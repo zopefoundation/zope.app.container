@@ -16,7 +16,6 @@
 $Id$
 """
 
-from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
 from zope.security.checker import selectChecker, CombinedChecker
 
