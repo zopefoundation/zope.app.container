@@ -15,6 +15,8 @@
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
+
 from zope.interface import Interface, Attribute, implements, Invalid
 from zope.component.interfaces import IView
 from zope.interface.common.mapping import IItemMapping
@@ -60,40 +62,40 @@ class IWriteContainer(Interface):
     """An interface for the write aspects of a container."""
 
     def __setitem__(name, object):
-        """Add the given object to the container under the given name.
+        """Add the given `object` to the container under the given name.
 
-        Raises a TypeError if the key is not a unicode or ascii string.
-        Raises a ValueError if key is empty.
+        Raises a ``TypeError`` if the key is not a unicode or ascii string.
+        Raises a ``ValueError`` if key is empty.
 
         The container might choose to add a different object than the
         one passed to this method.
 
-        If the object doesn't implement IContained, then one of two
+        If the object doesn't implement `IContained`, then one of two
         things must be done:
 
-        1. If the object implements ILocation, then the IContained
+        1. If the object implements `ILocation`, then the `IContained`
            interface must be declared for the object.
 
-        2. Otherwise, a ContainedProxy is created for the object and
+        2. Otherwise, a `ContainedProxy` is created for the object and
            stored.
 
-        The object's __parent__ and __name__ attributes are set to the
+        The object's `__parent__` and `__name__` attributes are set to the
         container and the given name.
 
-        If the old parent was None, then an IObjectAddedEvent is
-        generated, otherwise, and IObjectMovedEvent is generated.  An
-        IObjectModifiedEvent is generated for the container.  If an
+        If the old parent was ``None``, then an `IObjectAddedEvent` is
+        generated, otherwise, and `IObjectMovedEvent` is generated.  An
+        `IObjectModifiedEvent` is generated for the container.  If an
         add event is generated and the object can be adapted to
-        IObjectAddedEvent, then the adapter's addNotify method is called
+        `IObjectAddedEvent`, then the adapter's `addNotify` method is called
         with the event.  If the object can be adapted to
-        IObjectMovedEvent, then the adapter's moveNotify method is
+        `IObjectMovedEvent`, then the adapter's `moveNotify` method is
         called with the event.
 
         If the object replaces another object, then the old object is
         deleted before the new object is added, unless the container
         vetos the replacement by raising an exception.
 
-        If the object's __parent__ and __name__ were already set to
+        If the object's `__parent__` and `__name__` were already set to
         the container and the name, then no events are generated and
         no hooks.  This allows advanced clients to take over event
         generation.
@@ -103,20 +105,20 @@ class IWriteContainer(Interface):
     def __delitem__(name):
         """Delete the named object from the container.
 
-        Raises a KeyError if the object is not found.
+        Raises a ``KeyError`` if the object is not found.
 
-        If the deleted object's __parent__ and __name__ match the
-        container and given name, then an IObjectRemovedEvent is
-        generated and the attributes are set to None. If the object
-        can be adapted to IObjectMovedEvent, then the adapter's
-        moveNotify method is called with the event.
+        If the deleted object's `__parent__` and `__name__` match the
+        container and given name, then an `IObjectRemovedEvent` is
+        generated and the attributes are set to ``None``. If the object
+        can be adapted to `IObjectMovedEvent`, then the adapter's
+        `moveNotify` method is called with the event.
 
-        Unless the object's __parent__ and __name__ attributes were
-        initially None, generate an IObjectModifiedEvent for the
+        Unless the object's `__parent__` and `__name__` attributes were
+        initially ``None``, generate an `IObjectModifiedEvent` for the
         container.
 
-        If the object's __parent__ and __name__ were already set to
-        None, then no events are generated.  This allows advanced
+        If the object's `__parent__` and `__name__` were already set to
+        ``None``, then no events are generated.  This allows advanced
         clients to take over event generation.
 
         """
@@ -138,12 +140,12 @@ class IOrderedContainer(IContainer):
         """Revise the order of keys, replacing the current ordering.
 
         order is a list or a tuple containing the set of existing keys in
-        the new order. order must contain len(keys()) items and cannot
+        the new order. `order` must contain ``len(keys())`` items and cannot
         contain duplicate keys.
 
-        Raises TypeError if order is not a tuple or a list.
+        Raises ``TypeError`` if order is not a tuple or a list.
 
-        Raises ValueError if order contains an invalid set of keys.
+        Raises ``ValueError`` if order contains an invalid set of keys.
         """
 
 class IContainerNamesContainer(IContainer):
@@ -185,17 +187,17 @@ class IAdding(IView):
     def add(content):
         """Add content object to container.
 
-        Add using the name in contentName.  Returns the added object
+        Add using the name in `contentName`.  Returns the added object
         in the context of its container.
 
-        If contentName is already used in container, raises
-        DuplicateIDError.
+        If `contentName` is already used in container, raises
+        ``DuplicateIDError``.
         """
 
     contentName = Attribute(
          """The content name, as usually set by the Adder traverser.
 
-         If the content name hasn't been defined yet, returns None.
+         If the content name hasn't been defined yet, returns ``None``.
 
          Some creation views might use this to optionally display the
          name on forms.

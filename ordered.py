@@ -15,6 +15,7 @@
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
 
 from zope.app.container.interfaces import IOrderedContainer
 from zope.interface import implements
@@ -25,7 +26,7 @@ from types import StringTypes, TupleType, ListType
 from zope.app.container.contained import Contained, setitem, uncontained
 
 class OrderedContainer(Persistent, Contained):
-    """ OrderedContainer maintains entries' order as added and moved.
+    """ `OrderedContainer` maintains entries' order as added and moved.
 
     >>> oc = OrderedContainer()
     >>> int(IOrderedContainer.providedBy(oc))
@@ -42,7 +43,7 @@ class OrderedContainer(Persistent, Contained):
         self._order = PersistentList()
 
     def keys(self):
-        """ See IOrderedContainer.
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc.keys()
@@ -60,7 +61,7 @@ class OrderedContainer(Persistent, Contained):
         return self._order[:]
 
     def __iter__(self):
-        """ See IOrderedContainer.
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc.keys()
@@ -76,7 +77,7 @@ class OrderedContainer(Persistent, Contained):
         return iter(self.keys())
 
     def __getitem__(self, key):
-        """ See IOrderedContainer
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc['foo'] = 'bar'
@@ -87,7 +88,7 @@ class OrderedContainer(Persistent, Contained):
         return self._data[key]
 
     def get(self, key, default=None):
-        """ See IOrderedContainer
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc['foo'] = 'bar'
@@ -100,7 +101,7 @@ class OrderedContainer(Persistent, Contained):
         return self._data.get(key, default)
 
     def values(self):
-        """ See IOrderedContainer.
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc.keys()
@@ -118,7 +119,7 @@ class OrderedContainer(Persistent, Contained):
         return [self._data[i] for i in self._order]
 
     def __len__(self):
-        """ See IOrderedContainer
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> int(len(oc) == 0)
@@ -131,7 +132,7 @@ class OrderedContainer(Persistent, Contained):
         return len(self._data)
 
     def items(self):
-        """ See IOrderedContainer.
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc.keys()
@@ -149,7 +150,7 @@ class OrderedContainer(Persistent, Contained):
         return [(i, self._data[i]) for i in self._order]
 
     def __contains__(self, key):
-        """ See IOrderedContainer.
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc['foo'] = 'bar'
@@ -164,7 +165,7 @@ class OrderedContainer(Persistent, Contained):
     has_key = __contains__
 
     def __setitem__(self, key, object):
-        """ See IOrderedContainer.
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc.keys()
@@ -203,7 +204,7 @@ class OrderedContainer(Persistent, Contained):
         return key
 
     def __delitem__(self, key):
-        """ See IOrderedContainer.
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc.keys()
@@ -227,7 +228,7 @@ class OrderedContainer(Persistent, Contained):
         self._order.remove(key)
 
     def updateOrder(self, order):
-        """ See IOrderedContainer
+        """ See `IOrderedContainer`.
 
         >>> oc = OrderedContainer()
         >>> oc['foo'] = 'bar'

@@ -16,6 +16,8 @@
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
+
 from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.app.size.interfaces import ISized
 from zope.interface import implements
@@ -28,11 +30,11 @@ class ContainerSized(object):
         self._container = container
 
     def sizeForSorting(self):
-        """See ISized"""
+        """See `ISized`"""
         return ('item', len(self._container))
 
     def sizeForDisplay(self):
-        """See ISized"""
+        """See `ISized`"""
         num_items = len(self._container)
         if num_items == 1:
             return _('1 item')

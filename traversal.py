@@ -15,6 +15,8 @@
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
+
 from zope.interface import implements
 from zope.exceptions import NotFoundError
 from zope.publisher.interfaces.browser import IBrowserPublisher
@@ -80,7 +82,7 @@ class ItemTraverser(ContainerTraverser):
 _marker = object()
 
 class ContainerTraversable(object):
-    """Traverses containers via getattr and get."""
+    """Traverses containers via `getattr` and `get`."""
 
     implements(ITraversable)
     __used_for__ = IReadContainer

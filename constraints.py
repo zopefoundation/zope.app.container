@@ -17,10 +17,10 @@
    containment relationship.
 
    A container expresses constraints through a precondition on it's
-   __setitem__ method in it's interface.
+   `__setitem__` method in it's interface.
 
    Preconditions can be simple callable objects, like functions. They
-   should raise a zope.interface.Invalid exception to indicate that a
+   should raise a ``zope.interface.Invalid`` exception to indicate that a
    constraint isn't satisfied:
 
    >>> def preNoZ(container, name, ob):
@@ -51,7 +51,7 @@
 
    We can also express constaints on the containers an object can be
    added to. We do this by setting a field constraint on an object's
-   __parent__ attribute:
+   `__parent__` attribute:
 
    >>> import zope.schema
 
@@ -101,10 +101,10 @@
    >>> c1.x = 1
    >>> checkObject(c1, "bob", O())
 
-   The checkObject function is handy when checking whether we can add an
+   The `checkObject` function is handy when checking whether we can add an
    existing object to a container, but, sometimes, we want to check
    whether an object produced by a factory can be added.  To do this, we
-   use checkFactory:
+   use `checkFactory`:
 
    >>> class Factory(object):
    ...     def __call__(self):
@@ -121,7 +121,7 @@
    >>> checkFactory(c1, "bob", factory)
    False
 
-   Unlike checkObject, checkFactory:
+   Unlike `checkObject`, `checkFactory`:
 
    - Returns a boolean value
 
@@ -134,7 +134,7 @@
    >>> checkFactory(c1, "Zbob", factory)
    True
 
-   To work with checkFactory, a container precondition has to
+   To work with `checkFactory`, a container precondition has to
    implement a factory method.  This is because a factory, rather than
    an object is passed.  Ti illistrate this, we'll make preNoZ it's
    own factory method:
@@ -149,6 +149,7 @@
 
    $Id$
    """
+__docformat__ = 'restructuredtext'
 
 import zope.interface
 from zope.interface import providedBy
@@ -231,7 +232,7 @@ class IItemTypePrecondition(zope.interface.Interface):
         """
 
 class ItemTypePrecondition(object):
-    """Specify a __setitem__ precondition that restricts item types
+    """Specify a `__setitem__` precondition that restricts item types
 
     Items must be one of the given types.  
 

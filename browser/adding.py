@@ -18,6 +18,8 @@ factory screen.
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
+
 from warnings import warn
 import zope.security.checker
 from zope.interface import implements
@@ -200,7 +202,7 @@ class Adding(BasicAdding):
         return len(self.addingInfo()) == 1
 
     def hasCustomAddView(self):
-       "This should be called only if there is singleMenuItem else return 0"
+       "This should be called only if there is `singleMenuItem` else return 0"
        if self.isSingleMenuItem():
            menu_item = self.addingInfo()[0]
            if 'has_custom_add_view' in menu_item:

@@ -15,6 +15,8 @@
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
+
 from zope.interface import implements
 from interfaces import IFind, IIdFindFilter
 from interfaces import IReadContainer

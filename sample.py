@@ -20,6 +20,8 @@ need a very different implementation.
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
+
 from zope.app.container.interfaces import IContainer
 from zope.interface import implements
 from zope.app.container.contained import Contained, setitem, uncontained
@@ -28,7 +30,7 @@ class SampleContainer(Contained):
     """Sample container implementation suitable for testing.
 
     It is not suitable, directly as a base class unless the subclass
-    overrides _newContainerData to return a persistent mapping object.
+    overrides `_newContainerData` to return a persistent mapping object.
     """
     implements(IContainer)
 
@@ -40,49 +42,49 @@ class SampleContainer(Contained):
 
         Subclasses should override this if they want different data.
 
-        The value returned is a mapping object that also has get,
-        has_key, keys, items, and values methods.
+        The value returned is a mapping object that also has `get`,
+        `has_key`, `keys`, `items`, and `values` methods.
         """
         return {}
 
     def keys(self):
-        '''See interface IReadContainer'''
+        '''See interface `IReadContainer`'''
         return self.__data.keys()
 
     def __iter__(self):
         return iter(self.__data)
 
     def __getitem__(self, key):
-        '''See interface IReadContainer'''
+        '''See interface `IReadContainer`'''
         return self.__data[key]
 
     def get(self, key, default=None):
-        '''See interface IReadContainer'''
+        '''See interface `IReadContainer`'''
         return self.__data.get(key, default)
 
     def values(self):
-        '''See interface IReadContainer'''
+        '''See interface `IReadContainer`'''
         return self.__data.values()
 
     def __len__(self):
-        '''See interface IReadContainer'''
+        '''See interface `IReadContainer`'''
         return len(self.__data)
 
     def items(self):
-        '''See interface IReadContainer'''
+        '''See interface `IReadContainer`'''
         return self.__data.items()
 
     def __contains__(self, key):
-        '''See interface IReadContainer'''
+        '''See interface `IReadContainer`'''
         return self.__data.has_key(key)
 
     has_key = __contains__
 
     def __setitem__(self, key, object):
-        '''See interface IWriteContainer'''
+        '''See interface `IWriteContainer`'''
         setitem(self, self.__data.__setitem__, key, object)
 
     def __delitem__(self, key):
-        '''See interface IWriteContainer'''
+        '''See interface `IWriteContainer`'''
         uncontained(self.__data[key], self, key)
         del self.__data[key]

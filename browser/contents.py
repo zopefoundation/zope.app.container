@@ -15,6 +15,7 @@
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
 
 from zope.exceptions import NotFoundError
 
@@ -338,7 +339,7 @@ class Contents(BrowserView):
 
 
     def hasClipboardContents(self):
-        """ interogates the PrinicipalAnnotation to see if
+        """ interogates the `PrinicipalAnnotation` to see if
            clipboard contents exist """
 
         if not self.supportsPaste:

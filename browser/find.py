@@ -15,6 +15,8 @@
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
+
 from zope.app.container.find import SimpleIdFindFilter
 from zope.app.container.interfaces import IFind
 from zope.app.traversing.api import getName
@@ -25,7 +27,7 @@ from zope.app.publisher.browser import BrowserView
 class Find(BrowserView):
 
     def findByIds(self, ids):
-        """Do a find for the ids listed in ids, which is a string."""
+        """Do a find for the `ids` listed in `ids`, which is a string."""
         finder = IFind(self.context)
         ids = ids.split()
         # if we don't have any ids listed, don't search at all
