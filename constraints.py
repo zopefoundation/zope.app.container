@@ -75,7 +75,7 @@
    >>> checkObject(c1, "bob", O())
    Traceback (most recent call last):
    ...
-   ValidationError: (u'Constraint not satisfied', C1)
+   ConstraintNotSatisfied: C1
 
    Note that the validation error isn't very informative. For that
    reason, it's better for constraints to raise Invalid errors when they
@@ -147,7 +147,7 @@
    >>> checkFactory(c1, "Zbob", factory)
    False
 
-   $Id: constraints.py,v 1.6 2004/03/05 22:08:59 jim Exp $
+   $Id: constraints.py,v 1.7 2004/04/11 10:34:40 srichter Exp $
    """
 
 import zope.interface
