@@ -201,17 +201,18 @@ def checkFactory(container, name, factory):
                     return False
 
     # check the constraint on __parent__
-    __parent__ = factory.getInterfaces().get('__parent__')
-    if __parent__ is not None:
-        try:
-            validate = __parent__.validate
-        except AttributeError:
-            pass
-        else:
+    for iface in factory.getInterfaces():
+        __parent__ = iface.get('__parent__')
+        if __parent__ is not None:
             try:
-                validate(container)
-            except zope.interface.Invalid:
-                return False
+                validate = __parent__.validate
+            except AttributeError:
+                pass
+            else:
+                try:
+                    validate(container)
+                except zope.interface.Invalid:
+                    return False
 
     return True
 
