@@ -9,11 +9,19 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 ##############################################################################
-"""XXX short summary goes here.
+"""File-system representation adapters for containers
 
-XXX longer description goes here.
+This module includes tow adapters (adapter factories, really) for
+providing a file-system representation for containers:
 
-$Id: directory.py,v 1.1 2003/02/03 15:08:29 jim Exp $
+noop
+  Factory that "adapts" IContainer to IWriteDirectory.
+  This is a lie, since it just returns the original object.
+
+Cloner
+  An IDirectoryFactory adapter that just clones the original object.
+
+$Id: directory.py,v 1.2 2003/03/23 13:44:59 jim Exp $
 """
 __metaclass__ = type
 
@@ -21,9 +29,20 @@ import zope.app.interfaces.file
 from zope.proxy.introspection import removeAllProxies
 
 def noop(container):
+    """XXX adapt an IContainer to an IWriteDirectory by just returning it
+
+    This "works" because IContainer and IWriteDirectory have the same
+    methods, however, the output doesn't actually imlement IWriteDirectory.
+    """
     return container
 
 class Cloner:
+    """IContainer to IDirectoryFactory adapter that clones
+
+    This adapter provides a factory that creates a new empty container
+    of the same class as it's context.
+    
+    """
 
     __implements__ = zope.app.interfaces.file.IDirectoryFactory
 
