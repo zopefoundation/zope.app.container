@@ -19,12 +19,12 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: sample.py,v 1.4 2002/12/27 19:22:50 gvanrossum Exp $
+$Id: sample.py,v 1.5 2002/12/30 20:43:49 jeremy Exp $
 """
 
-from zope.app.interfaces.container import IContainer
 from types import StringTypes
-from zope.app.interfaces.container import UnaddableError
+
+from zope.app.interfaces.container import IContainer, UnaddableError
 
 class SampleContainer(object):
     """Sample container implementation suitable for testing.
@@ -37,9 +37,9 @@ class SampleContainer(object):
     __implements__ =  IContainer
 
     def __init__(self):
-        self.__data = self._Container__newData()
+        self.__data = self._newContainerData()
 
-    def _Container__newData(self):
+    def _newContainerData(self):
         """Construct an item-data container
 
         Subclasses should override this if they want different data.
@@ -48,7 +48,6 @@ class SampleContainer(object):
         has_key, keys, items, and values methods.
         """
         return {}
-
 
     def keys(self):
         '''See interface IReadContainer'''
@@ -91,10 +90,11 @@ class SampleContainer(object):
                 unicode(key)
             except UnicodeError:
                 bad = True
-        else: bad = True
+        else:
+            bad = True
         if bad: 
-            raise TypeError(("'%s' is invalid, the key must be an " +
-                "ascii or unicode string") % key)
+            raise TypeError("'%s' is invalid, the key must be an "
+                            "ascii or unicode string" % key)
         if len(key) == 0:
             raise ValueError("The key cannot be an empty string")
         self.__data[key] = object
