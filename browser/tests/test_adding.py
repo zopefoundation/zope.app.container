@@ -80,8 +80,7 @@ class AbsoluteURL(BrowserView):
         if IContainmentRoot.providedBy(self.context):
             return ''
         name = self.context.__name__
-        url = str(zapi.getMultiAdapter(
-            (zapi.getParent(self.context), self.request), name='absolute_url'))
+        url = zapi.absoluteURL(zapi.getParent(self.context), self.request)
         url += '/' + name
         return url
 
