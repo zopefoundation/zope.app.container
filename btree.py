@@ -29,7 +29,7 @@ class BTreeContainer(SampleContainer, Persistent):
 
     # implements(what my base classes implement)
 
-    # XXX It appears that BTreeContainer uses SampleContainer only to
+    # TODO: It appears that BTreeContainer uses SampleContainer only to
     # get the implementation of __setitem__().  All the other methods
     # provided by that base class are just slower replacements for
     # operations on the BTree itself.  It would probably be clearer to
