@@ -27,6 +27,8 @@ from zope.app import zapi
 from zope.app.annotation.interfaces import IAttributeAnnotatable
 from zope.app.dublincore.interfaces import IZopeDublinCore
 
+from zope.app.tests.functional import FunctionalDocFileSuite
+
 class File(Persistent):
     implements(IAttributeAnnotatable)
 
@@ -261,6 +263,7 @@ class Test(BrowserTestCase):
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(Test))
+    suite.addTest(FunctionalDocFileSuite("index.txt"))
     return suite
 
 if __name__=='__main__':
