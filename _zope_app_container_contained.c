@@ -12,6 +12,8 @@
 #
 ############################################################################*/
 
+#define _ZOPE_APP_CONTAINER_CONTAINED_C "$Id: _zope_app_container_contained.c,v 1.5 2004/05/03 20:23:03 spascoe Exp $\n"
+
 /* Contained Proxy Base class
 
  Contained proxies provide __parent__ and __name__ attributes for
