@@ -18,7 +18,7 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.interface import implements
-from zope.exceptions import NotFoundError
+from zope.app.traversing.interfaces import TraversalError
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.xmlrpc import IXMLRPCPublisher
 from zope.publisher.interfaces import NotFound
@@ -98,6 +98,6 @@ class ContainerTraversable(object):
         if v is _marker:
             v = getattr(container, name, _marker)
             if v is _marker:
-                raise NotFoundError, name
+                raise TraversalError, name
 
         return v

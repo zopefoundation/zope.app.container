@@ -17,7 +17,7 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.exceptions import NotFoundError
+from zope.app.traversing.interfaces import TraversalError
 from zope.security.interfaces import Unauthorized
 from zope.security import checkPermission
 
@@ -301,7 +301,7 @@ class Contents(BrowserView):
         for item in items:
             try:
                 obj = zapi.traverse(target, item['target'])
-            except NotFoundError:
+            except TraversalError:
                 pass
             else:
                 if item['action'] == 'cut':
@@ -331,7 +331,7 @@ class Contents(BrowserView):
         for item in items:
             try:
                 obj = zapi.traverse(target, item['target'])
-            except NotFoundError:
+            except TraversalError:
                 pass
             else:
                 if item['action'] == 'cut':
@@ -367,7 +367,7 @@ class Contents(BrowserView):
         for item in items:
             try:
                 zapi.traverse(self.context, item['target'])
-            except NotFoundError:
+            except TraversalError:
                 pass
             else:
                 return True

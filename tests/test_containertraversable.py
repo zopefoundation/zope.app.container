@@ -17,7 +17,7 @@ $Id$
 """
 import unittest
 from zope.app.container.traversal import ContainerTraversable
-from zope.exceptions import NotFoundError
+from zope.app.traversing.interfaces import TraversalError
 from zope.app.container.interfaces import IContainer
 from zope.testing.cleanup import CleanUp
 from zope.interface import implements
@@ -58,7 +58,7 @@ class Test(CleanUp, unittest.TestCase):
         self.failUnless(T.traverse('foo', []) is baz)
         self.failUnless(T.traverse('bar', []) is bar)
 
-        self.assertRaises(NotFoundError , T.traverse, 'morebar', [])
+        self.assertRaises(TraversalError , T.traverse, 'morebar', [])
 
 
 def test_suite():
