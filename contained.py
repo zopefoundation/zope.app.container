@@ -11,10 +11,11 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Classes to support implenting IContained
+"""Classes to support implenting `IContained`
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
 
 from zope.exceptions import DuplicationError
 from zope.security.checker import selectChecker, CombinedChecker
@@ -39,7 +40,7 @@ from zope.app.container._zope_app_container_contained import ContainedProxyBase
 from zope.app.container._zope_app_container_contained import getProxiedObject
 
 class Contained(object):
-    """Stupid mix-in that defines __parent__ and __name__ attributes
+    """Stupid mix-in that defines `__parent__` and `__name__` attributes
     """
 
     zope.interface.implements(IContained)
@@ -210,11 +211,11 @@ def containedEvent(object, container, name=None):
     """Establish the containment of the object in the container
 
     The object and necessary event are returned. The object may be a
-    ContainedProxy around the original object. The event is an added
+    `ContainedProxy` around the original object. The event is an added
     event, a moved event, or None.
 
-    If the object implements IContained, simply set its __parent__
-    and __name__ attributes:
+    If the object implements `IContained`, simply set its `__parent__`
+    and `__name__` attributes:
 
         >>> container = {}
         >>> item = Contained()
@@ -270,9 +271,9 @@ def containedEvent(object, container, name=None):
         >>> event.oldName
         u'foo'
 
-    If the object implements ILocation, but not IContained, set it's
-    __parent__ and __name__ attributes *and* declare that it
-    implements IContained:
+    If the `object` implements `ILocation`, but not `IContained`, set it's
+    `__parent__` and `__name__` attributes *and* declare that it
+    implements `IContained`:
 
         >>> from zope.app.location import Location
         >>> item = Location()
@@ -289,8 +290,8 @@ def containedEvent(object, container, name=None):
         True
 
 
-    If the object doesn't even implement ILocation, put a
-    ContainedProxy around it:
+    If the `object` doesn't even implement `ILocation`, put a
+    `ContainedProxy` around it:
 
         >>> item = []
         >>> x, event = containedEvent(item, container, 'foo')
@@ -331,7 +332,7 @@ def contained(object, container, name=None):
     Just return the contained object without an event. This is a convenience
     "macro" for:
 
-       containedEvent(object, container, name)[0]
+       ``containedEvent(object, container, name)[0]``
 
     This function is only used for tests.
     """
@@ -341,10 +342,10 @@ def setitem(container, setitemf, name, object):
     """Helper function to set an item and generate needed events
 
     This helper is needed, in part, because the events need to get
-    published after the object has been added to the container.
+    published after the `object` has been added to the `container`.
 
-    If the item implements IContained, simply set it's __parent__
-    and __name attributes:
+    If the item implements `IContained`, simply set it's `__parent__`
+    and `__name__` attributes:
 
     >>> class IItem(zope.interface.Interface):
     ...     pass
@@ -376,7 +377,7 @@ def setitem(container, setitemf, name, object):
     >>> item.__name__
     u'c'
 
-    If we run this using the testing framework, we'll use getEvents to
+    If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
 
     >>> from zope.app.event.tests.placelesssetup import getEvents
@@ -410,8 +411,8 @@ def setitem(container, setitemf, name, object):
     >>> item.moved is event
     1
 
-    We can suppress events and hooks by setting the __parent__ and
-    __name__ first:
+    We can suppress events and hooks by setting the `__parent__` and
+    `__name__` first:
 
     >>> item = Item()
     >>> item.__parent__, item.__name__ = container, 'c2'
@@ -465,9 +466,9 @@ def setitem(container, setitemf, name, object):
     3
 
 
-    If the object implements ILocation, but not IContained, set it's
-    __parent__ and __name__ attributes *and* declare that it
-    implements IContained:
+    If the object implements `ILocation`, but not `IContained`, set it's
+    `__parent__` and `__name__` attributes *and* declare that it
+    implements `IContained`:
 
     >>> from zope.app.location import Location
     >>> item = Location()
@@ -490,8 +491,8 @@ def setitem(container, setitemf, name, object):
     >>> len(getEvents(IObjectModifiedEvent))
     4
 
-    If the object doesn't even implement ILocation, put a
-    ContainedProxy around it:
+    If the object doesn't even implement `ILocation`, put a
+    `ContainedProxy` around it:
 
     >>> item = []
     >>> setitem(container, container.__setitem__, u'i', item)
@@ -569,9 +570,10 @@ def setitem(container, setitemf, name, object):
 
 fixing_up = False
 def uncontained(object, container, name=None):
-    """Clear the containment relationship between the object amd the container
+    """Clear the containment relationship between the `object` and
+    the `container'
 
-    If we run this using the testing framework, we'll use getEvents to
+    If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
 
     >>> from zope.app.event.tests.placelesssetup import getEvents
@@ -629,7 +631,7 @@ def uncontained(object, container, name=None):
     >>> len(getEvents(IObjectModifiedEvent))
     1
 
-    But, if either the name or parent are not None and they are not
+    But, if either the name or parent are not ``None`` and they are not
     the container and the old name, we'll get a modified event but not
     a removed event.
 

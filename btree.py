@@ -20,6 +20,7 @@ need a very different implementation.
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
 
 from persistent import Persistent
 from BTrees.OOBTree import OOBTree

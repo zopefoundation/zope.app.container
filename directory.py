@@ -14,30 +14,32 @@
 This module includes two adapters (adapter factories, really) for
 providing a file-system representation for containers:
 
-noop
-  Factory that "adapts" IContainer to IWriteDirectory.
+`noop`
+  Factory that "adapts" `IContainer` to `IWriteDirectory`.
   This is a lie, since it just returns the original object.
 
-Cloner
-  An IDirectoryFactory adapter that just clones the original object.
+`Cloner`
+  An `IDirectoryFactory` adapter that just clones the original object.
 
 $Id$
 """
+__docformat__ = 'restructuredtext'
+
 import zope.app.filerepresentation.interfaces
 from zope.security.proxy import removeSecurityProxy
 from zope.interface import implements
 
 def noop(container):
-    """Adapt an IContainer to an IWriteDirectory by just returning it
+    """Adapt an `IContainer` to an `IWriteDirectory` by just returning it
 
-    This "works" because IContainer and IWriteDirectory have the same
-    methods, however, the output doesn't actually implement IWriteDirectory.
+    This "works" because `IContainer` and `IWriteDirectory` have the same
+    methods, however, the output doesn't actually implement `IWriteDirectory`.
     """
     return container
 
 
 class Cloner(object):
-    """IContainer to IDirectoryFactory adapter that clones
+    """`IContainer` to `IDirectoryFactory` adapter that clones
 
     This adapter provides a factory that creates a new empty container
     of the same class as it's context.
