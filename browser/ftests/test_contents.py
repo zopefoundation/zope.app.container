@@ -11,7 +11,8 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Functional tests for the Container's 'Contents' view
+
 $Id$
 """
 

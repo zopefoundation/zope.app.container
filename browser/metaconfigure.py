@@ -11,10 +11,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Container-specific 'browser' ZCML namespace directive handlers
+
 $Id$
 """
-
 from zope.interface import Interface
 from zope.configuration.fields import GlobalObject
 from zope.schema import Id
