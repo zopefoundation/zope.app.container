@@ -106,7 +106,7 @@ class BasicAdding(BrowserView):
         if view is not None:
             return view
 
-        factory = zapi.queryUtility(IFactory, name=name)
+        factory = zapi.queryUtility(IFactory, name)
         if factory is None:
             return super(BasicAdding, self).publishTraverse(request, name)
 

@@ -247,7 +247,7 @@ class Contents(BrowserView):
         container_path = zapi.getPath(self.context)
 
         user = self.request.principal
-        annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
+        annotationsvc = zapi.getService('PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         clipboard.clearContents()
@@ -267,7 +267,7 @@ class Contents(BrowserView):
         container_path = zapi.getPath(self.context)
 
         user = self.request.principal
-        annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
+        annotationsvc = zapi.getService('PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         clipboard.clearContents()
@@ -282,7 +282,7 @@ class Contents(BrowserView):
         """
         target = self.context
         user = self.request.principal
-        annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
+        annotationsvc = zapi.getService('PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         items = clipboard.getContents()
@@ -311,7 +311,7 @@ class Contents(BrowserView):
         """
         target = self.context
         user = self.request.principal
-        annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
+        annotationsvc = zapi.getService('PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         items = clipboard.getContents()
@@ -346,7 +346,7 @@ class Contents(BrowserView):
 
         user = self.request.principal
 
-        annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
+        annotationsvc = zapi.getService('PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
 
         # touch at least one item to in clipboard confirm contents

@@ -31,7 +31,7 @@ from zope.interface import Interface, implements
 
 from zope.app.copypastemove.interfaces import IPrincipalClipboard
 from zope.app.copypastemove import PrincipalClipboard
-from zope.component import getServices, getGlobalServices
+from zope.component import getGlobalServices
 from zope.app.principalannotation import PrincipalAnnotationService
 from zope.app.principalannotation.interfaces import IPrincipalAnnotationService
 from zope.app.annotation.interfaces import IAnnotations
