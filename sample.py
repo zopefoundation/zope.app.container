@@ -20,7 +20,7 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: sample.py,v 1.2 2002/12/25 14:12:46 jim Exp $
+$Id: sample.py,v 1.3 2002/12/27 18:39:02 rdmurray Exp $
 """
 
 from zope.app.interfaces.container import IContainer
@@ -86,8 +86,14 @@ class SampleContainer(object):
 
     def setObject(self, key, object):
         '''See interface IWriteContainer'''
-        if not isinstance(key, StringTypes):
-            raise TypeError("The key must be an ascii or unicode string")
+        bad = False
+        if isinstance(key, StringTypes):
+            try: unicode(key)
+            except UnicodeDecodeError: bad = True
+        else: bad = True
+        if bad: 
+            raise TypeError(("'%s' is invalid, the key must be an " +
+                "ascii or unicode string") % key)
         if len(key) == 0:
             raise ValueError("The key cannot be an empty string")
         self.__data[key] = object
