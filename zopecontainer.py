@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.4 2003/01/16 11:59:58 alga Exp $
+$Id: zopecontainer.py,v 1.5 2003/01/19 15:09:31 stevea Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -131,8 +131,8 @@ class ZopeContainerAdapter:
         elif hasattr(object, 'manage_beforeDelete'):
             # XXX: Ideally, only do this in debug mode.
             from warnings import warn
-            warn("Class %s has manage_beforeDelete but is not IDeleteNotifiable" %
-                 object.__class__)
+            warn('Class %s has manage_beforeDelete but is not'
+                 ' IDeleteNotifiable' % object.__class__)
 
         del container[key]
 
