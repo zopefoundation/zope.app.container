@@ -24,32 +24,6 @@
       factory=".directory.noop"
       />
 
-  <browser:page
-      name="_traverse" 
-      for="zope.app.interfaces.container.IItemContainer"
-      class="zope.app.container.traversal.ItemTraverser" 
-      permission="zope.Public"
-      />
-
-  <browser:page
-      name="_traverse" 
-      for="zope.app.interfaces.container.ISimpleReadContainer"
-      class="zope.app.container.traversal.ContainerTraverser" 
-      permission="zope.Public"
-      />
-
-  <xmlrpc:view
-      name="_traverse" 
-      for="zope.app.interfaces.container.IItemContainer"
-      factory="zope.app.container.traversal.ItemTraverser" 
-      />
-
-  <xmlrpc:view
-      name="_traverse" 
-      for="zope.app.interfaces.container.IReadContainer"
-      factory="zope.app.container.traversal.ContainerTraverser" 
-      />
-
   <adapter factory="zope.app.container.traversal.ContainerTraversable"
            provides="zope.app.interfaces.traversing.ITraversable"
            for="zope.app.interfaces.container.IReadContainer" 
