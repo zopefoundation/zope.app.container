@@ -14,18 +14,21 @@
 """
 
 Revision information:
-$Id: test_objectmover.py,v 1.8 2003/11/21 17:12:00 jim Exp $
+$Id: test_objectmover.py,v 1.9 2004/02/24 16:51:24 philikon Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
+from zope.component import getAdapter
+
 from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
-from zope.component import getAdapter
 from zope.app.tests import ztapi
 from zope.app.interfaces.copypastemove import IObjectMover
-from zope.app.interfaces.content.folder import IFolder
+from zope.app.folder.interfaces import IFolder
 from zope.app.copypastemove import ObjectMover
-from zope.app.content.file import File
+
+class File:
+    pass
 
 class ObjectMoverTest(PlacefulSetup, TestCase):
 
