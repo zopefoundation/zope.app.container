@@ -14,7 +14,7 @@
 """
 Revision information:
 
-$Id: test_objectcopier.py,v 1.13 2004/02/25 23:02:24 faassen Exp $
+$Id: test_objectcopier.py,v 1.14 2004/03/03 10:52:03 philikon Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -22,7 +22,7 @@ from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
 from zope.component import getAdapter
 from zope.app.tests import ztapi
-from zope.app.interfaces.copypastemove import IObjectCopier
+from zope.app.copypastemove.interfaces import IObjectCopier
 from zope.app.copypastemove import ObjectCopier
 
 class File:

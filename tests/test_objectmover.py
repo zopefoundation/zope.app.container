@@ -12,9 +12,7 @@
 #
 ##############################################################################
 """
-
-Revision information:
-$Id: test_objectmover.py,v 1.10 2004/02/25 23:02:24 faassen Exp $
+$Id: test_objectmover.py,v 1.11 2004/03/03 10:52:03 philikon Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -23,7 +21,7 @@ from zope.component import getAdapter
 from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
 from zope.app.tests import ztapi
-from zope.app.interfaces.copypastemove import IObjectMover
+from zope.app.copypastemove.interfaces import IObjectMover
 from zope.app.copypastemove import ObjectMover
 
 class File:
