@@ -13,19 +13,20 @@
 ##############################################################################
 """Test the IContainer interface.
 
-$Id: test_icontainer.py,v 1.5 2003/07/28 11:45:24 srichter Exp $
+$Id: test_icontainer.py,v 1.6 2003/09/21 17:30:43 jim Exp $
 """
 
 from unittest import TestCase, main, makeSuite
 from zope.app.interfaces.container import IContainer
 from zope.interface.verify import verifyObject
+from zope.app.tests.placelesssetup import PlacelessSetup
 
 
 def DefaultTestData():
         return [('3', '0'), ('2', '1'), ('4', '2'), ('6', '3'), ('0', '4'),
                 ('5', '5'), ('1', '6'), ('8', '7'), ('7', '8'), ('9', '9')]
 
-class BaseTestIContainer:
+class BaseTestIContainer(PlacelessSetup):
     """Base test cases for containers.
 
     Subclasses must define a makeTestObject that takes no
@@ -40,7 +41,7 @@ class BaseTestIContainer:
         self.__container = container = self.makeTestObject()
         self.__data = data = self.makeTestData()
         for k, v in data:
-            container.setObject(k, v)
+            container[k] = v
         return container, data
 
     ############################################################
@@ -164,24 +165,25 @@ class BaseTestIContainer:
         data = self.makeTestData()
         value = data[1][1]
         for name in self.getBadKeyTypes():
-            self.assertRaises(TypeError, folder.setObject, name, value)
+            self.assertRaises(TypeError, folder.__setitem__, name, value)
 
     def testOneItem(self):
         folder = self.makeTestObject()
         data = self.makeTestData()
 
         foo = data[0][1]
-        name = folder.setObject('foo', foo)
+        folder['foo'] = foo
+        name = 'foo'
 
         self.assertEquals(len(folder.keys()), 1)
-        self.assertEquals(folder.keys()[0], name)
+        self.assertEquals(folder.keys()[0], 'foo')
         self.assertEquals(len(folder.values()), 1)
         self.assertEquals(folder.values()[0], foo)
         self.assertEquals(len(folder.items()), 1)
-        self.assertEquals(folder.items()[0], (name, foo))
+        self.assertEquals(folder.items()[0], ('foo', foo))
         self.assertEquals(len(folder), 1)
 
-        self.failUnless(name in folder)
+        self.failUnless('foo' in folder)
         # Use an arbitrary id frpm the data set; don;t just use any id, since
         # there might be restrictions on their form
         self.failIf(data[6][0] in folder)
@@ -192,7 +194,9 @@ class BaseTestIContainer:
         self.assertRaises(KeyError, folder.__getitem__, data[6][0])
 
         foo2 = data[1][1]
-        name2 = folder.setObject('foo2', foo2)
+        
+        name2 = 'foo2'
+        folder[name2] = foo2
 
         self.assertEquals(len(folder.keys()), 2)
         self.assertEquals(not not name2 in folder.keys(), True)
@@ -219,10 +223,14 @@ class BaseTestIContainer:
         folder = self.makeTestObject()
         data = self.makeTestData()
         objects = [ data[i][1] for i in range(4) ]
-        name0 = folder.setObject('foo', objects[0])
-        name1 = folder.setObject('bar', objects[1])
-        name2 = folder.setObject('baz', objects[2])
-        name3 = folder.setObject('bam', objects[3])
+        name0 = 'foo'
+        name1 = 'bar'
+        name2 = 'baz'
+        name3 = 'bam'
+        folder['foo'] = objects[0]
+        folder['bar'] = objects[1]
+        folder['baz'] = objects[2]
+        folder['bam'] = objects[3]
 
         self.assertEquals(len(folder.keys()), len(objects))
         self.failUnless(name0 in folder.keys())

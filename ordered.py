@@ -14,7 +14,7 @@
 """Ordered container implementation.
 
 Revision information:
-$Id: ordered.py,v 1.5 2003/08/01 19:56:49 garrett Exp $
+$Id: ordered.py,v 1.6 2003/09/21 17:30:43 jim Exp $
 """
 
 from zope.app.interfaces.container import IOrderedContainer
@@ -23,8 +23,9 @@ from persistence import Persistent
 from persistence.dict import PersistentDict
 from persistence.list import PersistentList
 from types import StringTypes, TupleType, ListType
+from zope.app.container.contained import Contained, setitem, uncontained
 
-class OrderedContainer(Persistent):
+class OrderedContainer(Persistent, Contained):
     """ OrderedContainer maintains entries' order as added and moved.
 
     >>> oc = OrderedContainer()
@@ -47,10 +48,10 @@ class OrderedContainer(Persistent):
         >>> oc = OrderedContainer()
         >>> oc.keys()
         []
-        >>> key = oc.setObject('foo', 'bar')
+        >>> oc['foo'] = 'bar'
         >>> oc.keys()
         ['foo']
-        >>> key = oc.setObject('baz', 'quux')
+        >>> oc['baz'] = 'quux'
         >>> oc.keys()
         ['foo', 'baz']
         >>> int(len(oc._order) == len(oc._data))
@@ -65,8 +66,8 @@ class OrderedContainer(Persistent):
         >>> oc = OrderedContainer()
         >>> oc.keys()
         []
-        >>> key = oc.setObject('foo', 'bar')
-        >>> key = oc.setObject('baz', 'quux')
+        >>> oc['foo'] = 'bar'
+        >>> oc['baz'] = 'quux'
         >>> [i for i in oc]
         ['foo', 'baz']
         >>> int(len(oc._order) == len(oc._data))
@@ -79,7 +80,7 @@ class OrderedContainer(Persistent):
         """ See IOrderedContainer
 
         >>> oc = OrderedContainer()
-        >>> key = oc.setObject('foo', 'bar')
+        >>> oc['foo'] = 'bar'
         >>> oc['foo']
         'bar'
         """
@@ -90,7 +91,7 @@ class OrderedContainer(Persistent):
         """ See IOrderedContainer
 
         >>> oc = OrderedContainer()
-        >>> key = oc.setObject('foo', 'bar')
+        >>> oc['foo'] = 'bar'
         >>> oc.get('foo')
         'bar'
         >>> oc.get('funky', 'No chance, dude.')
@@ -105,10 +106,10 @@ class OrderedContainer(Persistent):
         >>> oc = OrderedContainer()
         >>> oc.keys()
         []
-        >>> key = oc.setObject('foo', 'bar')
+        >>> oc['foo'] = 'bar'
         >>> oc.values()
         ['bar']
-        >>> key = oc.setObject('baz', 'quux')
+        >>> oc['baz'] = 'quux'
         >>> oc.values()
         ['bar', 'quux']
         >>> int(len(oc._order) == len(oc._data))
@@ -123,7 +124,7 @@ class OrderedContainer(Persistent):
         >>> oc = OrderedContainer()
         >>> int(len(oc) == 0)
         1
-        >>> key = oc.setObject('foo', 'bar')
+        >>> oc['foo'] = 'bar'
         >>> int(len(oc) == 1)
         1
         """
@@ -136,10 +137,10 @@ class OrderedContainer(Persistent):
         >>> oc = OrderedContainer()
         >>> oc.keys()
         []
-        >>> key = oc.setObject('foo', 'bar')
+        >>> oc['foo'] = 'bar'
         >>> oc.items()
         [('foo', 'bar')]
-        >>> key = oc.setObject('baz', 'quux')
+        >>> oc['baz'] = 'quux'
         >>> oc.items()
         [('foo', 'bar'), ('baz', 'quux')]
         >>> int(len(oc._order) == len(oc._data))
@@ -152,7 +153,7 @@ class OrderedContainer(Persistent):
         """ See IOrderedContainer.
 
         >>> oc = OrderedContainer()
-        >>> key = oc.setObject('foo', 'bar')
+        >>> oc['foo'] = 'bar'
         >>> int('foo' in oc)
         1
         >>> int('quux' in oc)
@@ -163,16 +164,16 @@ class OrderedContainer(Persistent):
 
     has_key = __contains__
 
-    def setObject(self, key, object):
+    def __setitem__(self, key, object):
         """ See IOrderedContainer.
 
         >>> oc = OrderedContainer()
         >>> oc.keys()
         []
-        >>> key = oc.setObject('foo', 'bar')
+        >>> oc['foo'] = 'bar'
         >>> oc._order
         ['foo']
-        >>> key = oc.setObject('baz', 'quux')
+        >>> oc['baz'] = 'quux'
         >>> oc._order
         ['foo', 'baz']
         >>> int(len(oc._order) == len(oc._data))
@@ -194,7 +195,8 @@ class OrderedContainer(Persistent):
                             "ascii or unicode string" % key)
         if len(key) == 0:
             raise ValueError("The key cannot be an empty string")
-        self._data[key] = object
+
+        setitem(self, self._data.__setitem__, key, object)
 
         if not existed:
             self._order.append(key)
@@ -207,9 +209,9 @@ class OrderedContainer(Persistent):
         >>> oc = OrderedContainer()
         >>> oc.keys()
         []
-        >>> key = oc.setObject('foo', 'bar')
-        >>> key = oc.setObject('baz', 'quux')
-        >>> key = oc.setObject('zork', 'grue')
+        >>> oc['foo'] = 'bar'
+        >>> oc['baz'] = 'quux'
+        >>> oc['zork'] = 'grue'
         >>> oc.items()
         [('foo', 'bar'), ('baz', 'quux'), ('zork', 'grue')]
         >>> int(len(oc._order) == len(oc._data))
@@ -221,6 +223,7 @@ class OrderedContainer(Persistent):
         1
         """
 
+        uncontained(self._data[key], self, key)
         del self._data[key]
         self._order.remove(key)
 
@@ -228,9 +231,9 @@ class OrderedContainer(Persistent):
         """ See IOrderedContainer
 
         >>> oc = OrderedContainer()
-        >>> key = oc.setObject('foo', 'bar')
-        >>> key = oc.setObject('baz', 'quux')
-        >>> key = oc.setObject('zork', 'grue')
+        >>> oc['foo'] = 'bar'
+        >>> oc['baz'] = 'quux'
+        >>> oc['zork'] = 'grue'
         >>> oc.keys()
         ['foo', 'baz', 'zork']
         >>> oc.updateOrder(['baz', 'foo', 'zork'])

@@ -20,7 +20,7 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: btree.py,v 1.4 2003/06/03 14:16:05 stevea Exp $
+$Id: btree.py,v 1.5 2003/09/21 17:30:43 jim Exp $
 """
 
 from persistence import Persistent
@@ -32,7 +32,7 @@ class BTreeContainer(SampleContainer, Persistent):
     # implements(what my base classes implement)
 
     # XXX It appears that BTreeContainer uses SampleContainer only to
-    # get the implementation of setObject().  All the other methods
+    # get the implementation of __setitem__().  All the other methods
     # provided by that base class are just slower replacements for
     # operations on the BTree itself.  It would probably be clearer to
     # just delegate those methods directly to the btree.
