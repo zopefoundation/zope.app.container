@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.20 2004/03/14 04:03:30 srichter Exp $
+$Id: contained.py,v 1.21 2004/03/15 20:41:58 jim Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -242,12 +242,12 @@ def setitem(container, setitemf, name, object):
     >>> from zope.app.event.interfaces import ISubscriber
     >>> factory = objectEventCallbackHelper(
     ...     lambda event: event.object.setAdded(event))
-    >>> getService(None, Adapters).provideSubscriptionAdapter(
-    ...     IItem, ISubscriber, [factory], with=[IObjectAddedEvent])
+    >>> getService(None, Adapters).subscribe(
+    ...     [IItem,IObjectAddedEvent], ISubscriber, factory)
     >>> factory = objectEventCallbackHelper(
     ...     lambda event: event.object.setMoved(event))
-    >>> getService(None, Adapters).provideSubscriptionAdapter(
-    ...     IItem, ISubscriber, [factory], with=[IObjectMovedEvent])
+    >>> getService(None, Adapters).subscribe(
+    ...     [IItem, IObjectMovedEvent], ISubscriber, factory)
     >>> item = Item()
 
     >>> container = {}

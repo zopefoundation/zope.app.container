@@ -13,7 +13,7 @@
 ##############################################################################
 """Container Traverser Tests
 
-$Id: test_containertraverser.py,v 1.11 2004/03/03 10:38:39 philikon Exp $
+$Id: test_containertraverser.py,v 1.12 2004/03/15 20:42:04 jim Exp $
 """
 import unittest
 from zope.app.container.traversal import ContainerTraverser
@@ -62,7 +62,7 @@ class TraverserTest(PlacelessSetup, unittest.TestCase):
         # Create the traverser
         self.traverser = self._getTraverser(foo2, self.request)
         # Define a simple view for the container
-        ztapi.browserView(IReadContainer, 'viewfoo', [View])
+        ztapi.browserView(IReadContainer, 'viewfoo', View)
         
     def test_itemTraversal(self):
         self.assertEqual(
