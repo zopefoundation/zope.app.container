@@ -13,7 +13,7 @@
 ##############################################################################
 """Test the IContainer interface.
 
-$Id: test_icontainer.py,v 1.8 2004/03/08 23:35:04 srichter Exp $
+$Id: test_icontainer.py,v 1.9 2004/03/17 16:38:12 srichter Exp $
 """
 from unittest import TestCase, main, makeSuite
 from zope.app.container.interfaces import IContainer
@@ -296,7 +296,7 @@ class BaseTestIContainer(PlacelessSetup):
         self.failIf(name3 in folder)
 
 
-class Test(BaseTestIContainer, TestCase):
+class TestSampleContainer(BaseTestIContainer, TestCase):
 
     def makeTestObject(self):
         from zope.app.container.sample import SampleContainer
@@ -312,7 +312,7 @@ class Test(BaseTestIContainer, TestCase):
         return [None, ['foo'], 1, '\xf3abc']
 
 def test_suite():
-    return makeSuite(Test)
+    return makeSuite(TestSampleContainer)
 
 if __name__=='__main__':
     main(defaultTest='test_suite')

@@ -20,7 +20,7 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: btree.py,v 1.7 2004/02/20 22:02:28 fdrake Exp $
+$Id: btree.py,v 1.8 2004/03/17 16:38:12 srichter Exp $
 """
 
 from persistent import Persistent
@@ -46,3 +46,23 @@ class BTreeContainer(SampleContainer, Persistent):
         has_key, keys, items, and values methods.
         """
         return OOBTree()
+
+    def __contains__(self, key):
+        '''See interface IReadContainer
+
+        Reimplement this method, since has_key() returns the key if available,
+        while we expect True or False.
+
+        >>> c = BTreeContainer()
+        >>> "a" in c
+        False
+        >>> c["a"] = 1
+        >>> "a" in c
+        True
+        >>> "A" in c
+        False
+        '''
+        return key in self._SampleContainer__data
+
+    has_key = __contains__
+        
