@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: test_objectmover.py,v 1.6 2003/06/13 17:41:14 stevea Exp $
+$Id: test_objectmover.py,v 1.7 2003/09/21 17:31:42 jim Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -24,12 +24,6 @@ from zope.component import getAdapter
 from zope.component.adapter import provideAdapter
 from zope.app.interfaces.copypastemove import IObjectMover
 from zope.app.interfaces.content.folder import IFolder
-from zope.app.interfaces.container import IPasteTarget
-from zope.app.interfaces.container import IMoveSource
-from zope.app.interfaces.container import IPasteNamesChooser
-from zope.app.container.copypastemove import PasteTarget
-from zope.app.container.copypastemove import MoveSource
-from zope.app.container.copypastemove import PasteNamesChooser
 from zope.app.copypastemove import ObjectMover
 from zope.app.content.file import File
 
@@ -39,23 +33,22 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
         provideAdapter(None, IObjectMover, ObjectMover)
-        provideAdapter(IFolder, IPasteTarget, PasteTarget)
-        provideAdapter(IFolder, IMoveSource, MoveSource)
-        provideAdapter(IFolder, IPasteNamesChooser, PasteNamesChooser)
  
     def test_movetosame(self):
+        # Should be a noop, because "moving" to same location
         root = self.rootFolder
         container = traverse(root, 'folder1')
-        container.setObject('file1', File())
+        container['file1'] = File()
         file = traverse(root, 'folder1/file1')
         mover = getAdapter(file, IObjectMover)
         mover.moveTo(container, 'file1')
         self.failUnless('file1' in container)
+        self.assertEquals(len(container), 3)
 
     def test_movetosamewithnewname(self):
         root = self.rootFolder
         container = traverse(root, 'folder1')
-        container.setObject('file1', File())
+        container['file1'] = File()
         file = traverse(root, 'folder1/file1')
         mover = getAdapter(file, IObjectMover)
         mover.moveTo(container, 'file2')
@@ -65,7 +58,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
     def test_movetoother(self):
         root = self.rootFolder
         container = traverse(root, 'folder1')
-        container.setObject('file1', File())
+        container['file1'] = File()
         target = traverse(root, 'folder2')
         file = traverse(root, 'folder1/file1')
         mover = getAdapter(file, IObjectMover)
@@ -76,7 +69,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
     def test_movetootherwithnewname(self):
         root = self.rootFolder
         container = traverse(root, 'folder1')
-        container.setObject('file1', File())
+        container['file1'] = File()
         target = traverse(root, 'folder2')
         file = traverse(root, 'folder1/file1')
         mover = getAdapter(file, IObjectMover)
@@ -87,20 +80,20 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
     def test_movetootherwithnamecollision(self):
         root = self.rootFolder
         container = traverse(root, 'folder1')
-        container.setObject('file1', File())
+        container['file1'] = File()
         target = traverse(root, 'folder2')
-        target.setObject('file1', File())
+        target['file1'] = File()
         file = traverse(root, 'folder1/file1')
         mover = getAdapter(file, IObjectMover)
         mover.moveTo(target, 'file1')
         self.failIf('file1' in container)
         self.failUnless('file1' in target)
-        self.failUnless('copy_of_file1' in target)
+        self.failUnless('file1-2' in target)
 
     def test_moveable(self):
         root = self.rootFolder
         container = traverse(root, 'folder1')
-        container.setObject('file1', File())
+        container['file1'] = File()
         file = traverse(root, 'folder1/file1')
         mover = getAdapter(file, IObjectMover)
         self.failUnless(mover.moveable())
@@ -110,7 +103,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         #  object with the same id.
         root = self.rootFolder
         container = traverse(root, 'folder1')
-        container.setObject('file1', File())
+        container['file1'] = File()
         file = traverse(root, 'folder1/file1')
         mover = getAdapter(file, IObjectMover)
         self.failUnless(mover.moveableTo(container, 'file1'))
@@ -124,20 +117,24 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         self.failUnless('folder1_1' in target)
 
     def test_movefoldertosame(self):
+        # Should be a noop, because "moving" to same location
         root = self.rootFolder
         target = traverse(root, '/folder1')
         source = traverse(root, '/folder1/folder1_1')
         mover = getAdapter(source, IObjectMover)
         mover.moveTo(target)
         self.failUnless('folder1_1' in target)
+        self.assertEquals(len(target), 2)
 
     def test_movefoldertosame2(self):
+        # Should be a noop, because "moving" to same location
         root = self.rootFolder
         target = traverse(root, '/folder1/folder1_1')
         source = traverse(root, '/folder1/folder1_1/folder1_1_1')
         mover = getAdapter(source, IObjectMover)
         mover.moveTo(target)
         self.failUnless('folder1_1_1' in target)
+        self.assertEquals(len(target), 2)
 
     def test_movefolderfromroot(self):
         root = self.rootFolder
