@@ -13,10 +13,10 @@
 ##############################################################################
 """
 
-$Id: test_containertraversable.py,v 1.3 2003/03/13 18:49:05 alga Exp $
+$Id: test_containertraversable.py,v 1.4 2003/05/01 19:35:09 faassen Exp $
 """
 
-import unittest, sys
+import unittest
 from zope.app.container.traversal import ContainerTraversable
 from zope.exceptions import NotFoundError
 from zope.app.interfaces.container import IContainer

@@ -14,7 +14,7 @@
 """
 Revision information:
 
-$Id: test_objectcopier.py,v 1.6 2003/03/31 14:48:40 sidnei Exp $
+$Id: test_objectcopier.py,v 1.7 2003/05/01 19:35:09 faassen Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -35,7 +35,6 @@ from zope.app.container.copypastemove import PasteTarget
 from zope.app.container.copypastemove import CopySource, NoChildrenCopySource
 from zope.app.container.copypastemove import PasteNamesChooser
 from zope.app.copypastemove import ObjectCopier, NoChildrenObjectCopier
-from zope.app.content.folder import Folder
 from zope.app.content.file import File
 from zope.app.container.sample import SampleContainer
 

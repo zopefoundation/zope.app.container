@@ -19,12 +19,12 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: sample.py,v 1.5 2002/12/30 20:43:49 jeremy Exp $
+$Id: sample.py,v 1.6 2003/05/01 19:35:09 faassen Exp $
 """
 
 from types import StringTypes
 
-from zope.app.interfaces.container import IContainer, UnaddableError
+from zope.app.interfaces.container import IContainer
 
 class SampleContainer(object):
     """Sample container implementation suitable for testing.

@@ -14,7 +14,7 @@
 """
 Revision information:
 
-$Id: test_rename.py,v 1.3 2003/02/17 15:10:40 sidnei Exp $
+$Id: test_rename.py,v 1.4 2003/05/01 19:35:09 faassen Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -34,11 +34,9 @@ from zope.app.container.copypastemove import PasteTarget
 from zope.app.container.copypastemove import MoveSource
 from zope.app.container.copypastemove import PasteNamesChooser
 from zope.app.copypastemove import ObjectMover
-from zope.app.content.folder import Folder
 from zope.app.content.file import File
 from zope.exceptions import NotFoundError, DuplicationError
-from zope.app.container.zopecontainer \
-     import ZopeContainerAdapter
+from zope.app.container.zopecontainer import ZopeContainerAdapter
 
 class RenameTest(PlacefulSetup, TestCase):
 

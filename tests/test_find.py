@@ -14,10 +14,10 @@
 """
 
 Revision information:
-$Id: test_find.py,v 1.2 2002/12/25 14:12:47 jim Exp $
+$Id: test_find.py,v 1.3 2003/05/01 19:35:09 faassen Exp $
 """
 
-from unittest import TestCase, TestSuite, main, makeSuite
+from unittest import TestCase, main, makeSuite
 from zope.app.interfaces.container import IReadContainer
 from zope.app.interfaces.container.find import IObjectFindFilter
 from zope.app.container.find\

@@ -15,18 +15,17 @@
 
 XXX longer description goes here.
 
-$Id: test_zopecontaineradpter.py,v 1.3 2003/02/26 16:11:35 gvanrossum Exp $
+$Id: test_zopecontaineradpter.py,v 1.4 2003/05/01 19:35:09 faassen Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
 from zope.app.interfaces.container import IAddNotifiable
 from zope.app.interfaces.container import IDeleteNotifiable
 from zope.app.container.tests.baseizopeitemcontainer \
-     import BaseTestIZopeItemContainer, BaseTestIZopeSimpleReadContainer,\
-            BaseTestIZopeReadContainer, BaseTestIZopeWriteContainer
-from zope.app.traversing import getParent
-from zope.proxy.context import ContextWrapper
+     import BaseTestIZopeSimpleReadContainer, BaseTestIZopeReadContainer,\
+     BaseTestIZopeWriteContainer
 from zope.app.tests.placelesssetup import PlacelessSetup
+
 class C: pass
 
 class H:

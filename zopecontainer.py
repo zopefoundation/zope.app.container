@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.13 2003/02/26 16:11:35 gvanrossum Exp $
+$Id: zopecontainer.py,v 1.14 2003/05/01 19:35:09 faassen Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -30,8 +30,7 @@ from types import StringTypes
 from zope.proxy.introspection import removeAllProxies
 from zope.exceptions import NotFoundError, DuplicationError
 from zope.app.event.objectevent \
-     import ObjectRemovedEvent, ObjectModifiedEvent, ObjectAddedEvent, \
-            ObjectMovedEvent
+     import ObjectRemovedEvent, ObjectModifiedEvent, ObjectAddedEvent
 
 _marker = object()
 

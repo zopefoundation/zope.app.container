@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: test_objectmover.py,v 1.4 2003/03/30 16:22:32 sidnei Exp $
+$Id: test_objectmover.py,v 1.5 2003/05/01 19:35:09 faassen Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -33,7 +33,6 @@ from zope.app.container.copypastemove import PasteTarget
 from zope.app.container.copypastemove import MoveSource
 from zope.app.container.copypastemove import PasteNamesChooser
 from zope.app.copypastemove import ObjectMover
-from zope.app.content.folder import Folder
 from zope.app.content.file import File
 
 class ObjectMoverTest(PlacefulSetup, TestCase):

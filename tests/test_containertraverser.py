@@ -13,10 +13,10 @@
 ##############################################################################
 """
 
-$Id: test_containertraverser.py,v 1.6 2003/03/13 18:49:05 alga Exp $
+$Id: test_containertraverser.py,v 1.7 2003/05/01 19:35:09 faassen Exp $
 """
 
-import unittest, sys
+import unittest
 from zope.component.tests.request import Request
 from zope.component import getService
 from zope.app.services.servicenames import Views
