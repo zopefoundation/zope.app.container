@@ -19,7 +19,7 @@ from transaction import get_transaction
 from persistent import Persistent
 
 import zope.interface
-from zope.testing.doctestunit import DocTestSuite
+from zope.testing import doctest
 
 from zope.app.tests.placelesssetup import setUp, tearDown
 from zope.app.container.contained import ContainedProxy
@@ -84,10 +84,7 @@ def test_basic_persistent_w_non_persistent_proxied():
     """
 
 def test_declarations_on_ContainedProxy():
-    """
-
-    ..Ignoe whitespace differences
-      >>> doctest: +NORMALIZE_WHITESPACE
+    r"""
     
     It is possible to make declarations on ContainedProxy objects.
 
@@ -292,9 +289,9 @@ def test_proxy_cache_interaction():
 
 def test_suite():
     return unittest.TestSuite((
-        DocTestSuite('zope.app.container.contained',
-                     setUp=setUp, tearDown=tearDown),
-        DocTestSuite(),
+        doctest.DocTestSuite('zope.app.container.contained',
+                             setUp=setUp, tearDown=tearDown),
+        doctest.DocTestSuite(optionflags=doctest.NORMALIZE_WHITESPACE),
         ))
 
 if __name__ == '__main__': unittest.main()
