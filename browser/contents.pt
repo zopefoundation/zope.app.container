@@ -1,4 +1,4 @@
-<html metal:use-macro="views/standard_macros/view">
+<html metal:use-macro="context/@@standard_macros/view">
 <body>
 <div metal:fill-slot="body">
   <div metal:define-macro="contents">
