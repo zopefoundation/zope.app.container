@@ -14,13 +14,12 @@
 """
 Revision information:
 
-$Id: test_objectcopier.py,v 1.14 2004/03/03 10:52:03 philikon Exp $
+$Id: test_objectcopier.py,v 1.15 2004/03/06 16:50:19 jim Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
 from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
-from zope.component import getAdapter
 from zope.app.tests import ztapi
 from zope.app.copypastemove.interfaces import IObjectCopier
 from zope.app.copypastemove import ObjectCopier
@@ -40,7 +39,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        copier = getAdapter(file, IObjectCopier)
+        copier = IObjectCopier(file)
         copier.copyTo(container, 'file1')
         self.failUnless('file1' in container)
         self.failUnless('file1-2' in container)
@@ -50,7 +49,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        copier = getAdapter(file, IObjectCopier)
+        copier = IObjectCopier(file)
         copier.copyTo(container, 'file2')
         self.failUnless('file1' in container)
         self.failUnless('file2' in container)
@@ -61,7 +60,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         container['file1'] = File()
         target = traverse(root, 'folder2')
         file = traverse(root, 'folder1/file1')
-        copier = getAdapter(file, IObjectCopier)
+        copier = IObjectCopier(file)
         copier.copyTo(target, 'file1')
         self.failUnless('file1' in container)
         self.failUnless('file1' in target)
@@ -72,7 +71,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         container['file1'] = File()
         target = traverse(root, 'folder2')
         file = traverse(root, 'folder1/file1')
-        copier = getAdapter(file, IObjectCopier)
+        copier = IObjectCopier(file)
         copier.copyTo(target, 'file2')
         self.failUnless('file1' in container)
         self.failUnless('file2' in target)
@@ -84,7 +83,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         target = traverse(root, 'folder2')
         target['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        copier = getAdapter(file, IObjectCopier)
+        copier = IObjectCopier(file)
         copier.copyTo(target, 'file1')
         # we do it twice, just to test auto-name generation
         copier.copyTo(target, 'file1')
@@ -98,7 +97,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        copier = getAdapter(file, IObjectCopier)
+        copier = IObjectCopier(file)
         self.failUnless(copier.copyable())
 
     def test_copyableTo(self):
@@ -108,14 +107,14 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        copier = getAdapter(file, IObjectCopier)
+        copier = IObjectCopier(file)
         self.failUnless(copier.copyableTo(container, 'file1'))
         
     def test_copyfoldertosibling(self):
         root = self.rootFolder
         target = traverse(root, '/folder2')
         source = traverse(root, '/folder1/folder1_1')
-        copier = getAdapter(source, IObjectCopier)
+        copier = IObjectCopier(source)
         copier.copyTo(target)
         self.failUnless('folder1_1' in target)
 
@@ -123,7 +122,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         root = self.rootFolder
         target = traverse(root, '/folder1')
         source = traverse(root, '/folder1/folder1_1')
-        copier = getAdapter(source, IObjectCopier)
+        copier = IObjectCopier(source)
         copier.copyTo(target)
         self.failUnless('folder1_1' in target)
 
@@ -131,7 +130,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         root = self.rootFolder
         target = traverse(root, '/folder1/folder1_1')
         source = traverse(root, '/folder1/folder1_1/folder1_1_1')
-        copier = getAdapter(source, IObjectCopier)
+        copier = IObjectCopier(source)
         copier.copyTo(target)
         self.failUnless('folder1_1_1' in target)
 
@@ -139,7 +138,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         root = self.rootFolder
         target = traverse(root, '/folder2')
         source = traverse(root, '/folder1')
-        copier = getAdapter(source, IObjectCopier)
+        copier = IObjectCopier(source)
         copier.copyTo(target)
         self.failUnless('folder1' in target)
 
@@ -147,7 +146,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         root = self.rootFolder
         target = traverse(root, '/folder2/folder2_1/folder2_1_1')
         source = traverse(root, '/folder1')
-        copier = getAdapter(source, IObjectCopier)
+        copier = IObjectCopier(source)
         copier.copyTo(target)
         self.failUnless('folder1' in target)
 

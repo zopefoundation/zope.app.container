@@ -12,11 +12,10 @@
 #
 ##############################################################################
 """
-$Id: test_objectmover.py,v 1.11 2004/03/03 10:52:03 philikon Exp $
+$Id: test_objectmover.py,v 1.12 2004/03/06 16:50:19 jim Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
-from zope.component import getAdapter
 
 from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
@@ -40,7 +39,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        mover = getAdapter(file, IObjectMover)
+        mover = IObjectMover(file)
         mover.moveTo(container, 'file1')
         self.failUnless('file1' in container)
         self.assertEquals(len(container), 3)
@@ -50,7 +49,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        mover = getAdapter(file, IObjectMover)
+        mover = IObjectMover(file)
         mover.moveTo(container, 'file2')
         self.failIf('file1' in container)
         self.failUnless('file2' in container)
@@ -61,7 +60,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         container['file1'] = File()
         target = traverse(root, 'folder2')
         file = traverse(root, 'folder1/file1')
-        mover = getAdapter(file, IObjectMover)
+        mover = IObjectMover(file)
         mover.moveTo(target, 'file1')
         self.failIf('file1' in container)
         self.failUnless('file1' in target)
@@ -72,7 +71,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         container['file1'] = File()
         target = traverse(root, 'folder2')
         file = traverse(root, 'folder1/file1')
-        mover = getAdapter(file, IObjectMover)
+        mover = IObjectMover(file)
         mover.moveTo(target, 'file2')
         self.failIf('file1' in container)
         self.failUnless('file2' in target)
@@ -84,7 +83,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         target = traverse(root, 'folder2')
         target['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        mover = getAdapter(file, IObjectMover)
+        mover = IObjectMover(file)
         mover.moveTo(target, 'file1')
         self.failIf('file1' in container)
         self.failUnless('file1' in target)
@@ -95,7 +94,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        mover = getAdapter(file, IObjectMover)
+        mover = IObjectMover(file)
         self.failUnless(mover.moveable())
 
     def test_moveableTo(self):
@@ -105,14 +104,14 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container['file1'] = File()
         file = traverse(root, 'folder1/file1')
-        mover = getAdapter(file, IObjectMover)
+        mover = IObjectMover(file)
         self.failUnless(mover.moveableTo(container, 'file1'))
 
     def test_movefoldertosibling(self):
         root = self.rootFolder
         target = traverse(root, '/folder2')
         source = traverse(root, '/folder1/folder1_1')
-        mover = getAdapter(source, IObjectMover)
+        mover = IObjectMover(source)
         mover.moveTo(target)
         self.failUnless('folder1_1' in target)
 
@@ -121,7 +120,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         root = self.rootFolder
         target = traverse(root, '/folder1')
         source = traverse(root, '/folder1/folder1_1')
-        mover = getAdapter(source, IObjectMover)
+        mover = IObjectMover(source)
         mover.moveTo(target)
         self.failUnless('folder1_1' in target)
         self.assertEquals(len(target), 2)
@@ -131,7 +130,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         root = self.rootFolder
         target = traverse(root, '/folder1/folder1_1')
         source = traverse(root, '/folder1/folder1_1/folder1_1_1')
-        mover = getAdapter(source, IObjectMover)
+        mover = IObjectMover(source)
         mover.moveTo(target)
         self.failUnless('folder1_1_1' in target)
         self.assertEquals(len(target), 2)
@@ -140,7 +139,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         root = self.rootFolder
         target = traverse(root, '/folder2')
         source = traverse(root, '/folder1')
-        mover = getAdapter(source, IObjectMover)
+        mover = IObjectMover(source)
         mover.moveTo(target)
         self.failUnless('folder1' in target)
 
@@ -148,7 +147,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         root = self.rootFolder
         target = traverse(root, '/folder2/folder2_1/folder2_1_1')
         source = traverse(root, '/folder1')
-        mover = getAdapter(source, IObjectMover)
+        mover = IObjectMover(source)
         mover.moveTo(target)
         self.failUnless('folder1' in target)
 
