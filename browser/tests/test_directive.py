@@ -26,7 +26,7 @@ from zope.app.container.browser.metaconfigure import containerViews
 
 atre = re.compile(' at [0-9a-fA-Fx]+')
 
-class Context:
+class Context(object):
     actions = ()
     
     def action(self, discriminator, callable, args):

@@ -11,10 +11,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Object Mover Tests
+
 $Id$
 """
-
 from unittest import TestCase, TestSuite, main, makeSuite
 
 from zope.app.traversing.api import traverse
@@ -23,7 +23,7 @@ from zope.app.tests import ztapi
 from zope.app.copypastemove.interfaces import IObjectMover
 from zope.app.copypastemove import ObjectMover
 
-class File:
+class File(object):
     pass
 
 class ObjectMoverTest(PlacefulSetup, TestCase):

@@ -34,7 +34,7 @@
    ...     __setitem__.precondition = preNoZ
 
    >>> from zope.app.container.interfaces import IContainer
-   >>> class C1:
+   >>> class C1(object):
    ...     zope.interface.implements(I1, IContainer)
    ...     def __repr__(self):
    ...         return 'C1'
@@ -66,7 +66,7 @@
    >>> class I2(zope.interface.Interface):
    ...     __parent__ = zope.schema.Field(constraint = con1)
 
-   >>> class O:
+   >>> class O(object):
    ...     zope.interface.implements(I2)
 
    if the constraint isn't satisfied, we'll get a validation error when we
@@ -90,7 +90,7 @@
    >>> class I2(zope.interface.Interface):
    ...     __parent__ = zope.schema.Field(constraint = con1)
 
-   >>> class O:
+   >>> class O(object):
    ...     zope.interface.implements(I2)
 
    >>> checkObject(c1, "bob", O())
@@ -106,7 +106,7 @@
    whether an object produced by a factory can be added.  To do this, we
    use checkFactory:
 
-   >>> class Factory:
+   >>> class Factory(object):
    ...     def __call__(self):
    ...         return O()
    ...     def getInterfaces(self):
@@ -230,7 +230,7 @@ class IItemTypePrecondition(zope.interface.Interface):
         Return a boolean value.
         """
 
-class ItemTypePrecondition:
+class ItemTypePrecondition(object):
     """Specify a __setitem__ precondition that restricts item types
 
     Items must be one of the given types.  
@@ -243,11 +243,11 @@ class ItemTypePrecondition:
 
     >>> precondition = ItemTypePrecondition(I1, I2)
 
-    >>> class Ob:
+    >>> class Ob(object):
     ...     pass
     >>> ob = Ob()
 
-    >>> class Factory:
+    >>> class Factory(object):
     ...     def __call__(self):
     ...         return Ob()
     ...     def getInterfaces(self):
@@ -297,14 +297,14 @@ class ItemTypePrecondition:
         raise InvalidItemType(container, factory, self.types)
 
 
-class ContainerTypesConstraint:
+class ContainerTypesConstraint(object):
     """Constrain a container to be one of a number of types
 
     >>> class I1(zope.interface.Interface):
     ...     pass
     >>> class I2(zope.interface.Interface):
     ...     pass
-    >>> class Ob:
+    >>> class Ob(object):
     ...     pass
     >>> ob = Ob()
     >>> constraint = ContainerTypesConstraint(I1, I2)

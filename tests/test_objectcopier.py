@@ -11,12 +11,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
-Revision information:
+"""Object Copier Tests
 
 $Id$
 """
-
 from unittest import TestCase, TestSuite, main, makeSuite
 from zope.app.traversing.api import traverse
 from zope.app.site.tests.placefulsetup import PlacefulSetup
@@ -24,7 +22,7 @@ from zope.app.tests import ztapi
 from zope.app.copypastemove.interfaces import IObjectCopier
 from zope.app.copypastemove import ObjectCopier
 
-class File:
+class File(object):
     pass
 
 class ObjectCopierTest(PlacefulSetup, TestCase):

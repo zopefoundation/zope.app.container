@@ -30,7 +30,7 @@ from zope.app.traversing.namespace import UnexpectedParameters
 # Note that the next two classes are included here because they
 # can be used for multiple view types.
 
-class ContainerTraverser:
+class ContainerTraverser(object):
     """A traverser that knows how to look up objects by name in a container."""
 
     implements(IBrowserPublisher, IXMLRPCPublisher)
@@ -79,7 +79,7 @@ class ItemTraverser(ContainerTraverser):
 
 _marker = object()
 
-class ContainerTraversable:
+class ContainerTraversable(object):
     """Traverses containers via getattr and get."""
 
     implements(ITraversable)

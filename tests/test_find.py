@@ -11,17 +11,17 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Find functionality tests
+
 $Id$
 """
-
 from unittest import TestCase, main, makeSuite
 from zope.app.container.interfaces import IReadContainer
 from zope.app.container.interfaces import IObjectFindFilter
 from zope.app.container.find import FindAdapter, SimpleIdFindFilter
 from zope.interface import implements
 
-class FakeContainer:
+class FakeContainer(object):
     implements(IReadContainer)
 
     def __init__(self, id, objects):

@@ -11,11 +11,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Container Traverser tests.
 
 $Id$
 """
-
 import unittest
 from zope.app.container.traversal import ContainerTraversable
 from zope.exceptions import NotFoundError
@@ -24,7 +23,7 @@ from zope.testing.cleanup import CleanUp
 from zope.interface import implements
 
 
-class Container:
+class Container(object):
 
     implements(IContainer)
 

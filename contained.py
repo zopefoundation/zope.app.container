@@ -95,7 +95,7 @@ def dispatchToSublocations(object, event):
        Suppose, for example, that we define some location objects.
 
 
-         >>> class L:
+         >>> class L(object):
          ...     zope.interface.implements(ILocation)
          ...     def __init__(self, name):
          ...         self.__name__ = name
@@ -182,7 +182,7 @@ class ContainerSublocations(object):
 
        Obviously, this is the container values:
 
-         >>> class MyContainer:
+         >>> class MyContainer(object):
          ...     def __init__(self, **data):
          ...         self.data = data
          ...     def __iter__(self):
@@ -673,7 +673,7 @@ def uncontained(object, container, name=None):
     object.__name__ = None
     modified(container)
 
-class NameChooser:
+class NameChooser(object):
 
     zope.interface.implements(INameChooser)
 

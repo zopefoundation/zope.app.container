@@ -93,7 +93,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         from datetime import datetime
         from zope.app.dublincore.interfaces import IZopeDublinCore
-        class FauxDCAdapter:
+        class FauxDCAdapter(object):
             implements(IZopeDublinCore)
 
             def __init__(self, context):
@@ -146,11 +146,11 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 class IDocument(Interface):
     pass
 
-class Document:
+class Document(object):
     implements(IDocument)
 
 
-class Principal:
+class Principal(object):
     
     id = 'bob'
 

@@ -25,7 +25,7 @@ from zope.exceptions import NotFoundError
 from zope.interface import implements
 from zope.publisher.interfaces.browser import IBrowserRequest 
 
-class TestContainer:
+class TestContainer(object):
     implements(IReadContainer)
 
     def __init__(self, **kw):
@@ -36,7 +36,7 @@ class TestContainer:
         return getattr(self, name, default)
 
 
-class View:
+class View(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request

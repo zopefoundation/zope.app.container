@@ -15,11 +15,10 @@
 
 $Id$
 """
-
 from unittest import TestCase, TestSuite, main, makeSuite
 import zope.app.container.directory
 
-class Directory:
+class Directory(object):
     pass
  
 class Test(TestCase):

@@ -41,7 +41,7 @@ from zope.app.container.contained import contained
 from zope.app.container.browser.adding import Adding
 from zope.app.container.sample import SampleContainer
 
-class Root:
+class Root(object):
     implements(IContainmentRoot)
 
 class Container(SampleContainer):
@@ -53,10 +53,10 @@ class CreationView(BrowserView):
         return 'been there, done that'
 
 
-class Content:
+class Content(object):
     pass
 
-class Factory:
+class Factory(object):
 
     implements(IFactory)
 
@@ -211,10 +211,10 @@ def test_constraint_driven_addingInfo():
     >>> menuService.menuItem('zope.app.container.add', IAdding, '', 'item4',
     ...                      None, extra={'factory': 'f2'})
 
-    >>> class F1:
+    >>> class F1(object):
     ...     pass
 
-    >>> class F2:
+    >>> class F2(object):
     ...     pass
 
     >>> def pre(container, name, object):
@@ -232,7 +232,7 @@ def test_constraint_driven_addingInfo():
     ...     __setitem__.precondition = pre
 
 
-    >>> class Container:
+    >>> class Container(object):
     ...     zope.interface.implements(IContainer)
 
     >>> from zope.component.factory import Factory
@@ -266,10 +266,10 @@ def test_constraint_driven_add():
     >>> from zope.app.container.sample import SampleContainer
     >>> from zope.app.container.browser.adding import Adding
 
-    >>> class F1:
+    >>> class F1(object):
     ...     pass
 
-    >>> class F2:
+    >>> class F2(object):
     ...     pass
 
     >>> def pre(container, name, object):
@@ -335,7 +335,7 @@ def test_nameAllowed():
 
     Class implements IContainerNamesContainer
     
-    >>> class FakeContainer:
+    >>> class FakeContainer(object):
     ...    zope.interface.implements(IContainerNamesContainer)
 
     nameAllowed returns False if the class imlements
@@ -347,7 +347,7 @@ def test_nameAllowed():
 
     Fake class without IContainerNamesContainer
     
-    >>> class Fake:
+    >>> class Fake(object):
     ...    pass
 
     nameAllowed returns True if the class
@@ -364,7 +364,7 @@ def test_nameAllowed():
 def test_chooseName():
     """If user don't enter name, pick one
     
-    >>> class MyContainer:
+    >>> class MyContainer(object):
     ...    zope.interface.implements(INameChooser, IContainer)
     ...    def chooseName(self, name, object):
     ...        return 'pickone'
@@ -409,10 +409,10 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
     >>> menuService.menuItem('zope.app.container.add', IAdding, '', 'item3',
     ...                      None, extra={'factory': 'f1'})
 
-    >>> class F1:
+    >>> class F1(object):
     ...     pass
 
-    >>> class F2:
+    >>> class F2(object):
     ...     pass
 
     >>> def pre(container, name, object):
@@ -430,7 +430,7 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
     ...     __setitem__.precondition = pre
 
 
-    >>> class Container:
+    >>> class Container(object):
     ...     zope.interface.implements(IContainer)
 
     >>> from zope.component.factory import Factory
@@ -479,10 +479,10 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     >>> menuService.menu('zope.app.container.add', '')
     >>> menuService.menuItem('zope.app.container.add', None, '', 'item3',
     ...                      None, extra={'factory': ''})
-    >>> class F1:
+    >>> class F1(object):
     ...     pass
 
-    >>> class F2:
+    >>> class F2(object):
     ...     pass
 
     >>> def pre(container, name, object):
@@ -500,7 +500,7 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     ...     __setitem__.precondition = pre
 
 
-    >>> class Container:
+    >>> class Container(object):
     ...     zope.interface.implements(IContainer)
 
     >>> from zope.component.factory import Factory
@@ -549,10 +549,10 @@ def test_isSingleMenuItem_with_ICNC():
     >>> menuService.menuItem('zope.app.container.add', None, '', 'item3',
     ...                      None, extra={'factory': ''})
     
-    >>> class F1:
+    >>> class F1(object):
     ...     pass
 
-    >>> class F2:
+    >>> class F2(object):
     ...     pass
 
     >>> def pre(container, name, object):
@@ -570,7 +570,7 @@ def test_isSingleMenuItem_with_ICNC():
     ...     __setitem__.precondition = pre
 
 
-    >>> class Container:
+    >>> class Container(object):
     ...     zope.interface.implements(IContainer, IContainerNamesContainer)
 
     >>> from zope.app.container.browser.adding import Adding

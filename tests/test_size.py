@@ -11,7 +11,8 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Test container ISized adapter.
+
 $Id$
 """
 import unittest
@@ -20,7 +21,7 @@ from zope.app.size.interfaces import ISized
 from zope.app.container.interfaces import IContainer
 from zope.interface import implements
 
-class DummyContainer:
+class DummyContainer(object):
 
     implements(IContainer)
 
