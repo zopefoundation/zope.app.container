@@ -1,0 +1,70 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
+   i18n_domain="zope"
+   >
+
+  <adapter
+     provides=".interfaces.IFind"
+     for=".interfaces.IReadContainer"
+     permission="zope.ManageContent"
+     factory="zope.app.container.find.FindAdapter"
+     />
+
+  <adapter
+      for=".interfaces.IReadContainer"
+      provides="zope.app.filerepresentation.interfaces.IReadDirectory"
+      factory=".directory.noop"
+      />
+
+  <adapter
+      for=".interfaces.IWriteContainer"
+      provides="zope.app.filerepresentation.interfaces.IWriteDirectory"
+      factory=".directory.noop"
+      />
+
+  <adapter
+      factory="zope.app.container.traversal.ContainerTraversable"
+      provides="zope.app.traversing.interfaces.ITraversable"
+      for="zope.app.container.interfaces.IReadContainer"
+      />
+
+
+  <adapter
+      factory="zope.app.container.size.ContainerSized"
+      provides="zope.app.size.interfaces.ISized"
+      for="zope.app.container.interfaces.IReadContainer"
+      />
+
+  <adapter
+      provides=".interfaces.INameChooser"
+      for="zope.app.container.interfaces.IWriteContainer"
+      factory=".contained.NameChooser"
+      />
+
+  <subscriber
+      factory=".dependency.CheckDependency"
+      for="zope.app.container.interfaces.IObjectRemovedEvent"
+      trusted="y"
+      />
+
+  <subscriber
+      for="zope.app.location.interfaces.ILocation
+           zope.app.container.interfaces.IObjectMovedEvent"
+      factory=".contained.dispatchToSublocations"
+      >
+      Handler dispatches moved events to sublocations of the original object.
+  </subscriber>
+
+  <adapter
+      provides="zope.app.location.interfaces.ISublocations"
+      for="zope.app.container.interfaces.IReadContainer"
+      factory=".contained.ContainerSublocations"
+      />
+
+  <content class=".constraints.ItemTypePrecondition">
+    <allow interface=".constraints.IItemTypePrecondition" />
+  </content>
+
+</configure>
