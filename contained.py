@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.7 2004/02/25 23:02:23 faassen Exp $
+$Id: contained.py,v 1.8 2004/03/02 17:51:51 philikon Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -36,7 +36,7 @@ from zope.app.interfaces.container import INameChooser
 from zope.app.interfaces.container import IObjectAddedEvent
 from zope.app.interfaces.container import IObjectMovedEvent
 from zope.app.interfaces.container import IObjectRemovedEvent
-from zope.app.interfaces.location import ILocation
+from zope.app.location.interfaces import ILocation
 from zope.app.container._zope_app_container_contained import ContainedProxyBase
 from zope.app.container._zope_app_container_contained import getProxiedObject
 
