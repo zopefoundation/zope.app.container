@@ -76,7 +76,7 @@ class BasicAdding(BrowserView):
     def nextURL(self):
         """See zope.app.container.interfaces.IAdding"""
         return (str(zapi.getView(self.context, "absolute_url", self.request))
-                + '/@@SelectedManagementView.html')
+                + '/@@contents.html')
 
     # set in BrowserView.__init__
     request = None 
@@ -106,7 +106,7 @@ class BasicAdding(BrowserView):
         if view is not None:
             return view
 
-        factory = zapi.queryUtility(self.context, IFactory, name=name)
+        factory = zapi.queryUtility(IFactory, name=name)
         if factory is None:
             return super(BasicAdding, self).publishTraverse(request, name)
 
@@ -138,7 +138,7 @@ class BasicAdding(BrowserView):
         #      then ProxyFactory does not the right thing and the original's
         #      checker info gets lost. No factory that was registered via ZCML
         #      and was used via addMenuItem worked here. (SR)
-        factory = zapi.getUtility(self, IFactory, type_name)
+        factory = zapi.getUtility(IFactory, type_name)
         if not type(factory) is zope.security.checker.Proxy:
             factory = LocationProxy(factory, self, type_name)
             factory = zope.security.checker.ProxyFactory(factory)
@@ -174,7 +174,7 @@ class Adding(BasicAdding):
         This is sorted by title.
         """
         container = self.context
-        menu_service = zapi.getService(container, "BrowserMenu")
+        menu_service = zapi.getService("BrowserMenu")
         result = []
         for menu_id in (self.menu_id, 'zope.app.container.add'):
             if not menu_id:
@@ -184,7 +184,7 @@ class Adding(BasicAdding):
                 if extra:
                     factory = extra.get('factory')
                     if factory:
-                        factory = zapi.getUtility(container, IFactory, factory)
+                        factory = zapi.getUtility(IFactory, factory)
                         if not checkFactory(container, None, factory):
                             continue
                         elif item['extra']['factory'] != item['action']:
