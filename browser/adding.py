@@ -16,10 +16,8 @@
 The Adding View is used to add new objects to a container. It is sort of a
 factory screen.
 
-$Id: adding.py,v 1.4 2004/05/06 15:46:04 eddala Exp $
+$Id: adding.py,v 1.5 2004/05/10 06:38:54 philikon Exp $
 """
-__metaclass__ = type
-
 from warnings import warn
 import zope.security.checker
 from zope.interface import implements
@@ -28,11 +26,9 @@ from zope.proxy import removeAllProxies
 from zope.component.interfaces import IFactory
 
 from zope.app.exception.interfaces import UserError
-from zope.app.container.interfaces import IAdding
+from zope.app.container.interfaces import IAdding, INameChooser
 from zope.app.container.interfaces import IContainerNamesContainer
-from zope.app.container.interfaces import INameChooser
-from zope.app.container.constraints import checkFactory
-from zope.app.container.constraints import checkObject
+from zope.app.container.constraints import checkFactory, checkObject
 
 from zope.app import zapi
 from zope.app.event.objectevent import ObjectCreatedEvent
@@ -43,7 +39,6 @@ from zope.app.publisher.browser import BrowserView
 from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.i18n import translate
 from zope.app.location import LocationProxy
-
 
 class BasicAdding(BrowserView):
     implements(IAdding, IPublishTraverse)
@@ -83,10 +78,9 @@ class BasicAdding(BrowserView):
         return (str(zapi.getView(self.context, "absolute_url", self.request))
                 + '/@@contents.html')
 
-    request = None # set in BrowserView.__init__
-
-    context = None # set in BrowserView.__init__
-
+    # set in BrowserView.__init__
+    request = None 
+    context = None
 
     def renderAddButton(self):
         warn("The renderAddButton method is deprecated, use nameAllowed",
@@ -112,7 +106,7 @@ class BasicAdding(BrowserView):
         if view is not None:
             return view
 
-        factory = zapi.queryFactory(self.context, name)
+        factory = zapi.queryUtility(self.context, IFactory, name)
         if factory is None:
             return super(BasicAdding, self).publishTraverse(request, name)
 
@@ -172,7 +166,6 @@ class BasicAdding(BrowserView):
 class Adding(BasicAdding):
 
     menu_id = None
-
     index = ViewPageTemplateFile("add.pt")
 
     def addingInfo(self):
