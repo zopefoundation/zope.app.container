@@ -16,7 +16,7 @@
 $Id$
 """
 __docformat__ = 'restructuredtext'
-        
+
 import urllib
 
 from zope.app.traversing.interfaces import TraversalError
@@ -33,7 +33,7 @@ from zope.app.dublincore.interfaces import IDCDescriptiveProperties
 from zope.app.copypastemove.interfaces import IPrincipalClipboard
 from zope.app.copypastemove.interfaces import IObjectCopier
 from zope.app.copypastemove.interfaces import IObjectMover
-from zope.app.copypastemove import rename
+from zope.app.copypastemove.interfaces import IContainerItemRenamer
 from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 
 from zope.app.container.browser.adding import Adding
@@ -205,9 +205,10 @@ class Contents(BrowserView):
         ids = request.get("rename_ids")
         newids = request.get("new_value")
 
+        renamer = IContainerItemRenamer(self.context)
         for oldid, newid in map(None, ids, newids):
             if newid != oldid:
-                rename(self.context, oldid, newid)
+                renamer.renameItem(oldid, newid)
 
     def changeTitle(self):
         """Given a sequence of tuples of old, new ids we rename"""
@@ -241,7 +242,7 @@ class Contents(BrowserView):
             # above, because there is no "+" view.
             adding.__parent__ = self.context
             adding.__name__ = '+'
-             
+
         adding.action(request['type_name'], new)
 
     def removeObjects(self):
