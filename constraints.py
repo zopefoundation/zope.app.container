@@ -151,6 +151,7 @@
    """
 
 import zope.interface
+from zope.interface import providedBy
 from zope.app.container.interfaces import InvalidItemType, InvalidContainerType
 from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.app.container.interfaces import IContainer
@@ -159,65 +160,58 @@ def checkObject(container, name, object):
     """Check containement constraints for an object and container
     """
 
-
     # check __setitem__ precondition
-    for iface in zope.interface.providedBy(container):
-        __setitem__ = iface.get('__setitem__')
-        if __setitem__ is not None:
-            precondition = __setitem__.queryTaggedValue('precondition')
-            if precondition is not None:
-                precondition(container, name, object)
-            break
+    containerProvided = providedBy(container)
+    __setitem__ = containerProvided.get('__setitem__')
+    if __setitem__ is not None:
+        precondition = __setitem__.queryTaggedValue('precondition')
+        if precondition is not None:
+            precondition(container, name, object)
 
     # check the constraint on __parent__
-    for iface in zope.interface.providedBy(object):
-        __parent__ = iface.get('__parent__')
-        if __parent__ is not None:
-            try:
-                validate = __parent__.validate
-            except AttributeError:
-                pass
-            else:
-                validate(container)
-            break
+    __parent__ = providedBy(object).get('__parent__')
+    if __parent__ is not None:
+        try:
+            validate = __parent__.validate
+        except AttributeError:
+            pass
+        else:
+            validate(container)
 
-    if not IContainer.providedBy(container):
+ 
+    if not containerProvided.extends(IContainer):
         # If it doesn't implement IContainer, it can't contain stuff.
         raise TypeError(
             _('Container is not a valid Zope container.')
             )
 
 def checkFactory(container, name, factory):
-    for iface in zope.interface.providedBy(container):
-        __setitem__ = iface.get('__setitem__')
-        if __setitem__ is not None:
-            precondition = __setitem__.queryTaggedValue('precondition')
-            if precondition is not None:
-                try:
-                    precondition = precondition.factory
-                except AttributeError:
-                    pass
-                else:
-                    try:
-                        precondition(container, name, factory)
-                    except zope.interface.Invalid:
-                        return False
-            break
-
-    # check the constraint on __parent__
-    for iface in factory.getInterfaces():
-        __parent__ = iface.get('__parent__')
-        if __parent__ is not None:
+    __setitem__ = providedBy(container).get('__setitem__')
+    if __setitem__ is not None:
+        precondition = __setitem__.queryTaggedValue('precondition')
+        if precondition is not None:
             try:
-                validate = __parent__.validate
+                precondition = precondition.factory
             except AttributeError:
                 pass
             else:
                 try:
-                    validate(container)
+                    precondition(container, name, factory)
                 except zope.interface.Invalid:
                     return False
-            break
+
+    # check the constraint on __parent__
+    __parent__ = factory.getInterfaces().get('__parent__')
+    if __parent__ is not None:
+        try:
+            validate = __parent__.validate
+        except AttributeError:
+            pass
+        else:
+            try:
+                validate(container)
+            except zope.interface.Invalid:
+                return False
 
     return True
 
