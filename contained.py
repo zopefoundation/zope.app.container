@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.10 2004/03/03 10:38:39 philikon Exp $
+$Id: contained.py,v 1.11 2004/03/05 22:08:59 jim Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -155,7 +155,7 @@ def containedEvent(object, container, name=None):
 
     >>> from zope.app.location import Location
     >>> item = Location()
-    >>> IContained.isImplementedBy(item)
+    >>> IContained.providedBy(item)
     0
     >>> x, event = containedEvent(item, container, 'foo')
     >>> x is item
@@ -164,7 +164,7 @@ def containedEvent(object, container, name=None):
     1
     >>> item.__name__
     'foo'
-    >>> IContained.isImplementedBy(item)
+    >>> IContained.providedBy(item)
     1
 
     If the object doesn't even implement ILocation, put a
@@ -181,8 +181,8 @@ def containedEvent(object, container, name=None):
 
     """
 
-    if not IContained.isImplementedBy(object):
-        if ILocation.isImplementedBy(object):
+    if not IContained.providedBy(object):
+        if ILocation.providedBy(object):
             zope.interface.directlyProvides(object, IContained)
         else:
             object = ContainedProxy(object)
@@ -354,7 +354,7 @@ def setitem(container, setitemf, name, object):
 
     >>> from zope.app.location import Location
     >>> item = Location()
-    >>> IContained.isImplementedBy(item)
+    >>> IContained.providedBy(item)
     0
     >>> setitem(container, container.__setitem__, u'l', item)
     >>> container[u'l'] is item
@@ -363,7 +363,7 @@ def setitem(container, setitemf, name, object):
     1
     >>> item.__name__
     u'l'
-    >>> IContained.isImplementedBy(item)
+    >>> IContained.providedBy(item)
     1
 
     We get new added and modification events:
@@ -387,7 +387,7 @@ def setitem(container, setitemf, name, object):
     1
     >>> item.__name__
     u'i'
-    >>> IContained.isImplementedBy(item)
+    >>> IContained.providedBy(item)
     1
 
     >>> len(getEvents(IObjectAddedEvent))
@@ -743,7 +743,7 @@ def parentgeddonFixup(event):
         # No old data
         return
 
-    if IRootFolder.isImplementedBy(app):
+    if IRootFolder.providedBy(app):
         # already did fixup
         return
 
@@ -772,7 +772,7 @@ def fixcontainer(container):
     for name in container:
         ob = container[name]
 
-        if not IContained.isImplementedBy(ob):
+        if not IContained.providedBy(ob):
             # remove the old item and reassign it
             del container[name]
             ob = contained(ob, container, name)
@@ -781,13 +781,13 @@ def fixcontainer(container):
             ob.__parent__ = container
             ob.__name__ = name
 
-        if IContainer.isImplementedBy(ob):
+        if IContainer.providedBy(ob):
             fixcontainer(ob)
 
-        if IRegistry.isImplementedBy(ob):
+        if IRegistry.providedBy(ob):
             fixregistry(ob)
 
-    if IPossibleSite.isImplementedBy(container):
+    if IPossibleSite.providedBy(container):
         try:
             sm = container.getSiteManager()
         except ComponentLookupError:
@@ -804,7 +804,7 @@ def fixupsitemanager(sm, container):
     fixcontainer(sm)
 
 def fixregistry(registry):
-    if INameRegistry.isImplementedBy(registry):
+    if INameRegistry.providedBy(registry):
         for name in registry.listRegistrationNames():
             stack = registry.queryRegistrations(name)
             stack.__parent__ = registry

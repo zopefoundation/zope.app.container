@@ -13,7 +13,7 @@
 ##############################################################################
 """Find Support
 
-$Id: find.py,v 1.9 2004/03/03 10:38:39 philikon Exp $
+$Id: find.py,v 1.10 2004/03/05 22:08:59 jim Exp $
 """
 
 from zope.app.interfaces.find import IFind, IIdFindFilter
@@ -56,7 +56,7 @@ def _find_helper(id, object, container, id_filters, object_filters, result):
             # if we didn't break out of the loop, all filters matched
             result.append(object)
 
-    if not IReadContainer.isImplementedBy(object):
+    if not IReadContainer.providedBy(object):
         return
 
     container = object

@@ -12,7 +12,7 @@
 #
 ##############################################################################
 """
-$Id: test_find.py,v 1.7 2004/03/03 10:38:39 philikon Exp $
+$Id: test_find.py,v 1.8 2004/03/05 22:09:00 jim Exp $
 """
 
 from unittest import TestCase, main, makeSuite
@@ -66,7 +66,7 @@ class TestObjectFindFilter(object):
         self._count = count
 
     def matches(self, object):
-        if IReadContainer.isImplementedBy(object):
+        if IReadContainer.providedBy(object):
             return len(object) == self._count
         else:
             return False

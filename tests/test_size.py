@@ -12,7 +12,7 @@
 #
 ##############################################################################
 """
-$Id: test_size.py,v 1.5 2004/03/03 11:03:58 philikon Exp $
+$Id: test_size.py,v 1.6 2004/03/05 22:09:00 jim Exp $
 """
 import unittest
 
@@ -36,7 +36,7 @@ class Test(unittest.TestCase):
     def testImplementsISized(self):
         from zope.app.container.size import ContainerSized
         sized = ContainerSized(DummyContainer(23))
-        self.assert_(ISized.isImplementedBy(sized))
+        self.assert_(ISized.providedBy(sized))
 
     def testEmptyContainer(self):
         from zope.app.container.size import ContainerSized

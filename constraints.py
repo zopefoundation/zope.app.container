@@ -147,7 +147,7 @@
    >>> checkFactory(c1, "Zbob", factory)
    False
 
-   $Id: constraints.py,v 1.5 2004/03/03 10:38:39 philikon Exp $
+   $Id: constraints.py,v 1.6 2004/03/05 22:08:59 jim Exp $
    """
 
 import zope.interface
@@ -181,7 +181,7 @@ def checkObject(container, name, object):
                 validate(container)
             break
 
-    if not IContainer.isImplementedBy(container):
+    if not IContainer.providedBy(container):
         # If it doesn't implement IContainer, it can't contain stuff.
         raise TypeError(
             _('Container is not a valid Zope container.')
@@ -290,7 +290,7 @@ class ItemTypePrecondition:
 
     def __call__(self, container, name, object):
         for iface in self.types:
-            if iface.isImplementedBy(object):
+            if iface.providedBy(object):
                 return
         raise InvalidItemType(container, object, self.types)
 
@@ -333,7 +333,7 @@ class ContainerTypesConstraint:
 
     def __call__(self, object):
        for iface in self.types:
-           if iface.isImplementedBy(object):
+           if iface.providedBy(object):
                return True
        else:
            raise InvalidContainerType(object, self.types)

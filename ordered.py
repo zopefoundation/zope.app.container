@@ -13,7 +13,7 @@
 ##############################################################################
 """Ordered container implementation.
 
-$Id: ordered.py,v 1.8 2004/03/03 10:38:39 philikon Exp $
+$Id: ordered.py,v 1.9 2004/03/05 22:08:59 jim Exp $
 """
 
 from zope.app.container.interfaces import IOrderedContainer
@@ -28,7 +28,7 @@ class OrderedContainer(Persistent, Contained):
     """ OrderedContainer maintains entries' order as added and moved.
 
     >>> oc = OrderedContainer()
-    >>> int(IOrderedContainer.isImplementedBy(oc))
+    >>> int(IOrderedContainer.providedBy(oc))
     1
     >>> len(oc)
     0
