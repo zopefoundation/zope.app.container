@@ -280,7 +280,7 @@ class TestCutCopyPaste(PlacefulSetup, TestCase):
         from zope.app.container.browser.contents import Contents
         from zope.publisher.browser import TestRequest
         request = TestRequest()
-        request.setUser(Principal())
+        request.setPrincipal(Principal())
         return Contents(container, request)
 
 class Test(BaseTestContentsBrowserView, TestCase):
@@ -296,7 +296,7 @@ class Test(BaseTestContentsBrowserView, TestCase):
         from zope.app.container.browser.contents import Contents
         from zope.publisher.browser import TestRequest
         request = TestRequest()
-        request.setUser(Principal())
+        request.setPrincipal(Principal())
         return Contents(container, request)
 
 def test_suite():

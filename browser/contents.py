@@ -246,7 +246,7 @@ class Contents(BrowserView):
 
         container_path = zapi.getPath(self.context)
 
-        user = self.request.user
+        user = self.request.principal
         annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
@@ -266,7 +266,7 @@ class Contents(BrowserView):
 
         container_path = zapi.getPath(self.context)
 
-        user = self.request.user
+        user = self.request.principal
         annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
@@ -281,7 +281,7 @@ class Contents(BrowserView):
         """Decide if there is anything to paste
         """
         target = self.context
-        user = self.request.user
+        user = self.request.principal
         annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
@@ -310,7 +310,7 @@ class Contents(BrowserView):
         """Paste ojects in the user clipboard to the container
         """
         target = self.context
-        user = self.request.user
+        user = self.request.principal
         annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
@@ -344,7 +344,7 @@ class Contents(BrowserView):
         if not self.supportsPaste:
             return False
 
-        user = self.request.user
+        user = self.request.principal
 
         annotationsvc = zapi.getService(self.context, 'PrincipalAnnotation')
         annotations = annotationsvc.getAnnotations(user)
