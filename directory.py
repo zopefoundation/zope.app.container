@@ -11,7 +11,7 @@
 ##############################################################################
 """File-system representation adapters for containers
 
-This module includes tow adapters (adapter factories, really) for
+This module includes two adapters (adapter factories, really) for
 providing a file-system representation for containers:
 
 noop
@@ -21,7 +21,7 @@ noop
 Cloner
   An IDirectoryFactory adapter that just clones the original object.
 
-$Id: directory.py,v 1.2 2003/03/23 13:44:59 jim Exp $
+$Id: directory.py,v 1.3 2003/03/31 17:13:07 rdmurray Exp $
 """
 __metaclass__ = type
 
