@@ -13,7 +13,7 @@
 ##############################################################################
 """Define view component for folder contents.
 
-$Id: traversal.py,v 1.7 2003/05/01 19:35:09 faassen Exp $
+$Id: traversal.py,v 1.8 2003/06/07 06:37:22 stevea Exp $
 """
 
 from zope.publisher.interfaces.browser import IBrowserPublisher
@@ -27,13 +27,14 @@ from zope.app.interfaces.traversing import ITraversable
 from zope.app.traversing.namespace import UnexpectedParameters
 from zope.app.interfaces.container import IReadContainer
 from zope.exceptions import NotFoundError
+from zope.interface import implements
 
 # Note that the next two classes are included here because they
 # can be used for multiple view types.
 
 class ContainerTraverser:
 
-    __implements__ = IBrowserPublisher, IXMLRPCPublisher
+    implements(IBrowserPublisher, IXMLRPCPublisher)
     __used_for__ = ISimpleReadContainer
 
     def __init__(self, container, request):
@@ -84,7 +85,7 @@ class ContainerTraversable:
     """Traverses containers via getattr and get.
     """
 
-    __implements__ = ITraversable
+    implements(ITraversable)
     __used_for__ = IReadContainer
 
     def __init__(self, container):

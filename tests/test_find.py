@@ -14,17 +14,17 @@
 """
 
 Revision information:
-$Id: test_find.py,v 1.3 2003/05/01 19:35:09 faassen Exp $
+$Id: test_find.py,v 1.4 2003/06/07 06:37:22 stevea Exp $
 """
 
 from unittest import TestCase, main, makeSuite
 from zope.app.interfaces.container import IReadContainer
 from zope.app.interfaces.container.find import IObjectFindFilter
-from zope.app.container.find\
-     import FindAdapter, SimpleIdFindFilter
+from zope.app.container.find import FindAdapter, SimpleIdFindFilter
+from zope.interface import implements
 
 class FakeContainer:
-    __implements__ = IReadContainer
+    implements(IReadContainer)
 
     def __init__(self, id, objects):
         self._id = id
@@ -62,7 +62,7 @@ class FakeContainer:
         return len(self._objects)
 
 class TestObjectFindFilter(object):
-    __implements__ = IObjectFindFilter
+    implements(IObjectFindFilter)
 
     def __init__(self, count):
         self._count = count

@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: copypastemove.py,v 1.8 2003/06/01 15:59:29 jim Exp $
+$Id: copypastemove.py,v 1.9 2003/06/07 06:37:22 stevea Exp $
 """
 
 from types import StringTypes
@@ -28,13 +28,14 @@ from zope.app.interfaces.container import IPasteNamesChooser
 from zope.app.interfaces.container import IPasteTarget
 from zope.app.interfaces.content.folder import ICloneWithoutChildren
 from zope.component import getAdapter
+from zope.interface import implements
 from zope.app.context import ContextWrapper
 from zope.proxy import removeAllProxies
 import copy
 
 class PasteTarget:
 
-    __implements__ = IPasteTarget
+    implements(IPasteTarget)
 
     def __init__(self, container):
         self.context = container
@@ -96,7 +97,7 @@ class PasteTarget:
 
 class MoveSource:
 
-    __implements__ = IMoveSource
+    implements(IMoveSource)
 
     def __init__(self, container):
         self.context = container
@@ -126,7 +127,7 @@ class MoveSource:
 
 class CopySource:
 
-    __implements__ = ICopySource
+    implements(ICopySource)
 
     def __init__(self, container):
         self.context = container
@@ -146,7 +147,7 @@ class CopySource:
 
 class NoChildrenCopySource:
 
-    __implements__ = INoChildrenCopySource
+    implements(INoChildrenCopySource)
 
     def __init__(self, container):
         self.context = container
@@ -167,7 +168,7 @@ class NoChildrenCopySource:
 
 class PasteNamesChooser:
 
-    __implements__ = IPasteNamesChooser
+    implements(IPasteNamesChooser)
 
     def __init__(self, container):
         self.context = container

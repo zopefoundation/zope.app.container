@@ -15,10 +15,11 @@ import unittest
 
 from zope.app.interfaces.size import ISized
 from zope.app.interfaces.container import IContainer
+from zope.interface import implements
 
 class DummyContainer:
 
-    __implements__ = IContainer
+    implements(IContainer)
 
     def __init__(self, numitems):
         self._numitems = numitems

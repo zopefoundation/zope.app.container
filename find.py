@@ -13,18 +13,19 @@
 ##############################################################################
 """
 
-$Id: find.py,v 1.4 2003/06/01 15:59:29 jim Exp $
+$Id: find.py,v 1.5 2003/06/07 06:37:22 stevea Exp $
 
 """
 
 from zope.app.interfaces.container.find import IFind, IIdFindFilter
 from zope.app.interfaces.container import IReadContainer
+from zope.interface import implements
 # XXX need to do this manually to wrap objects
 from zope.app.context import ContextWrapper
 
 class FindAdapter(object):
 
-    __implements__ =  IFind
+    implements(IFind)
 
     __used_for__ = IReadContainer
 
@@ -71,7 +72,7 @@ def _find_helper(id, object, container, id_filters, object_filters, result):
 
 class SimpleIdFindFilter(object):
 
-    __implements__ =  IIdFindFilter
+    implements(IIdFindFilter)
 
     def __init__(self, ids):
         self._ids = ids

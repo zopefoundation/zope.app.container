@@ -13,7 +13,7 @@
 ##############################################################################
 """
 
-$Id: test_containertraverser.py,v 1.7 2003/05/01 19:35:09 faassen Exp $
+$Id: test_containertraverser.py,v 1.8 2003/06/07 06:37:22 stevea Exp $
 """
 
 import unittest
@@ -21,7 +21,7 @@ from zope.component.tests.request import Request
 from zope.component import getService
 from zope.app.services.servicenames import Views
 from zope.app.container.traversal import ContainerTraverser
-from zope.interface import Interface
+from zope.interface import Interface, implements
 from zope.exceptions import NotFoundError
 from zope.app.interfaces.container import IContainer
 from zope.app.tests.placelesssetup import PlacelessSetup
@@ -31,7 +31,7 @@ class I(Interface):
 
 
 class Container:
-    __implements__ = IContainer
+    implements(IContainer)
 
     def __init__(self, **kw):
         for k in kw:

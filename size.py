@@ -14,16 +14,17 @@
 ##############################################################################
 """Adapters that give the size of an object.
 
-$Id: size.py,v 1.2 2003/03/12 10:04:46 stevea Exp $
+$Id: size.py,v 1.3 2003/06/07 06:37:22 stevea Exp $
 """
 
 from zope.app.interfaces.size import ISized
+from zope.interface import implements
 
 __metaclass__ = type
 
 class ContainerSized:
 
-    __implements__ = ISized
+    implements(ISized)
 
     def __init__(self, container):
         self._container = container

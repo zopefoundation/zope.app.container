@@ -13,7 +13,7 @@
 ##############################################################################
 """
 
-$Id: test_containertraversable.py,v 1.4 2003/05/01 19:35:09 faassen Exp $
+$Id: test_containertraversable.py,v 1.5 2003/06/07 06:37:22 stevea Exp $
 """
 
 import unittest
@@ -21,11 +21,12 @@ from zope.app.container.traversal import ContainerTraversable
 from zope.exceptions import NotFoundError
 from zope.app.interfaces.container import IContainer
 from zope.testing.cleanup import CleanUp
+from zope.interface import implements
 
 
 class Container:
 
-    __implements__ = IContainer
+    implements(IContainer)
 
     def __init__(self, attrs={}, objs={}):
         for attr,value in attrs.iteritems():

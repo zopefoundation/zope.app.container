@@ -15,7 +15,7 @@
 
 XXX longer description goes here.
 
-$Id: test_zopecontaineradpter.py,v 1.4 2003/05/01 19:35:09 faassen Exp $
+$Id: test_zopecontaineradpter.py,v 1.5 2003/06/07 06:37:22 stevea Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -25,11 +25,12 @@ from zope.app.container.tests.baseizopeitemcontainer \
      import BaseTestIZopeSimpleReadContainer, BaseTestIZopeReadContainer,\
      BaseTestIZopeWriteContainer
 from zope.app.tests.placelesssetup import PlacelessSetup
+from zope.interface import implements
 
 class C: pass
 
 class H:
-    __implements__ = IAddNotifiable, IDeleteNotifiable
+    implements(IAddNotifiable, IDeleteNotifiable)
     notified = 0
     def beforeDeleteHook(self, object, container):
         self.notified -= 1
