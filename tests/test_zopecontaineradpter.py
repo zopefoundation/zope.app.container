@@ -15,7 +15,7 @@
 
 XXX longer description goes here.
 
-$Id: test_zopecontaineradpter.py,v 1.2 2002/12/25 14:12:47 jim Exp $
+$Id: test_zopecontaineradpter.py,v 1.3 2003/02/26 16:11:35 gvanrossum Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -32,11 +32,11 @@ class C: pass
 class H:
     __implements__ = IAddNotifiable, IDeleteNotifiable
     notified = 0
-    def manage_beforeDelete(self, object, container):
+    def beforeDeleteHook(self, object, container):
         self.notified -= 1
 
 
-    def manage_afterAdd(self, object, container):
+    def afterAddHook(self, object, container):
         self.notified += 1
 
 class Test(PlacelessSetup,

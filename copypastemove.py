@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: copypastemove.py,v 1.1 2003/02/17 15:10:39 sidnei Exp $
+$Id: copypastemove.py,v 1.2 2003/02/26 16:11:35 gvanrossum Exp $
 """
 
 from zope.app.interfaces.container import IOptionalNamesContainer
@@ -64,7 +64,7 @@ class PasteTarget:
         given key.
         
         This method must not issue an IObjectAddedEvent, nor must it
-        call the manage_afterAdd hook of the object.
+        call the afterAddHook method of the object.
         However, it must publish an IObjectModified event for the
         container.
         '''
@@ -107,7 +107,7 @@ class MoveSource:
         
         movingTo is the unicode path for where the move is to.
         This method should not publish an IObjectRemovedEvent, nor should
-        it call the manage_afterDelete method of the object.
+        it call the afterDeleteHook method of the object.
         However, it must publish an IObjectModified event for the
         container.
         '''

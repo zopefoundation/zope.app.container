@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.12 2003/02/17 15:10:39 sidnei Exp $
+$Id: zopecontainer.py,v 1.13 2003/02/26 16:11:35 gvanrossum Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -115,7 +115,7 @@ class ZopeContainerAdapter:
         # Call the after add hook, if necessary
         adapter = queryAdapter(object, IAddNotifiable)
         if adapter is not None:
-            adapter.manage_afterAdd(object, container)
+            adapter.afterAddHook(object, container)
 
         publish(container, ObjectModifiedEvent(container))
         return key
@@ -130,11 +130,11 @@ class ZopeContainerAdapter:
         # Call the before delete hook, if necessary
         adapter = queryAdapter(object, IDeleteNotifiable)
         if adapter is not None:
-            adapter.manage_beforeDelete(object, container)
-        elif hasattr(object, 'manage_beforeDelete'):
+            adapter.beforeDeleteHook(object, container)
+        elif hasattr(object, 'beforeDeleteHook'):
             # XXX: Ideally, only do this in debug mode.
             from warnings import warn
-            warn('Class %s has manage_beforeDelete but is not'
+            warn('Class %s has beforeDeleteHook but is not'
                  ' IDeleteNotifiable' % object.__class__)
 
         del container[key]
@@ -155,18 +155,18 @@ class ZopeContainerAdapter:
         'newKey' that was used is returned.
         
         If the object at 'currentKey' is IMoveNotifiable, its
-        manage_beforeDelete method is called, with a movingTo
+        beforeDeleteHook method is called, with a movingTo
         argument of the container's path plus the 'newKey'.
         Otherwise, if the object at 'currentKey' is IDeleteNotifiable,
-        its manage_beforeDelete method is called.
+        its beforeDeleteHook method is called.
         
         Then, the object is removed from the container using the
         container's __del__ method.
         
-        Then, If the object is IMoveNotifiable, its manage_afterAdd
+        Then, If the object is IMoveNotifiable, its afterAddHook
         method is called, with a movedFrom argument of the container's
         path plus the 'currentKey'.
-        Otherwise, if the object is IAddNotifiable, its manage_afterAdd
+        Otherwise, if the object is IAddNotifiable, its afterAddHook
         method is called.
         
         Then, an IObjectMovedEvent is published.
@@ -183,9 +183,9 @@ class ZopeContainerAdapter:
 
         if mover.moveable() and mover.moveableTo(target, newKey):
 
-            # the mover will call manage_beforeDelete hook for us
+            # the mover will call beforeDeleteHook hook for us
             mover.moveTo(target, newKey)
-            # the mover will call the manage_afterAdd hook for us
+            # the mover will call the afterAddHook hook for us
             # the mover will publish an ObjectMovedEvent for us
 
            

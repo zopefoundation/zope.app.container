@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: baseizopeitemcontainer.py,v 1.2 2002/12/25 14:12:47 jim Exp $
+$Id: baseizopeitemcontainer.py,v 1.3 2003/02/26 16:11:35 gvanrossum Exp $
 """
 
 from zope.proxy.context import getWrapperContainer, getWrapperData
@@ -132,8 +132,8 @@ class BaseTestIZopeWriteContainer(BaseTestIZopeItemContainer):
 
         The new item must implement IAddNotifiable
         and IDeleteNotifyable, and must have a notified attribute that
-        is incremented when manageAfterAdd is called and decremented
-        when manage_beforeDelete is called.
+        is incremented when afterAddHook is called and decremented
+        when beforeDeleteHook is called.
         """
         raise TypeError("_sample_newItem was not implemented")
 
