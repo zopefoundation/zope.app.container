@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.19 2003/06/04 14:57:56 stevea Exp $
+$Id: zopecontainer.py,v 1.20 2003/06/13 17:53:34 stevea Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -35,7 +35,7 @@ from zope.interface import implements
 
 _marker = object()
 
-class ZopeContainerAdapter:
+class xZopeContainerAdapter:
 
     implements(IZopeContainer)
 

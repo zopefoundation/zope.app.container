@@ -31,12 +31,6 @@
       />
 
   <adapter
-      factory="zope.app.container.zopecontainer.ZopeContainerAdapter"
-      provides="zope.app.interfaces.container.IZopeContainer"
-      for="zope.app.interfaces.container.IContainer"
-      />
-
-  <adapter
       factory="zope.app.container.zopecontainer.ZopeContainerDecorator"
       provides="zope.app.interfaces.context.IZopeContextWrapper"
       for="zope.app.interfaces.container.IContainer"
