@@ -42,6 +42,16 @@
       for="zope.app.interfaces.container.IContainer"
       />
 
+  <!-- XXX There is a sticky question of what permission 'rename' should have.
+           See src/zope/app/context.txt for further discussion.
+    -->
+  <class class="zope.app.container.zopecontainer.ZopeContainerDecorator">
+    <require
+        attributes="rename"
+        permission="zope.ManageServices"
+        />
+  </class>
+
   <adapter
       factory="zope.app.container.size.ContainerSized"
       provides="zope.app.interfaces.size.ISized"
