@@ -3,7 +3,7 @@
 <div metal:fill-slot="body">
   <div metal:define-macro="contents">
 
-    <form name="containerContentsForm" method="POST" action="."
+    <form name="containerContentsForm" method="post" action="."
           tal:attributes="action request/URL"
           tal:define="container_contents view/listContentInfo">
 
@@ -174,7 +174,7 @@
 
     </form>
 
-    <script ><!--
+    <script type="text/javascript"><!--
         prettydump('focus', LG_INFO);
         if (document.containerContentsForm.new_value)
 	        document.containerContentsForm.new_value.focus();
