@@ -22,8 +22,8 @@ from zope.app.tests.placelesssetup import PlacelessSetup
 
 
 def DefaultTestData():
-        return [('3', '0'), ('2', '1'), ('4', '2'), ('6', '3'), ('0', '4'),
-                ('5', '5'), ('1', '6'), ('8', '7'), ('7', '8'), ('9', '9')]
+    return [('3', '0'), ('2', '1'), ('4', '2'), ('6', '3'), ('0', '4'),
+            ('5', '5'), ('1', '6'), ('8', '7'), ('7', '8'), ('9', '9')]
 
 class BaseTestIContainer(PlacelessSetup):
     """Base test cases for containers.
@@ -84,14 +84,14 @@ class BaseTestIContainer(PlacelessSetup):
         self.assertEqual(list(values), [])
 
         container, data = self.__setUp()
-        values = container.values()
-        # XXX: this assumes that sort produces a deterministic order for
-        # the data returned by container.  This is valid for the data
-        # in DefaultTestData, but it may not be valid for all IContainers.
-        # Is there a better way to write this test?
-        values = list(values); values.sort() # convert to sorted list
-        ivalues = [ v for k, v in data ]; ivalues.sort() # sort original.
-        self.assertEqual(values, ivalues)
+        values = list(container.values())
+        for k, v in data:
+            try:
+                values.remove(v)
+            except ValueError:
+                self.fail('Value not in list')
+                
+        self.assertEqual(values, [])
 
     def test_len(self):
         # See interface IReadContainer
