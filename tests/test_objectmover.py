@@ -12,13 +12,13 @@
 #
 ##############################################################################
 """
-$Id: test_objectmover.py,v 1.12 2004/03/06 16:50:19 jim Exp $
+$Id: test_objectmover.py,v 1.13 2004/03/13 15:21:13 srichter Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
 
 from zope.app.traversing import traverse
-from zope.app.services.tests.placefulsetup import PlacefulSetup
+from zope.app.site.tests.placefulsetup import PlacefulSetup
 from zope.app.tests import ztapi
 from zope.app.copypastemove.interfaces import IObjectMover
 from zope.app.copypastemove import ObjectMover
