@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: copypastemove.py,v 1.2 2003/02/26 16:11:35 gvanrossum Exp $
+$Id: copypastemove.py,v 1.3 2003/03/13 18:49:05 alga Exp $
 """
 
 from zope.app.interfaces.container import IOptionalNamesContainer
@@ -42,7 +42,7 @@ class PasteTarget:
     def acceptsObject(self, key, obj):
         '''Allow the container to say if it accepts the given wrapped
         object.
-        
+
         Returns True if the object would be accepted as contents of
         this container. Otherwise, returns False.
         '''
@@ -52,17 +52,17 @@ class PasteTarget:
         if key in container:
             return False
         return True
-        
-        
+
+
     def pasteObject(self, key, obj):
         '''Add the given object to the container under the given key.
-        
+
         Raises a ValueError if key is an empty string, unless the
         this object chooses a different key.
-        
+
         Returns the key used, which might be different than the
         given key.
-        
+
         This method must not issue an IObjectAddedEvent, nor must it
         call the afterAddHook method of the object.
         However, it must publish an IObjectModified event for the
@@ -93,18 +93,18 @@ class PasteTarget:
 
         publish(container, ObjectModifiedEvent(container))
         return key
-        
+
 class MoveSource:
 
     __implements__ = IMoveSource
 
     def __init__(self, container):
         self.context = container
-          
+
     def removeObject(self, key, movingTo):
         '''Remove and return the object with the given key, as the
         first part of a move.
-        
+
         movingTo is the unicode path for where the move is to.
         This method should not publish an IObjectRemovedEvent, nor should
         it call the afterDeleteHook method of the object.
@@ -112,7 +112,7 @@ class MoveSource:
         container.
         '''
         container = self.context
- 
+
         object = container[key]
         object = ContextWrapper(object, container, name=key)
 
@@ -142,7 +142,7 @@ class CopySource:
             value = removeAllProxies(value)
             value = copy.deepcopy(value)
             return ContextWrapper(value, self.context, name=key)
-        
+
 class PasteNamesChooser:
 
     __implements__ = IPasteNamesChooser
@@ -158,7 +158,7 @@ class PasteNamesChooser:
         if key not in container:
             return key
 
-        n = 1 
+        n = 1
         while new_key in container:
             if n > 1:
                 new_key = 'copy%s_of_%s' % (n, key)

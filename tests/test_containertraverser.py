@@ -13,7 +13,7 @@
 ##############################################################################
 """
 
-$Id: test_containertraverser.py,v 1.5 2003/02/12 02:17:17 seanb Exp $
+$Id: test_containertraverser.py,v 1.6 2003/03/13 18:49:05 alga Exp $
 """
 
 import unittest, sys
@@ -56,8 +56,8 @@ class Test(PlacelessSetup, unittest.TestCase):
     def testAttr(self):
         # test container traver
         foo = Container()
-        c   = Container( foo=foo )
-        req = Request( I, '')
+        c   = Container(foo=foo)
+        req = Request(I, '')
 
         T = ContainerTraverser(c, req)
         self.failUnless(T.publishTraverse(req,'foo') is foo)
@@ -68,8 +68,8 @@ class Test(PlacelessSetup, unittest.TestCase):
     def testView(self):
         # test getting a view
         foo = Container()
-        c   = Container( foo=foo )
-        req = Request( I, '')
+        c   = Container(foo=foo)
+        req = Request(I, '')
 
         T = ContainerTraverser(c, req)
         getService(None,Views).provideView(IContainer, 'viewfoo', I, [View])

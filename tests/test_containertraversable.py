@@ -13,7 +13,7 @@
 ##############################################################################
 """
 
-$Id: test_containertraversable.py,v 1.2 2002/12/25 14:12:47 jim Exp $
+$Id: test_containertraversable.py,v 1.3 2003/03/13 18:49:05 alga Exp $
 """
 
 import unittest, sys
@@ -52,7 +52,7 @@ class Test(CleanUp, unittest.TestCase):
         foo = Container()
         bar = Container()
         baz = Container()
-        c   = Container( {'foo':foo}, {'bar':bar, 'foo':baz} )
+        c   = Container({'foo': foo}, {'bar': bar, 'foo': baz})
 
         T = ContainerTraversable(c)
         self.failUnless(T.traverse('foo', (), 'foo', []) is baz)
