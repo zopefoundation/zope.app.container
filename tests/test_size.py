@@ -40,7 +40,8 @@ class Test(unittest.TestCase):
         obj = DummyContainer(0)
         sized = ContainerSized(obj)
         self.assertEqual(sized.sizeForSorting(), ('item', 0))
-        self.assertEqual(sized.sizeForDisplay(), u'0 items')
+        self.assertEqual(sized.sizeForDisplay(), u'${items} items')
+        self.assertEqual(sized.sizeForDisplay().mapping['items'], '0')
 
     def testOneItem(self):
         from zope.app.container.size import ContainerSized
@@ -54,7 +55,8 @@ class Test(unittest.TestCase):
         obj = DummyContainer(2)
         sized = ContainerSized(obj)
         self.assertEqual(sized.sizeForSorting(), ('item', 2))
-        self.assertEqual(sized.sizeForDisplay(), u'2 items')
+        self.assertEqual(sized.sizeForDisplay(), u'${items} items')
+        self.assertEqual(sized.sizeForDisplay().mapping['items'], '2')
 
 def test_suite():
     loader = unittest.TestLoader()

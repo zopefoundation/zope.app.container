@@ -11,10 +11,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Find Support
 
-$Id: find.py,v 1.5 2003/06/07 06:37:22 stevea Exp $
-
+$Id: find.py,v 1.6 2003/08/06 14:45:04 srichter Exp $
 """
 
 from zope.app.interfaces.container.find import IFind, IIdFindFilter
@@ -45,8 +44,6 @@ class FindAdapter(object):
                          result)
         return result
 
-    #
-    ############################################################
 
 def _find_helper(id, object, container, id_filters, object_filters, result):
     for id_filter in id_filters:

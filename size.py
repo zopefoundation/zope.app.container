@@ -14,9 +14,9 @@
 ##############################################################################
 """Adapters that give the size of an object.
 
-$Id: size.py,v 1.3 2003/06/07 06:37:22 stevea Exp $
+$Id: size.py,v 1.4 2003/08/06 14:45:04 srichter Exp $
 """
-
+from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.app.interfaces.size import ISized
 from zope.interface import implements
 
@@ -37,5 +37,7 @@ class ContainerSized:
         """See ISized"""
         num_items = len(self._container)
         if num_items == 1:
-            return '1 item'
-        return '%s items' % num_items
+            return _('1 item')
+        size = _('${items} items')
+        size.mapping = {'items': str(num_items)}
+        return size
