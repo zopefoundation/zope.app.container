@@ -13,7 +13,7 @@
 ##############################################################################
 """Traversal components for containers
 
-$Id: traversal.py,v 1.11 2004/03/13 21:03:08 srichter Exp $
+$Id: traversal.py,v 1.12 2004/03/19 03:17:23 srichter Exp $
 """
 from zope.interface import implements
 from zope.exceptions import NotFoundError
@@ -74,7 +74,7 @@ class ItemTraverser(ContainerTraverser):
             if view is not None:
                 return view
 
-        raise NotFound(context, name, request)
+        raise NotFound(self.context, name, request)
 
 
 _marker = object()
