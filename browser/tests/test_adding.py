@@ -192,7 +192,7 @@ class Test(PlacelessSetup, unittest.TestCase):
 def test_constraint_driven_addingInfo():
     """
     >>> setUp()
-    >>> serviceService = zapi.getService(None, zapi.servicenames.Services)
+    >>> serviceService = zapi.getGlobalServices()
     >>> from zope.app.publisher.interfaces.browser import IBrowserMenuService
     >>> serviceService.defineService(zapi.servicenames.BrowserMenu,
     ...                              IBrowserMenuService)
@@ -201,7 +201,7 @@ def test_constraint_driven_addingInfo():
     >>> serviceService.provideService(zapi.servicenames.BrowserMenu,
     ...                               globalBrowserMenuService)
 
-    >>> menuService = zapi.getService(None, zapi.servicenames.BrowserMenu)
+    >>> menuService = zapi.getGlobalService(zapi.servicenames.BrowserMenu)
     >>> menuService.menu('test', '')
     >>> menuService.menuItem('test', IAdding, '', 'item1', None)
     >>> menuService.menuItem('test', IAdding, '', 'item2', None)
@@ -395,7 +395,7 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
     the container contains only a single content object
     
     >>> setUp()
-    >>> serviceService = zapi.getService(None, zapi.servicenames.Services)
+    >>> serviceService = zapi.getGlobalServices()
     >>> from zope.app.publisher.interfaces.browser import IBrowserMenuService
     >>> serviceService.defineService(zapi.servicenames.BrowserMenu,
     ...                              IBrowserMenuService)
@@ -404,7 +404,7 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
     >>> serviceService.provideService(zapi.servicenames.BrowserMenu,
     ...                               globalBrowserMenuService)
 
-    >>> menuService = zapi.getService(None, zapi.servicenames.BrowserMenu)
+    >>> menuService = zapi.getGlobalService(zapi.servicenames.BrowserMenu)
     >>> menuService.menu('zope.app.container.add', '')
     >>> menuService.menuItem('zope.app.container.add', IAdding, '', 'item3',
     ...                      None, extra={'factory': 'f1'})
@@ -466,7 +466,7 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     implement IContainerNamesContainer
     
     >>> setUp()
-    >>> serviceService = zapi.getService(None, zapi.servicenames.Services)
+    >>> serviceService = zapi.getGlobalServices()
     >>> from zope.app.publisher.interfaces.browser import IBrowserMenuService
     >>> serviceService.defineService(zapi.servicenames.BrowserMenu,
     ...                              IBrowserMenuService)
@@ -475,7 +475,7 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     >>> serviceService.provideService(zapi.servicenames.BrowserMenu,
     ...                               globalBrowserMenuService)
 
-    >>> menuService = zapi.getService(None, zapi.servicenames.BrowserMenu)
+    >>> menuService = zapi.getGlobalService(zapi.servicenames.BrowserMenu)
     >>> menuService.menu('zope.app.container.add', '')
     >>> menuService.menuItem('zope.app.container.add', None, '', 'item3',
     ...                      None, extra={'factory': ''})
@@ -535,7 +535,7 @@ def test_isSingleMenuItem_with_ICNC():
 
     
     >>> setUp()
-    >>> serviceService = zapi.getService(None, zapi.servicenames.Services)
+    >>> serviceService = zapi.getGlobalServices()
     >>> from zope.app.publisher.interfaces.browser import IBrowserMenuService
     >>> serviceService.defineService(zapi.servicenames.BrowserMenu,
     ...                              IBrowserMenuService)
@@ -544,7 +544,7 @@ def test_isSingleMenuItem_with_ICNC():
     >>> serviceService.provideService(zapi.servicenames.BrowserMenu,
     ...                               globalBrowserMenuService)
     
-    >>> menuService = zapi.getService(None, zapi.servicenames.BrowserMenu)
+    >>> menuService = zapi.getGlobalService(zapi.servicenames.BrowserMenu)
     >>> menuService.menu('zope.app.container.add', '')
     >>> menuService.menuItem('zope.app.container.add', None, '', 'item3',
     ...                      None, extra={'factory': ''})
