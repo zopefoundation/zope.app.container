@@ -12,6 +12,18 @@
      factory="zope.app.container.find.FindAdapter" 
      />
 
+  <adapter 
+      for="zope.app.interfaces.container.IReadContainer"
+      provides="zope.app.interfaces.file.IReadDirectory"
+      factory=".directory.noop"
+      />
+
+  <adapter 
+      for="zope.app.interfaces.container.IWriteContainer"
+      provides="zope.app.interfaces.file.IWriteDirectory"
+      factory=".directory.noop"
+      />
+
   <browser:page
       name="_traverse" 
       for="zope.app.interfaces.container.IItemContainer"
