@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.13 2004/03/06 04:17:22 garrett Exp $
+$Id: contained.py,v 1.14 2004/03/06 17:48:47 jim Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -448,10 +448,10 @@ def setitem(container, setitemf, name, object):
     setitemf(name, object)
     if event:
         if event.__class__ is ObjectAddedEvent:
-            a = zapi.queryAdapter(object, IAddNotifiable)
+            a = IAddNotifiable(object, None)
             if a is not None:
                 a.addNotify(event)
-        a = zapi.queryAdapter(object, IMoveNotifiable)
+        a = IMoveNotifiable(object, None)
         if a is not None:
             a.moveNotify(event)
         publish(container, event)
@@ -562,10 +562,10 @@ def uncontained(object, container, name=None):
         return
 
     event = ObjectRemovedEvent(object, oldparent, oldname)
-    a = zapi.queryAdapter(object, IRemoveNotifiable)
+    a = IRemoveNotifiable(object, None)
     if a is not None:
         a.removeNotify(event)
-    a = zapi.queryAdapter(object, IMoveNotifiable)
+    a = IMoveNotifiable(object, None)
     if a is not None:
         a.moveNotify(event)
     publish(container, event)

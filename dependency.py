@@ -13,7 +13,7 @@
 ##############################################################################
 """Objects that take care of annotating dublin core meta data times
 
-$Id: dependency.py,v 1.11 2004/03/02 18:50:57 philikon Exp $
+$Id: dependency.py,v 1.12 2004/03/06 17:48:47 jim Exp $
 """
 from zope.proxy import removeAllProxies
 from zope.interface import implements
@@ -33,7 +33,7 @@ class DependencyChecker:
 
     def notify(self, event):
         object = removeAllProxies(event.object)
-        dependency = zapi.queryAdapter(object, IDependable)
+        dependency = IDependable(object, None)
         if dependency is not None:
             dependents = dependency.dependents()
             if dependents:
