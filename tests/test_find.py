@@ -12,13 +12,11 @@
 #
 ##############################################################################
 """
-
-Revision information:
-$Id: test_find.py,v 1.6 2003/11/20 07:27:56 philikon Exp $
+$Id: test_find.py,v 1.7 2004/03/03 10:38:39 philikon Exp $
 """
 
 from unittest import TestCase, main, makeSuite
-from zope.app.interfaces.container import IReadContainer
+from zope.app.container.interfaces import IReadContainer
 from zope.app.interfaces.find import IObjectFindFilter
 from zope.app.container.find import FindAdapter, SimpleIdFindFilter
 from zope.interface import implements

@@ -13,11 +13,11 @@
 ##############################################################################
 """Test the IContainer interface.
 
-$Id: test_icontainer.py,v 1.6 2003/09/21 17:30:43 jim Exp $
+$Id: test_icontainer.py,v 1.7 2004/03/03 10:38:39 philikon Exp $
 """
 
 from unittest import TestCase, main, makeSuite
-from zope.app.interfaces.container import IContainer
+from zope.app.container.interfaces import IContainer
 from zope.interface.verify import verifyObject
 from zope.app.tests.placelesssetup import PlacelessSetup
 

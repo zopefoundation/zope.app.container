@@ -18,10 +18,9 @@ This is primarily for testing purposes.
 It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
-Revision information:
-$Id: sample.py,v 1.10 2004/02/25 23:02:23 faassen Exp $
+$Id: sample.py,v 1.11 2004/03/03 10:38:39 philikon Exp $
 """
-from zope.app.interfaces.container import IContainer
+from zope.app.container.interfaces import IContainer
 from zope.interface import implements
 from zope.app.container.contained import Contained, setitem, uncontained
 

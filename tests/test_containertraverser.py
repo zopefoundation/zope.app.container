@@ -13,11 +13,11 @@
 ##############################################################################
 """Container Traverser Tests
 
-$Id: test_containertraverser.py,v 1.10 2004/02/14 03:01:48 srichter Exp $
+$Id: test_containertraverser.py,v 1.11 2004/03/03 10:38:39 philikon Exp $
 """
 import unittest
 from zope.app.container.traversal import ContainerTraverser
-from zope.app.interfaces.container import IReadContainer
+from zope.app.container.interfaces import IReadContainer
 from zope.app.tests import ztapi
 from zope.app.tests.placelesssetup import PlacelessSetup
 from zope.component.tests.request import Request

@@ -13,11 +13,10 @@
 ##############################################################################
 """Ordered container implementation.
 
-Revision information:
-$Id: ordered.py,v 1.7 2004/02/20 16:57:24 fdrake Exp $
+$Id: ordered.py,v 1.8 2004/03/03 10:38:39 philikon Exp $
 """
 
-from zope.app.interfaces.container import IOrderedContainer
+from zope.app.container.interfaces import IOrderedContainer
 from zope.interface import implements
 from persistent import Persistent
 from persistent.dict import PersistentDict

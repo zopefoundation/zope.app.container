@@ -33,7 +33,7 @@
    ...         "Add an item"
    ...     __setitem__.precondition = preNoZ
 
-   >>> from zope.app.interfaces.container import IContainer
+   >>> from zope.app.container.interfaces import IContainer
    >>> class C1:
    ...     zope.interface.implements(I1, IContainer)
    ...     def __repr__(self):
@@ -147,13 +147,13 @@
    >>> checkFactory(c1, "Zbob", factory)
    False
 
-   $Id: constraints.py,v 1.4 2003/12/10 13:04:53 jace Exp $
+   $Id: constraints.py,v 1.5 2004/03/03 10:38:39 philikon Exp $
    """
 
 import zope.interface
-from zope.app.interfaces.container import InvalidItemType, InvalidContainerType
+from zope.app.container.interfaces import InvalidItemType, InvalidContainerType
 from zope.app.i18n import ZopeMessageIDFactory as _
-from zope.app.interfaces.container import IContainer
+from zope.app.container.interfaces import IContainer
 
 def checkObject(container, name, object):
     """Check containement constraints for an object and container

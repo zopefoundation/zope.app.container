@@ -13,11 +13,10 @@
 ##############################################################################
 """Unit test logic for setting up and tearing down basic infrastructure
 
-$Id: placelesssetup.py,v 1.4 2003/11/21 17:12:00 jim Exp $
+$Id: placelesssetup.py,v 1.5 2004/03/03 10:38:39 philikon Exp $
 """
 from zope.app.tests import ztapi
-from zope.app.interfaces.container import IWriteContainer
-from zope.app.interfaces.container import INameChooser
+from zope.app.container.interfaces import IWriteContainer, INameChooser
 from zope.app.container.contained import NameChooser
 
 class PlacelessSetup:

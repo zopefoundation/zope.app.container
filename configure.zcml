@@ -8,19 +8,19 @@
 
   <adapter
      provides="zope.app.interfaces.find.IFind"
-     for="zope.app.interfaces.container.IReadContainer"
+     for="zope.app.container.interfaces.IReadContainer"
      permission="zope.ManageContent"
      factory="zope.app.container.find.FindAdapter"
      />
 
   <adapter
-      for="zope.app.interfaces.container.IReadContainer"
+      for="zope.app.container.interfaces.IReadContainer"
       provides="zope.app.interfaces.file.IReadDirectory"
       factory=".directory.noop"
       />
 
   <adapter
-      for="zope.app.interfaces.container.IWriteContainer"
+      for="zope.app.container.interfaces.IWriteContainer"
       provides="zope.app.interfaces.file.IWriteDirectory"
       factory=".directory.noop"
       />
@@ -28,25 +28,25 @@
   <adapter
       factory="zope.app.container.traversal.ContainerTraversable"
       provides="zope.app.interfaces.traversing.ITraversable"
-      for="zope.app.interfaces.container.IReadContainer"
+      for="zope.app.container.interfaces.IReadContainer"
       />
 
 
   <adapter
       factory="zope.app.container.size.ContainerSized"
       provides="zope.app.interfaces.size.ISized"
-      for="zope.app.interfaces.container.IReadContainer"
+      for="zope.app.container.interfaces.IReadContainer"
       />
 
   <adapter
-      provides="zope.app.interfaces.container.INameChooser"
-      for="zope.app.interfaces.container.IWriteContainer"
+      provides="zope.app.container.interfaces.INameChooser"
+      for="zope.app.container.interfaces.IWriteContainer"
       factory=".contained.NameChooser"
       />
 
   <event:subscribe
       subscriber=".dependency.CheckDependency"
-      event_types="zope.app.interfaces.container.IObjectRemovedEvent"
+      event_types="zope.app.container.interfaces.IObjectRemovedEvent"
       />
 
   <content class=".constraints.ItemTypePrecondition">

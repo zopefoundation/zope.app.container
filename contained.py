@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.9 2004/03/02 18:50:57 philikon Exp $
+$Id: contained.py,v 1.10 2004/03/03 10:38:39 philikon Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -29,13 +29,13 @@ from zope.app import zapi
 from zope.app.event.objectevent import ObjectEvent, modified
 from zope.app.event import publish
 from zope.app.i18n import ZopeMessageIDFactory as _
-from zope.app.interfaces.container import IAddNotifiable, IMoveNotifiable
-from zope.app.interfaces.container import IRemoveNotifiable
-from zope.app.interfaces.container import IContained
-from zope.app.interfaces.container import INameChooser
-from zope.app.interfaces.container import IObjectAddedEvent
-from zope.app.interfaces.container import IObjectMovedEvent
-from zope.app.interfaces.container import IObjectRemovedEvent
+from zope.app.container.interfaces import IAddNotifiable, IMoveNotifiable
+from zope.app.container.interfaces import IRemoveNotifiable
+from zope.app.container.interfaces import IContained
+from zope.app.container.interfaces import INameChooser
+from zope.app.container.interfaces import IObjectAddedEvent
+from zope.app.container.interfaces import IObjectMovedEvent
+from zope.app.container.interfaces import IObjectRemovedEvent
 from zope.app.location.interfaces import ILocation
 from zope.app.container._zope_app_container_contained import ContainedProxyBase
 from zope.app.container._zope_app_container_contained import getProxiedObject
@@ -235,8 +235,8 @@ def setitem(container, setitemf, name, object):
     ...         self.moved = event
 
     >>> from zope.app.event.objectevent import objectEventCallbackHelper
-    >>> from zope.app.interfaces.container import IObjectAddedEvent
-    >>> from zope.app.interfaces.container import IObjectMovedEvent
+    >>> from zope.app.container.interfaces import IObjectAddedEvent
+    >>> from zope.app.container.interfaces import IObjectMovedEvent
     >>> from zope.component import getService
     >>> from zope.app.services.servicenames import Adapters
     >>> from zope.app.event.interfaces import ISubscriber
@@ -465,7 +465,7 @@ def uncontained(object, container, name=None):
     track the events generated:
 
     >>> from zope.app.event.tests.placelesssetup import getEvents
-    >>> from zope.app.interfaces.container import IObjectRemovedEvent
+    >>> from zope.app.container.interfaces import IObjectRemovedEvent
     >>> from zope.app.event.interfaces import IObjectModifiedEvent
 
     We'll start by creating a container with an item:
@@ -582,7 +582,7 @@ class NameChooser:
         self.context = context
 
     def checkName(self, name, object):
-        "See zope.app.interfaces.container.INameChooser"
+        "See zope.app.container.interfaces.INameChooser"
 
         if not name:
             raise zapi.UserError(
@@ -608,7 +608,7 @@ class NameChooser:
 
 
     def chooseName(self, name, object):
-        "See zope.app.interfaces.container.INameChooser"
+        "See zope.app.container.interfaces.INameChooser"
 
         container = self.context
 
@@ -724,9 +724,9 @@ class ContainedProxy(ContainedProxyBase):
 
 from zope.app.event.function import Subscriber
 from zope.app.folder.interfaces import IRootFolder
-from zope.app.interfaces.container import IWriteContainer
+from zope.app.container.interfaces import IWriteContainer
 from zope.app.interfaces.services.service import IPossibleSite
-from zope.app.interfaces.container import IContainer
+from zope.app.container.interfaces import IContainer
 from transaction import get_transaction
 from zope.component.exceptions import ComponentLookupError
 from zope.app.interfaces.services.registration import IRegistry, INameRegistry
