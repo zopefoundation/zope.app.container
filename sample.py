@@ -19,11 +19,8 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: sample.py,v 1.9 2003/11/20 07:26:45 philikon Exp $
+$Id: sample.py,v 1.10 2004/02/25 23:02:23 faassen Exp $
 """
-
-from types import StringTypes
-
 from zope.app.interfaces.container import IContainer
 from zope.interface import implements
 from zope.app.container.contained import Contained, setitem, uncontained

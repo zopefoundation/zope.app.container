@@ -13,9 +13,9 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.6 2004/02/24 16:51:11 philikon Exp $
+$Id: contained.py,v 1.7 2004/02/25 23:02:23 faassen Exp $
 """
-from zope.proxy import ProxyBase, getProxiedObject
+from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
 from zope.security.checker import selectChecker, CombinedChecker
 

@@ -14,18 +14,16 @@
 """
 Revision information:
 
-$Id: test_objectcopier.py,v 1.12 2004/02/24 16:51:24 philikon Exp $
+$Id: test_objectcopier.py,v 1.13 2004/02/25 23:02:24 faassen Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
 from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
-from zope.component import getAdapter, ComponentLookupError
+from zope.component import getAdapter
 from zope.app.tests import ztapi
 from zope.app.interfaces.copypastemove import IObjectCopier
 from zope.app.copypastemove import ObjectCopier
-from zope.app.interfaces.container import IContainer
-from zope.app.container.sample import SampleContainer
 
 class File:
     pass

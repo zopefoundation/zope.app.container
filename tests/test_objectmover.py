@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: test_objectmover.py,v 1.9 2004/02/24 16:51:24 philikon Exp $
+$Id: test_objectmover.py,v 1.10 2004/02/25 23:02:24 faassen Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -24,7 +24,6 @@ from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
 from zope.app.tests import ztapi
 from zope.app.interfaces.copypastemove import IObjectMover
-from zope.app.folder.interfaces import IFolder
 from zope.app.copypastemove import ObjectMover
 
 class File:
