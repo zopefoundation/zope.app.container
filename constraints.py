@@ -345,6 +345,16 @@ def contains(*types):
     f_locals['__setitem__'] = __setitem__
 
 
+class IContainerTypesConstraint(zope.interface.Interface):
+
+    def __call__(object):
+        """Test whether object is valid.
+
+        Return True if valid.
+        Raise zope.interface.Invalid if the objet is invalid.
+        """
+
+
 class ContainerTypesConstraint(object):
     """Constrain a container to be one of a number of types
 
@@ -368,7 +378,9 @@ class ContainerTypesConstraint(object):
     >>> constraint(Ob())
     True
 
-    """ 
+    """
+
+    zope.interface.implements(IContainerTypesConstraint)
 
     def __init__(self, *types):
         self.types = types
