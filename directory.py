@@ -21,11 +21,11 @@ noop
 Cloner
   An IDirectoryFactory adapter that just clones the original object.
 
-$Id: directory.py,v 1.5 2003/06/07 06:37:22 stevea Exp $
+$Id: directory.py,v 1.6 2004/03/15 13:10:44 srichter Exp $
 """
 __metaclass__ = type
 
-import zope.app.interfaces.file
+import zope.app.filerepresentation.interfaces
 from zope.proxy import removeAllProxies
 from zope.interface import implements
 
@@ -44,7 +44,7 @@ class Cloner:
     of the same class as it's context.
     """
 
-    implements(zope.app.interfaces.file.IDirectoryFactory)
+    implements(zope.app.filerepresentation.interfaces.IDirectoryFactory)
 
     def __init__(self, context):
         self.context = context

@@ -15,13 +15,13 @@
 
   <adapter
       for=".interfaces.IReadContainer"
-      provides="zope.app.interfaces.file.IReadDirectory"
+      provides="zope.app.filerepresentation.interfaces.IReadDirectory"
       factory=".directory.noop"
       />
 
   <adapter
       for=".interfaces.IWriteContainer"
-      provides="zope.app.interfaces.file.IWriteDirectory"
+      provides="zope.app.filerepresentation.interfaces.IWriteDirectory"
       factory=".directory.noop"
       />
 
