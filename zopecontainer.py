@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.6 2003/02/03 14:58:16 jim Exp $
+$Id: zopecontainer.py,v 1.7 2003/02/03 17:10:57 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -24,9 +24,17 @@ from zope.component import queryAdapter
 from zope.proxy.context import ContextWrapper
 from zope.app.event import publish
 from zope.app.event.objectevent \
-     import ObjectRemovedEvent, ObjectModifiedEvent, ObjectAddedEvent
+     import ObjectRemovedEvent, ObjectModifiedEvent, ObjectAddedEvent, \
+            ObjectMovedEvent
 from zope.app.interfaces.container import IAddNotifiable
 from zope.app.interfaces.container import IDeleteNotifiable
+from zope.app.interfaces.container import IMoveNotifiable
+from zope.app.interfaces.container import IMoveSource
+from zope.app.interfaces.container import IPasteTarget
+from zope.app.interfaces.container import IPasteTarget
+from zope.app.interfaces.container import IContainerCopyPasteMoveSupport
+from zope.app.interfaces.copy import IObjectMover
+from zope.app.interfaces.traversing import IPhysicallyLocatable
 from types import StringTypes
 from zope.proxy.introspection import removeAllProxies
 
@@ -34,7 +42,7 @@ _marker = object()
 
 class ZopeContainerAdapter:
 
-    __implements__ =  IZopeContainer
+    __implements__ =  (IZopeContainer, IContainerCopyPasteMoveSupport)
 
     def __init__(self, container):
         self.context = container
@@ -68,10 +76,6 @@ class ZopeContainerAdapter:
     def keys(self):
         '''See interface IReadContainer'''
         return self.context.keys()
-
-    def __iter__(self):
-        '''See interface IReadContainer'''
-        return iter(self.context)
 
     def __len__(self):
         '''See interface IReadContainer'''
@@ -144,3 +148,56 @@ class ZopeContainerAdapter:
         publish(container, ObjectModifiedEvent(container))
 
         return key
+
+
+    def rename(currentKey, newKey):
+        """Put the object found at 'currentKey' under 'newKey' instead.
+        
+        The container can choose different or modified 'newKey'. The
+        'newKey' that was used is returned.
+        
+        If the object at 'currentKey' is IMoveNotifiable, its
+        manage_beforeDelete method is called, with a movingTo
+        argument of the container's path plus the 'newKey'.
+        Otherwise, if the object at 'currentKey' is IDeleteNotifiable,
+        its manage_beforeDelete method is called.
+        
+        Then, the object is removed from the container using the
+        container's __del__ method.
+        
+        Then, If the object is IMoveNotifiable, its manage_afterAdd
+        method is called, with a movedFrom argument of the container's
+        path plus the 'currentKey'.
+        Otherwise, if the object is IAddNotifiable, its manage_afterAdd
+        method is called.
+        
+        Then, an IObjectMovedEvent is published.
+        """
+
+        object = self.get(currentKey)
+        mover = getAdapter(object, IObjectMover)
+        container = self.context
+        target = getAdapter(container, IPasteTarget)
+
+        if mover.moveable() and mover.moveableTo(target, newKey):
+            physical = getAdapter(container, IPhysicallyLocatable)
+            target_path = physical.getPhysicalPath()
+
+            if queryAdapter(object, IMoveNotifiable):
+              object.manage_beforeDelete(object, container, \
+              movingTo=target_path)
+            elif queryAdapter(object, IDeleteNotifiable):
+              object.manage_beforeDelete(object, container)
+
+            source = getAdapter(container, IMoveSource)
+            object = source.removeObject(currentKey, target_path)
+
+            mover = getAdapter(object, IObjectMover)
+            mover.moveTo(target, newKey)
+          
+            publish(container, ObjectMovedEvent(object))
+
+
+
+
+           
