@@ -34,6 +34,7 @@ from zope.app.copypastemove.interfaces import IPrincipalClipboard
 from zope.app.copypastemove.interfaces import IObjectCopier
 from zope.app.copypastemove.interfaces import IObjectMover
 from zope.app.copypastemove import rename
+from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 
 from zope.app.container.browser.adding import Adding
 from zope.app.container.interfaces import IContainer
@@ -266,8 +267,8 @@ class Contents(BrowserView):
         container_path = zapi.getPath(self.context)
 
         user = self.request.principal
-        annotationsvc = zapi.getService('PrincipalAnnotation')
-        annotations = annotationsvc.getAnnotations(user)
+        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
+        annotations = annotationutil.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         clipboard.clearContents()
         items = []
@@ -286,8 +287,8 @@ class Contents(BrowserView):
         container_path = zapi.getPath(self.context)
 
         user = self.request.principal
-        annotationsvc = zapi.getService('PrincipalAnnotation')
-        annotations = annotationsvc.getAnnotations(user)
+        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
+        annotations = annotationutil.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         clipboard.clearContents()
         items = []
@@ -301,8 +302,8 @@ class Contents(BrowserView):
         """
         target = self.context
         user = self.request.principal
-        annotationsvc = zapi.getService('PrincipalAnnotation')
-        annotations = annotationsvc.getAnnotations(user)
+        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
+        annotations = annotationutil.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         items = clipboard.getContents()
         for item in items:
@@ -332,8 +333,8 @@ class Contents(BrowserView):
         """
         target = self.context
         user = self.request.principal
-        annotationsvc = zapi.getService('PrincipalAnnotation')
-        annotations = annotationsvc.getAnnotations(user)
+        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
+        annotations = annotationutil.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         items = clipboard.getContents()
         moved = False
@@ -367,8 +368,8 @@ class Contents(BrowserView):
 
         user = self.request.principal
 
-        annotationsvc = zapi.getService('PrincipalAnnotation')
-        annotations = annotationsvc.getAnnotations(user)
+        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
+        annotations = annotationutil.getAnnotations(user)
 
         # touch at least one item to in clipboard confirm contents
         clipboard = IPrincipalClipboard(annotations)

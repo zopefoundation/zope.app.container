@@ -32,8 +32,8 @@ from zope.interface import Interface, implements
 from zope.app.copypastemove.interfaces import IPrincipalClipboard
 from zope.app.copypastemove import PrincipalClipboard
 from zope.component import getGlobalServices
-from zope.app.principalannotation import PrincipalAnnotationService
-from zope.app.principalannotation.interfaces import IPrincipalAnnotationService
+from zope.app.principalannotation import PrincipalAnnotationUtility
+from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.app.annotation.interfaces import IAnnotations
 from zope.app.container.contained import contained
 
@@ -56,11 +56,8 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         ztapi.provideAdapter(IAnnotations, IPrincipalClipboard,
                              PrincipalClipboard)
-        global_sm = getGlobalServices()
-        svc = PrincipalAnnotationService()
-        global_sm.defineService("PrincipalAnnotation", \
-            IPrincipalAnnotationService)
-        global_sm.provideService("PrincipalAnnotation", svc)
+        ztapi.provideUtility(IPrincipalAnnotationUtility,
+                             PrincipalAnnotationUtility())
 
     def testInfo(self):
         # Do we get the correct information back from ContainerContents?
@@ -177,11 +174,8 @@ class TestCutCopyPaste(PlacefulSetup, TestCase):
 
         ztapi.provideAdapter(IAnnotations, IPrincipalClipboard,
                              PrincipalClipboard)
-        global_sm = getGlobalServices()
-        svc = PrincipalAnnotationService()
-        global_sm.defineService("PrincipalAnnotation", \
-            IPrincipalAnnotationService)
-        global_sm.provideService("PrincipalAnnotation", svc)
+        ztapi.provideUtility(IPrincipalAnnotationUtility,
+                             PrincipalAnnotationUtility())
 
     def testRename(self):
         container = traverse(self.rootFolder, 'folder1')
