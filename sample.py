@@ -11,8 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
-This module provides a sample container implementation.
+"""Sample container implementation.
 
 This is primarily for testing purposes.
 
@@ -20,7 +19,7 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: sample.py,v 1.3 2002/12/27 18:39:02 rdmurray Exp $
+$Id: sample.py,v 1.4 2002/12/27 19:22:50 gvanrossum Exp $
 """
 
 from zope.app.interfaces.container import IContainer
@@ -88,8 +87,10 @@ class SampleContainer(object):
         '''See interface IWriteContainer'''
         bad = False
         if isinstance(key, StringTypes):
-            try: unicode(key)
-            except UnicodeDecodeError: bad = True
+            try:
+                unicode(key)
+            except UnicodeError:
+                bad = True
         else: bad = True
         if bad: 
             raise TypeError(("'%s' is invalid, the key must be an " +
@@ -102,6 +103,3 @@ class SampleContainer(object):
     def __delitem__(self, key):
         '''See interface IWriteContainer'''
         del self.__data[key]
-
-    #
-    ############################################################
