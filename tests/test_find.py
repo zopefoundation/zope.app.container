@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: test_find.py,v 1.5 2003/09/05 18:43:20 jim Exp $
+$Id: test_find.py,v 1.6 2003/11/20 07:27:56 philikon Exp $
 """
 
 from unittest import TestCase, main, makeSuite
@@ -55,8 +55,8 @@ class FakeContainer:
     def __contains__(self, id):
         for object in self._objects:
             if object.id == id:
-                return 1
-        return 0
+                return True
+        return False
 
     def __len__(self):
         return len(self._objects)
@@ -71,7 +71,7 @@ class TestObjectFindFilter(object):
         if IReadContainer.isImplementedBy(object):
             return len(object) == self._count
         else:
-            return 0
+            return False
 
 class Test(TestCase):
     def test_idFind(self):
