@@ -13,38 +13,39 @@
 ##############################################################################
 """Adding implementation tests
 
-$Id: test_adding.py,v 1.4 2004/03/19 20:26:24 srichter Exp $
+$Id: test_adding.py,v 1.5 2004/04/27 15:47:37 eckart Exp $
 """
 import unittest
 from zope.testing.doctestunit import DocTestSuite
-from zope.app import zapi
-from zope.app.tests import ztapi
-from zope.app.traversing.browser import AbsoluteURL
-from zope.app.container.browser.adding import Adding
-from zope.app.container.interfaces import IAdding
-from zope.app.container.interfaces import IObjectAddedEvent
-from zope.app.exception.interfaces import UserError
-from zope.app.traversing.interfaces import IContainmentRoot
-from zope.app.tests.placelesssetup import PlacelessSetup, setUp, tearDown
+
 from zope.component.interfaces import IFactory
 from zope.component.exceptions import ComponentLookupError
+import zope.interface
 from zope.interface import implements, Interface, directlyProvides
 from zope.publisher.browser import TestRequest
-from zope.app.publisher.browser import BrowserView
-from zope.app.container.contained import contained
 import zope.security.checker
 from zope.exceptions import ForbiddenAttribute
-from zope.app.container.interfaces import IWriteContainer
+from zope.app import zapi
+from zope.app.tests import ztapi
+from zope.app.tests.placelesssetup import PlacelessSetup, setUp, tearDown
+from zope.app.traversing.browser import AbsoluteURL
+from zope.app.traversing.interfaces import IContainmentRoot
+from zope.app.exception.interfaces import UserError
+from zope.app.publisher.browser import BrowserView
+from zope.app.container.interfaces import IAdding
+from zope.app.container.interfaces import IObjectAddedEvent
 from zope.app.container.interfaces import IContainerNamesContainer
-import zope.interface
 from zope.app.container.interfaces import INameChooser
 from zope.app.container.interfaces import IContainer
+from zope.app.container.contained import contained
+from zope.app.container.browser.adding import Adding
+from zope.app.container.sample import SampleContainer
 
 class Root:
     implements(IContainmentRoot)
 
-class Container(dict):
-    implements(IWriteContainer)
+class Container(SampleContainer):
+    pass
 
 class CreationView(BrowserView):
 
@@ -181,7 +182,7 @@ class Test(PlacelessSetup, unittest.TestCase):
 
 
 
-def test_constraint_driven_adding():
+def test_constraint_driven_addingInfo():
     """
     >>> setUp()
     >>> serviceService = zapi.getService(None, zapi.servicenames.Services)
@@ -250,6 +251,70 @@ def test_constraint_driven_adding():
     >>> items[2]['title']
     'item3'
     >>> tearDown()    
+    """
+
+def test_constraint_driven_add():
+    """
+    >>> setUp()
+    >>> from zope.app.container.sample import SampleContainer
+    >>> from zope.app.container.browser.adding import Adding
+
+    >>> class F1:
+    ...     pass
+
+    >>> class F2:
+    ...     pass
+
+    >>> def pre(container, name, object):
+    ...     "a mock item constraint "
+    ...     if not isinstance(object, F1):
+    ...         raise zope.interface.Invalid('not a valid child')
+    
+    >>> class ITestContainer(zope.interface.Interface):
+    ...     def __setitem__(name, object):
+    ...         pass
+    ...     __setitem__.precondition = pre
+
+    >>> class Container(SampleContainer):
+    ...     zope.interface.implements(ITestContainer)
+
+    >>> adding = Adding(Container(), TestRequest())
+    >>> c = adding.add(F1())
+    
+    This test should fail, because the container only
+    accepts instances of F1
+    
+    >>> adding.add(F2())
+    Traceback (most recent call last):
+    ...
+    Invalid: not a valid child
+
+    >>> class ValidContainer(SampleContainer):
+    ...     zope.interface.implements(ITestContainer)
+
+    >>> def constr(container):
+    ...     "a mock container constraint"
+    ...     if not isinstance(container, ValidContainer):
+    ...         raise zope.interface.Invalid('not a valid container')
+    ...     return True
+
+    >>> class I2(zope.interface.Interface):
+    ...     __parent__ = zope.schema.Field(constraint = constr)
+
+    >>> zope.interface.classImplements(F1, I2)
+
+    This adding now fails, because the Container is not a valid
+    parent for F1 
+
+    >>> c = adding.add(F1())
+    Traceback (most recent call last):
+    ...
+    Invalid: not a valid container
+
+    >>> adding = Adding(ValidContainer(), TestRequest())
+    >>> c = adding.add(F1())
+
+    >>> tearDown()
     """
 
 def test_renderAddButton():
