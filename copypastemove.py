@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: copy.py,v 1.2 2003/02/11 15:59:41 sidnei Exp $
+$Id: copypastemove.py,v 1.1 2003/02/17 15:10:39 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IOptionalNamesContainer
@@ -28,7 +28,9 @@ from zope.proxy.introspection import removeAllProxies
 from zope.app.event.objectevent import ObjectModifiedEvent
 from zope.proxy.context import ContextWrapper
 from zope.app.event import publish
+from zope.proxy.introspection import removeAllProxies
 from types import StringTypes
+import copy
 
 class PasteTarget:
 
@@ -137,6 +139,8 @@ class CopySource:
         '''
         value = self.context.get(key, None)
         if value is not None:
+            value = removeAllProxies(value)
+            value = copy.deepcopy(value)
             return ContextWrapper(value, self.context, name=key)
         
 class PasteNamesChooser:

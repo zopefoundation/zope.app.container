@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: test_objectmover.py,v 1.2 2003/02/11 15:59:42 sidnei Exp $
+$Id: test_objectmover.py,v 1.3 2003/02/17 15:10:40 sidnei Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -24,15 +24,15 @@ from zope.component import getAdapter
 from zope.component.adapter import provideAdapter
 from zope.app.traversing import IObjectName
 from zope.app.traversing.adapters import ObjectName
-from zope.app.interfaces.copy import IObjectMover
+from zope.app.interfaces.copypastemove import IObjectMover
 from zope.app.interfaces.content.folder import IFolder
 from zope.app.interfaces.container import IPasteTarget
 from zope.app.interfaces.container import IMoveSource
 from zope.app.interfaces.container import IPasteNamesChooser
-from zope.app.container.copy import PasteTarget
-from zope.app.container.copy import MoveSource
-from zope.app.container.copy import PasteNamesChooser
-from zope.app.copy import ObjectMover
+from zope.app.container.copypastemove import PasteTarget
+from zope.app.container.copypastemove import MoveSource
+from zope.app.container.copypastemove import PasteNamesChooser
+from zope.app.copypastemove import ObjectMover
 from zope.app.content.folder import Folder
 from zope.app.content.file import File
 

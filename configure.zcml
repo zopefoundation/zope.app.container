@@ -43,28 +43,28 @@
      provides="zope.app.interfaces.container.ICopySource"
      for="zope.app.interfaces.content.folder.IFolder"
      permission="zope.ManageContent" 
-     factory="zope.app.container.copy.CopySource" 
+     factory="zope.app.container.copypastemove.CopySource" 
      />
 
   <adapter 
      provides="zope.app.interfaces.container.IMoveSource"
      for="zope.app.interfaces.content.folder.IFolder"
      permission="zope.ManageContent" 
-     factory="zope.app.container.copy.MoveSource" 
+     factory="zope.app.container.copypastemove.MoveSource" 
      />
 
   <adapter 
      provides="zope.app.interfaces.container.IPasteTarget"
      for="zope.app.interfaces.content.folder.IFolder"
      permission="zope.ManageContent" 
-     factory="zope.app.container.copy.PasteTarget" 
+     factory="zope.app.container.copypastemove.PasteTarget" 
      />
            
   <adapter 
      provides="zope.app.interfaces.container.IPasteNamesChooser"
      for="zope.app.interfaces.content.folder.IFolder"
      permission="zope.ManageContent" 
-     factory="zope.app.container.copy.PasteNamesChooser" 
+     factory="zope.app.container.copypastemove.PasteNamesChooser" 
      />
 
 

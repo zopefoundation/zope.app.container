@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.11 2003/02/11 19:53:36 sidnei Exp $
+$Id: zopecontainer.py,v 1.12 2003/02/17 15:10:39 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -25,7 +25,7 @@ from zope.proxy.context import ContextWrapper
 from zope.app.event import publish
 from zope.app.interfaces.container import IAddNotifiable
 from zope.app.interfaces.container import IDeleteNotifiable
-from zope.app.interfaces.copy import IObjectMover
+from zope.app.interfaces.copypastemove import IObjectMover
 from types import StringTypes
 from zope.proxy.introspection import removeAllProxies
 from zope.exceptions import NotFoundError, DuplicationError
@@ -176,8 +176,7 @@ class ZopeContainerAdapter:
         if object is None:
             raise NotFoundError(self.context, currentKey)
         mover = getAdapter(object, IObjectMover)
-        container = self.context
-        target = container
+        target = self.context
         
         if target.__contains__(newKey):
             raise DuplicationError("name, %s, is already in use" % newKey)
