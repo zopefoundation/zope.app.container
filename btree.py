@@ -20,11 +20,11 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: btree.py,v 1.6 2004/02/20 16:57:24 fdrake Exp $
+$Id: btree.py,v 1.7 2004/02/20 22:02:28 fdrake Exp $
 """
 
 from persistent import Persistent
-from zodb.btrees.OOBTree import OOBTree
+from BTrees.OOBTree import OOBTree
 from zope.app.container.sample import SampleContainer
 
 class BTreeContainer(SampleContainer, Persistent):
