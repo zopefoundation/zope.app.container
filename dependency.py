@@ -22,6 +22,11 @@ from zope.app.dependable.interfaces import IDependable, DependencyError
 from zope.proxy import removeAllProxies
 
 def CheckDependency(event):
+
+    # We have to remove the proxies here to be able to get at
+    # annotations. Perhaps this should be a trusted subscriber, but we
+    # don't have those yet.
+
     object = removeAllProxies(event.object)
     dependency = IDependable(object, None)
     if dependency is not None:
