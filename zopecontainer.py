@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.3 2002/12/30 14:02:54 stevea Exp $
+$Id: zopecontainer.py,v 1.4 2003/01/16 11:59:58 alga Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -128,7 +128,11 @@ class ZopeContainerAdapter:
         adapter = queryAdapter(object, IDeleteNotifiable)
         if adapter is not None:
             adapter.manage_beforeDelete(object, container)
-
+        elif hasattr(object, 'manage_beforeDelete'):
+            # XXX: Ideally, only do this in debug mode.
+            from warnings import warn
+            warn("Class %s has manage_beforeDelete but is not IDeleteNotifiable" %
+                 object.__class__)
 
         del container[key]
 
