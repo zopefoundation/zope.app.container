@@ -13,7 +13,7 @@
 ##############################################################################
 """Adding implementation tests
 
-$Id: test_adding.py,v 1.5 2004/04/27 15:47:37 eckart Exp $
+$Id: test_adding.py,v 1.6 2004/05/06 15:46:04 eddala Exp $
 """
 import unittest
 from zope.testing.doctestunit import DocTestSuite
@@ -317,9 +317,10 @@ def test_constraint_driven_add():
     >>> tearDown()
     """
 
-def test_renderAddButton():
+
+def test_nameAllowed():
     """
-    Test for renderAddButton in adding.py 
+    Test for nameAllowed in adding.py 
     
     >>> setUp()
     >>> from zope.app.container.browser.adding import Adding
@@ -330,59 +331,28 @@ def test_renderAddButton():
     >>> class FakeContainer:
     ...    zope.interface.implements(IContainerNamesContainer)
 
-    renderAddButton returns only 'Add' button if the class imlement
+    nameAllowed returns False if the class imlements
     IContainerNamesContainer
     
     >>> adding = Adding(FakeContainer(),TestRequest())
-    >>> adding.renderAddButton()
-    u" <input type='submit' name='UPDATE_SUBMIT' value='Add'>"
+    >>> adding.nameAllowed()
+    False
 
     Fake class without IContainerNamesContainer
     
     >>> class Fake:
     ...    pass
 
-    renderAddButton returns only 'Add' and 'inputbox' if the class
-    doest imlement IContainerNamesContainer
+    nameAllowed returns True if the class
+    doesn't imlement IContainerNamesContainer
 
     >>> adding = Adding(Fake(),TestRequest())
-    >>> adding.renderAddButton()
-    u"&nbsp;&nbsp;<input type='submit' name='UPDATE_SUBMIT' value='Add'>&nbsp;&nbsp;<b>Object Name:</b>&nbsp;<input type='text' name='add_input_name' value=''>"
-    >>> adding.contentName='myname'
-    >>> adding.renderAddButton()
-    u"&nbsp;&nbsp;<input type='submit' name='UPDATE_SUBMIT' value='Add'>&nbsp;&nbsp;<b>Object Name:</b>&nbsp;<input type='text' name='add_input_name' value='myname'>"
-    >>> adding = Adding(Fake(),TestRequest())     
-
-    To check request variable
-
-    >>> from zope.app.container.interfaces import IContainer
-    >>> from zope.app.publisher.browser import BrowserView
-
-    >>> class MyContainer:
-    ...    zope.interface.implements(INameChooser, IContainer)
-    ...    def chooseName(self, name, object):
-    ...        return "foo"
-    ...    def checkName(self, name, object):
-    ...        return "foo"
-    ...    def __setitem__(self, name, object):
-    ...        setattr(self, name, object)
-    ...        self.name=name
-    ...    def __getitem__(self, key):
-    ...        return self
-
-    >>> request = TestRequest()
-    >>> request.form.update({'add_input_name': 'reqname'})
-    >>> mycontainer = MyContainer()
-    >>> adding = Adding(mycontainer, request)
-    >>> o = object()
-    >>> add_obj = adding.add(o)
-    >>> add_obj.name
-    'reqname'
-    >>> mycontainer.reqname is o
+    >>> adding.nameAllowed()
     True
-    >>> tearDown()
 
     """
+
+
 
 def test_chooseName():
     """If user don't enter name, pick one

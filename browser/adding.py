@@ -16,10 +16,11 @@
 The Adding View is used to add new objects to a container. It is sort of a
 factory screen.
 
-$Id: adding.py,v 1.3 2004/04/27 15:45:10 eckart Exp $
+$Id: adding.py,v 1.4 2004/05/06 15:46:04 eddala Exp $
 """
 __metaclass__ = type
 
+from warnings import warn
 import zope.security.checker
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
@@ -88,25 +89,9 @@ class BasicAdding(BrowserView):
 
 
     def renderAddButton(self):
-        """To Render Add button with or without Inputbox"""
-        container = self.context
-        add_button_value = _('add-button', 'Add')
-        add_button_label = _('add-button-label','Object Name')
-        
-        add_button_value = translate(self.context, add_button_value,
-                                     context=self.request)
-        add_button_label = translate(self.context, add_button_label,
-                                     context=self.request)
-        if IContainerNamesContainer.providedBy(container):
-            return " <input type='submit' name='UPDATE_SUBMIT' value='%s'>" \
-                   % add_button_value
-        else:
-            contentName = self.contentName or ''
-            return (
-               "&nbsp;&nbsp;<input type='submit' name='UPDATE_SUBMIT' value='%s'>"
-               "&nbsp;&nbsp;<b>%s:</b>&nbsp;"
-               "<input type='text' name='add_input_name' value='%s'>"
-                    % (add_button_value, add_button_label, contentName))
+        warn("The renderAddButton method is deprecated, use nameAllowed",
+            DeprecationWarning, 2)
+    
 
     def publishTraverse(self, request, name):
         """See zope.app.container.interfaces.IAdding"""
@@ -178,6 +163,11 @@ class BasicAdding(BrowserView):
 
     def namesAccepted(self):
         return not IContainerNamesContainer.providedBy(self.context)
+
+    def nameAllowed(self):
+        """Return whether names can be input by the user."""
+        return not IContainerNamesContainer.providedBy(self.context)
+    
 
 class Adding(BasicAdding):
 

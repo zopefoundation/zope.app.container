@@ -13,7 +13,7 @@
 ##############################################################################
 """Container-related interfaces
 
-$Id: interfaces.py,v 1.3 2004/03/23 16:37:15 nathan Exp $
+$Id: interfaces.py,v 1.4 2004/05/06 15:46:02 eddala Exp $
 """
 from zope.interface import Interface, Attribute, implements, Invalid
 from zope.component.interfaces import IView
@@ -211,8 +211,9 @@ class IAdding(IView):
         decide what page to display after content is added.
         """
 
-    def renderAddButton():
-        """It will add Add button"""
+    def nameAllowed():
+        """Return whether names can be input by the user."""
+    
 
 
 class INameChooser(Interface):
