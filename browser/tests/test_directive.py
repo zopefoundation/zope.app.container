@@ -11,7 +11,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""'containerView' directive test
 
+$Id: test_directive.py,v 1.5 2004/04/15 13:25:25 srichter Exp $
+"""
 import re
 import pprint
 import cStringIO
@@ -28,6 +31,7 @@ class Context:
     
     def action(self, discriminator, callable, args):
         self.actions += ((discriminator, callable, args), )
+        self.info = 'info'
 
     def __repr__(self):
         stream = cStringIO.StringIO()
@@ -49,9 +53,7 @@ def test_containerViews():
        'zmi_views',
        <InterfaceClass zope.app.container.browser.tests.test_directive.I>,
        u'Contents'),
-      <bound method GlobalBrowserMenuService.menuItem of """ \
-            """<zope.app.publisher.browser.globalbrowsermenuservice.""" \
-            """GlobalBrowserMenuService object>>,
+      <bound method GlobalBrowserMenuService.menuItem of <zope.app.publisher.browser.globalbrowsermenuservice.GlobalBrowserMenuService object>>,
       ('zmi_views',
        <InterfaceClass zope.app.container.browser.tests.test_directive.I>,
        '@@contents.html',
@@ -80,7 +82,8 @@ def test_containerViews():
        'contents.html',
        [<InterfaceClass zope.app.container.browser.tests.test_directive.I>],
        <InterfaceClass zope.interface.Interface>,
-       'default')),
+       'default',
+       'info')),
      (None,
       <function checkPermission>,
       (None, 'zope.View')),
@@ -101,14 +104,13 @@ def test_containerViews():
        'index.html',
        [<InterfaceClass zope.app.container.browser.tests.test_directive.I>],
        <InterfaceClass zope.interface.Interface>,
-       'default')),
+       'default',
+       'info')),
      (('browser:menuItem',
        'zmi_actions',
        <InterfaceClass zope.app.container.browser.tests.test_directive.I>,
        u'Add'),
-      <bound method GlobalBrowserMenuService.menuItem of """ \
-             """<zope.app.publisher.browser.globalbrowsermenuservice.""" \
-             """GlobalBrowserMenuService object>>,
+      <bound method GlobalBrowserMenuService.menuItem of <zope.app.publisher.browser.globalbrowsermenuservice.GlobalBrowserMenuService object>>,
       ('zmi_actions',
        <InterfaceClass zope.app.container.browser.tests.test_directive.I>,
        '@@+',
@@ -141,8 +143,8 @@ def test_containerViews():
        '+',
        [<InterfaceClass zope.app.container.browser.tests.test_directive.I>],
        <InterfaceClass zope.interface.Interface>,
-       'default')))
-
+       'default',
+       'info')))
     """
     
        
