@@ -175,7 +175,6 @@
     </form>
 
     <script type="text/javascript"><!--
-        prettydump('focus', LG_INFO);
         if (document.containerContentsForm.new_value)
 	        document.containerContentsForm.new_value.focus();
         //-->
