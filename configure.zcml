@@ -48,6 +48,15 @@
       for="zope.app.container.interfaces.IObjectRemovedEvent"
       />
 
+  <subscriber
+      for="zope.app.location.interfaces.ILocation
+           zope.app.container.interfaces.IObjectMovedEvent"
+      factory=".contained.dispatchToSublocations"
+      >
+      Handler dispatches moved events to sublocations of the original object.
+  </subscriber>
+
+
   <content class=".constraints.ItemTypePrecondition">
     <allow interface=".constraints.IItemTypePrecondition" />
   </content>

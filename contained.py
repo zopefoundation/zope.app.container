@@ -15,6 +15,7 @@
 
 $Id$
 """
+
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
 from zope.security.checker import selectChecker, CombinedChecker
@@ -25,6 +26,7 @@ from zope.interface.declarations import getObjectSpecification
 from zope.interface.declarations import ObjectSpecification
 from zope.interface import providedBy
 
+from zope.app import zapi
 from zope.app.exception.interfaces import UserError
 from zope.app.event.objectevent import ObjectEvent, modified
 from zope.event import notify
@@ -34,7 +36,7 @@ from zope.app.container.interfaces import INameChooser
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.app.container.interfaces import IObjectMovedEvent
 from zope.app.container.interfaces import IObjectRemovedEvent
-from zope.app.location.interfaces import ILocation
+from zope.app.location.interfaces import ILocation, ISublocations
 from zope.app.container._zope_app_container_contained import ContainedProxyBase
 from zope.app.container._zope_app_container_contained import getProxiedObject
 
@@ -81,6 +83,100 @@ class ObjectRemovedEvent(ObjectMovedEvent):
         if oldName is None:
             oldName = object.__name__
         ObjectMovedEvent.__init__(self, object, oldParent, oldName, None, None)
+
+def dispatchToSublocations(object, event):
+    """Dispatch an event to sublocations of a given object
+
+       When a move event happens for an object, it's important to
+       notify subobjects as well.
+
+       We do this based on locations.
+
+       Suppose, for example, that we define some location objects.
+
+
+         >>> class L:
+         ...     zope.interface.implements(ILocation)
+         ...     def __init__(self, name):
+         ...         self.__name__ = name
+         ...         self.__parent__ = None
+         ...     def __repr__(self):
+         ...         return '%s(%s)' % (
+         ...                 self.__class__.__name__, str(self.__name__))
+
+         >>> class C(L):
+         ...     zope.interface.implements(ISublocations)
+         ...     def __init__(self, name, *subs):
+         ...         L.__init__(self, name)
+         ...         self.subs = subs
+         ...         for sub in subs:
+         ...             sub.__parent__ = self
+         ...     def sublocations(self):
+         ...         return self.subs
+
+         >>> c = C(1,
+         ...       C(11,
+         ...         L(111),
+         ...         L(112),
+         ...         ),
+         ...       C(12,
+         ...         L(121),
+         ...         L(122),
+         ...         L(123),
+         ...         L(124),
+         ...         ),
+         ...       L(13),
+         ...       )
+         
+       Now, if we call the dispatcher, it should call event handlers
+       for all of the objects.
+
+       Lets create an event handler that records the objects it sees:
+
+         >>> seen = []
+         >>> def handler(ob, event):
+         ...     seen.append((ob, event.object))
+
+       Note that we record the the object the handler is called on as
+       well as the event object:
+
+       Now we'll register it:
+
+         >>> from zope.app.tests import ztapi
+         >>> ztapi.handle([None, IObjectMovedEvent], handler)
+
+       We also register our dispatcher:
+       
+         >>> ztapi.handle([None, IObjectMovedEvent], dispatchToSublocations)
+
+       We can then call the dispatcher for the root object:
+
+         >>> event = ObjectRemovedEvent(c)
+         >>> dispatchToSublocations(c, event)
+
+       Now, we should have seen all of the subobjects:
+
+         >>> seenreprs = map(repr, seen)
+         >>> seenreprs.sort()
+         >>> seenreprs
+         ['(C(11), C(1))', '(C(12), C(1))', '(L(111), C(1))',""" \
+          """ '(L(112), C(1))', '(L(121), C(1))', '(L(122), C(1))',""" \
+          """ '(L(123), C(1))', '(L(124), C(1))', '(L(13), C(1))']
+
+       We see that we get entries for each of the subobjects and
+       that,for each entry, the event object is top object.
+
+       This suggests that location event handlers need to be aware that
+       the objects they are called on and the event objects could be
+       different.
+       
+       """
+    subs = ISublocations(object, None)
+    if subs is not None:
+        for sub in subs.sublocations():
+            for ignored in zapi.subscribers((sub, event), None):
+                pass # They do work in the adapter fetch
+    
 
 
 def containedEvent(object, container, name=None):
