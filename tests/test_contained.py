@@ -54,9 +54,9 @@ def test_basic_proxy_attribute_management_and_picklability():
 def test_basic_persistent_w_non_persistent_proxied():
     """
     >>> p = ContainedProxy([1])
-    >>> p.__parent__ = 2;
+    >>> p.__parent__ = 2
     >>> p.__name__ = 'test'
-    >>> db = DB(DemoStorage('test_storage'));
+    >>> db = DB(DemoStorage('test_storage'))
     >>> c = db.open()
     >>> c.root()['p'] = p
     >>> get_transaction().commit()
@@ -110,7 +110,7 @@ def test_basic_persistent_w_persistent_proxied():
 
     Now we'll save the data:
     
-    >>> db = DB(DemoStorage('test_storage'));
+    >>> db = DB(DemoStorage('test_storage'))
     >>> c1 = db.open()
     >>> c1.root()['parent'] = parent
     >>> c1.root()['other'] = other
