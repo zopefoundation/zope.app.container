@@ -129,8 +129,7 @@ class Adding(BrowserView):
         if zapi.queryMultiAdapter((self, self.request),
                                   name=view_name) is not None:
             url = "%s/%s=%s" % (
-                zapi.getMultiAdapter((self, self.request), name="absolute_url"),
-                type_name, id)
+                zapi.absoluteURL(self, self.request), type_name, id)
             self.request.response.redirect(url)
             return
 
