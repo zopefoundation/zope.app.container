@@ -13,15 +13,14 @@
 ##############################################################################
 """Unit test logic for setting up and tearing down basic infrastructure
 
-$Id: placelesssetup.py,v 1.2 2003/06/05 12:41:55 stevea Exp $
+$Id: placelesssetup.py,v 1.3 2003/09/21 17:31:39 jim Exp $
 """
 from zope.component.adapter import provideAdapter
-from zope.app.container.zopecontainer import ZopeContainerDecorator
-from zope.app.interfaces.context import IZopeContextWrapper
-from zope.app.interfaces.container import IContainer
+from zope.app.interfaces.container import IWriteContainer
+from zope.app.interfaces.container import INameChooser
+from zope.app.container.contained import NameChooser
 
 class PlacelessSetup:
 
     def setUp(self):
-        provideAdapter(
-            IContainer, IZopeContextWrapper, ZopeContainerDecorator)
+        provideAdapter(IWriteContainer, INameChooser, NameChooser)
