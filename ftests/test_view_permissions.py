@@ -18,7 +18,7 @@ $Id: $
 import unittest
 from transaction import get_transaction
 
-from zope.exceptions import Unauthorized
+from zope.security.interfaces import Unauthorized
 
 from zope.app.tests.functional import BrowserTestCase
 from zope.app.file import File
