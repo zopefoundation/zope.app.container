@@ -40,7 +40,6 @@ from zope.app.location import LocationProxy
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser import BrowserView
 from zope.app.publisher.browser.menu import getMenu
-from zope.app.publisher.interfaces.browser import AddMenu
 
 class Adding(BrowserView):
     implements(IAdding, IPublishTraverse)
@@ -171,7 +170,7 @@ class Adding(BrowserView):
         """
         container = self.context
         result = []
-        for menu_id in (self.menu_id, AddMenu):
+        for menu_id in (self.menu_id, 'zope.app.container.add'):
             if not menu_id:
                 continue
             for item in getMenu(menu_id, self, self.request):

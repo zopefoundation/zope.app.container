@@ -36,7 +36,8 @@ from zope.app.traversing.interfaces import IContainmentRoot
 from zope.app.exception.interfaces import UserError
 from zope.app.publisher.browser import BrowserView
 from zope.app.publisher.interfaces.browser import AddMenu
-from zope.app.publisher.browser.menu import BrowserMenuItem
+from zope.app.publisher.interfaces.browser import IMenuItemType, IBrowserMenu
+from zope.app.publisher.browser.menu import BrowserMenuItem, BrowserMenu
 from zope.app.container.interfaces import IAdding
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.app.container.interfaces import IContainerNamesContainer
@@ -93,6 +94,12 @@ def defineMenuItem(menuItemType, for_, action, title=u'', extra=None):
                      '_for': for_, 'extra':extra})
     zope.interface.classImplements(newclass, menuItemType)
     ztapi.provideAdapter((for_, IBrowserRequest), menuItemType, newclass, title)
+
+def registerAddMenu():
+  ztapi.provideUtility(IMenuItemType, AddMenu, 'zope.app.container.add')
+  ztapi.provideUtility(IBrowserMenu,
+                       BrowserMenu('zope.app.container.add', u'', u''),
+                       'zope.app.container.add')
 
 
 class Test(PlacelessSetup, unittest.TestCase):
@@ -206,9 +213,15 @@ class Test(PlacelessSetup, unittest.TestCase):
 def test_constraint_driven_addingInfo():
     """
     >>> setUp()
+    >>> registerAddMenu()
 
     >>> class TestMenu(zope.interface.Interface):
     ...     pass
+    >>> zope.interface.directlyProvides(TestMenu, IMenuItemType)
+
+    >>> ztapi.provideUtility(IMenuItemType, TestMenu, 'TestMenu')
+    >>> ztapi.provideUtility(IBrowserMenu, BrowserMenu('TestMenu', u'', u''),
+    ...                      'TestMenu')
 
     >>> defineMenuItem(TestMenu, IAdding, '', 'item1')
     >>> defineMenuItem(TestMenu, IAdding, '', 'item2')
@@ -252,7 +265,7 @@ def test_constraint_driven_addingInfo():
     >>> items[0]['title']
     'item3'
     
-    >>> adding.menu_id = TestMenu
+    >>> adding.menu_id = 'TestMenu'
     >>> items = adding.addingInfo()
     >>> len(items)
     3
@@ -400,6 +413,7 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
     the container contains only a single content object
     
     >>> setUp()
+    >>> registerAddMenu()
     >>> defineMenuItem(AddMenu, IAdding, '', 'item3', extra={'factory': 'f1'})
 
     >>> class F1(object):
@@ -459,6 +473,7 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     implement IContainerNamesContainer
     
     >>> setUp()
+    >>> registerAddMenu()
     >>> defineMenuItem(AddMenu, None, '', 'item3', extra={'factory': ''})
     >>> class F1(object):
     ...     pass
@@ -515,6 +530,7 @@ def test_isSingleMenuItem_with_ICNC():
     and the container uses IContainerNamesContaienr
 
     >>> setUp()
+    >>> registerAddMenu()
     >>> defineMenuItem(AddMenu, None, '', 'item3', extra={'factory': ''})
     
     >>> class F1(object):
