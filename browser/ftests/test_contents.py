@@ -12,14 +12,14 @@
 #
 ##############################################################################
 """
-$Id: test_contents.py,v 1.2 2004/03/19 03:17:14 srichter Exp $
+$Id: test_contents.py,v 1.3 2004/04/06 20:58:05 jim Exp $
 """
 
 import unittest
 
 from persistent import Persistent
 from transaction import get_transaction
-from zope.testing.functional import BrowserTestCase
+from zope.app.tests.functional import BrowserTestCase
 from zope.interface import implements
 
 from zope.app import zapi
