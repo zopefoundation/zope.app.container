@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: test_objectmover.py,v 1.5 2003/05/01 19:35:09 faassen Exp $
+$Id: test_objectmover.py,v 1.6 2003/06/13 17:41:14 stevea Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -22,8 +22,6 @@ from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
 from zope.component import getAdapter
 from zope.component.adapter import provideAdapter
-from zope.app.traversing import IObjectName
-from zope.app.traversing.adapters import ObjectName
 from zope.app.interfaces.copypastemove import IObjectMover
 from zope.app.interfaces.content.folder import IFolder
 from zope.app.interfaces.container import IPasteTarget
@@ -43,7 +41,6 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         provideAdapter(None, IObjectMover, ObjectMover)
         provideAdapter(IFolder, IPasteTarget, PasteTarget)
         provideAdapter(IFolder, IMoveSource, MoveSource)
-        provideAdapter(None, IObjectName, ObjectName)
         provideAdapter(IFolder, IPasteNamesChooser, PasteNamesChooser)
  
     def test_movetosame(self):

@@ -14,7 +14,7 @@
 """
 Revision information:
 
-$Id: test_objectcopier.py,v 1.8 2003/06/08 16:39:46 srichter Exp $
+$Id: test_objectcopier.py,v 1.9 2003/06/13 17:41:14 stevea Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -22,9 +22,8 @@ from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
 from zope.component import getAdapter, ComponentLookupError
 from zope.component.adapter import provideAdapter
-from zope.app.traversing import IObjectName
-from zope.app.traversing.adapters import ObjectName
-from zope.app.interfaces.copypastemove import IObjectCopier, INoChildrenObjectCopier
+from zope.app.interfaces.copypastemove import IObjectCopier
+from zope.app.interfaces.copypastemove import INoChildrenObjectCopier
 from zope.app.interfaces.container import CopyException
 from zope.app.interfaces.container import IContainer
 from zope.app.interfaces.container import IPasteTarget
@@ -45,9 +44,8 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         provideAdapter(None, IObjectCopier, ObjectCopier)
         provideAdapter(IContainer, IPasteTarget, PasteTarget)
         provideAdapter(IContainer, ICopySource, CopySource)
-        provideAdapter(None, IObjectName, ObjectName)
         provideAdapter(IContainer, IPasteNamesChooser, PasteNamesChooser)
- 
+
     def test_copytosame(self):
         root = self.rootFolder
         container = traverse(root, 'folder1')
@@ -175,9 +173,8 @@ class NoChildrenObjectCopierTest(PlacefulSetup, TestCase):
         provideAdapter(IContainer, IPasteTarget, PasteTarget)
         provideAdapter(IContainer, ICopySource, CopySource)
         provideAdapter(IContainer, INoChildrenCopySource, NoChildrenCopySource)
-        provideAdapter(None, IObjectName, ObjectName)
         provideAdapter(IContainer, IPasteNamesChooser, PasteNamesChooser)
- 
+
     def test_copytosame(self):
         root = self.rootFolder
         container = traverse(root, 'folder1')
@@ -192,7 +189,8 @@ class NoChildrenObjectCopierTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container.setObject('file1', File())
         file = traverse(root, 'folder1/file1')
-        self.assertRaises(ComponentLookupError, getAdapter, file, INoChildrenObjectCopier)
+        self.assertRaises(ComponentLookupError,
+                          getAdapter, file, INoChildrenObjectCopier)
 
     def test_copytoother(self):
         root = self.rootFolder
@@ -209,7 +207,8 @@ class NoChildrenObjectCopierTest(PlacefulSetup, TestCase):
         container = traverse(root, 'folder1')
         container.setObject('file1', File())
         file = traverse(root, 'folder1/file1')
-        self.assertRaises(ComponentLookupError, getAdapter, file, INoChildrenObjectCopier)
+        self.assertRaises(ComponentLookupError,
+                          getAdapter, file, INoChildrenObjectCopier)
 
     def test_doesntimplementclonewithoutchildren(self):
         root = self.rootFolder

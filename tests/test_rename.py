@@ -14,7 +14,7 @@
 """
 Revision information:
 
-$Id: test_rename.py,v 1.5 2003/06/05 12:03:15 stevea Exp $
+$Id: test_rename.py,v 1.6 2003/06/13 17:41:14 stevea Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -22,8 +22,6 @@ from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
 from zope.component import getAdapter
 from zope.component.adapter import provideAdapter
-from zope.app.traversing import IObjectName
-from zope.app.traversing.adapters import ObjectName
 from zope.app.interfaces.copypastemove import IObjectMover
 from zope.app.interfaces.container import IContainer
 from zope.app.interfaces.container import IPasteTarget
@@ -45,7 +43,6 @@ class RenameTest(PlacefulSetup, TestCase):
         provideAdapter(None, IObjectMover, ObjectMover)
         provideAdapter(IContainer, IPasteTarget, PasteTarget)
         provideAdapter(IContainer, IMoveSource, MoveSource)
-        provideAdapter(None, IObjectName, ObjectName)
         provideAdapter(IContainer, IPasteNamesChooser, PasteNamesChooser)
 
     def test_simplerename(self):
