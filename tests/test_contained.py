@@ -13,13 +13,16 @@
 ##############################################################################
 import unittest
 import gc
-from zope.testing.doctestunit import DocTestSuite
-from zope.app.tests.placelesssetup import setUp, tearDown
-from zope.app.container.contained import ContainedProxy
 from ZODB.DemoStorage import DemoStorage
 from ZODB.DB import DB
 from transaction import get_transaction
 from persistent import Persistent
+
+import zope.interface
+from zope.testing.doctestunit import DocTestSuite
+
+from zope.app.tests.placelesssetup import setUp, tearDown
+from zope.app.container.contained import ContainedProxy
 
 class MyOb(Persistent):
     pass
@@ -78,6 +81,63 @@ def test_basic_persistent_w_non_persistent_proxied():
     'test'
 
     >>> db.close()
+    """
+
+def test_declarations_on_ContainedProxy():
+    """
+
+    ..Ignoe whitespace differences
+      >>> doctest: +NORMALIZE_WHITESPACE
+    
+    It is possible to make declarations on ContainedProxy objects.
+
+      >>> class I1(zope.interface.Interface):
+      ...     pass
+      >>> class C(object):
+      ...     zope.interface.implements(I1)
+
+      >>> c = C()
+      >>> p = ContainedProxy(c)
+
+    ContainedProxy provides no interfaces on it's own:
+      
+      >>> tuple(zope.interface.providedBy(ContainedProxy))
+      ()
+
+    It implements IContained and IPersistent:
+      
+      >>> tuple(zope.interface.implementedBy(ContainedProxy))
+      (<InterfaceClass zope.app.container.interfaces.IContained>,
+       <InterfaceClass persistent.interfaces.IPersistent>)
+
+    A proxied object has IContainer, in addition to what the unproxied
+    object has:
+
+      >>> tuple(zope.interface.providedBy(p))
+      (<InterfaceClass zope.app.container.tests.test_contained.I1>,
+       <InterfaceClass zope.app.container.interfaces.IContained>,
+       <InterfaceClass persistent.interfaces.IPersistent>)
+
+      >>> class I2(zope.interface.Interface):
+      ...     pass
+      >>> zope.interface.directlyProvides(c, I2)
+      >>> tuple(zope.interface.providedBy(p))
+      (<InterfaceClass zope.app.container.tests.test_contained.I2>,
+       <InterfaceClass zope.app.container.tests.test_contained.I1>,
+       <InterfaceClass zope.app.container.interfaces.IContained>,
+       <InterfaceClass persistent.interfaces.IPersistent>)
+
+    We can declare interfaces through the proxy:
+
+      >>> class I3(zope.interface.Interface):
+      ...     pass
+      >>> zope.interface.directlyProvides(p, I3)
+      >>> tuple(zope.interface.providedBy(p))
+      (<InterfaceClass zope.app.container.tests.test_contained.I3>,
+       <InterfaceClass zope.app.container.tests.test_contained.I1>,
+       <InterfaceClass zope.app.container.interfaces.IContained>,
+       <InterfaceClass persistent.interfaces.IPersistent>)
+
     """
     
 def test_basic_persistent_w_persistent_proxied():

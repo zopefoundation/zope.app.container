@@ -21,8 +21,7 @@ from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
 from zope.security.checker import selectChecker, CombinedChecker
 
-import zope.interface
-from zope.interface.declarations import ObjectSpecificationDescriptor
+import zope.interface.declarations
 from zope.interface.declarations import getObjectSpecification
 from zope.interface.declarations import ObjectSpecification
 from zope.interface import providedBy
@@ -736,7 +735,8 @@ class NameChooser(object):
         return n
 
 
-class DecoratorSpecificationDescriptor(ObjectSpecificationDescriptor):
+class DecoratorSpecificationDescriptor(
+    zope.interface.declarations.ObjectSpecificationDescriptor):
     """Support for interface declarations on decorators
 
     >>> from zope.interface import *
@@ -808,6 +808,15 @@ class DecoratedSecurityCheckerDescriptor(object):
             else:
                 return CombinedChecker(wrapper_checker, checker)
 
+class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
+
+    def __set__(self, inst, value):
+        inst = getProxiedObject(inst)
+        inst.__provides__ = value
+
+    def __delete__(self, inst):
+        inst = getProxiedObject(inst)
+        del inst.__provides__
 
 class ContainedProxy(ContainedProxyBase):
 
@@ -819,5 +828,5 @@ class ContainedProxy(ContainedProxyBase):
 
     __Security_checker__ = DecoratedSecurityCheckerDescriptor()
 
-
+ContainedProxy.__provides__ = ContainedProxyClassProvides(ContainedProxy, type)
 
