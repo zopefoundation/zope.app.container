@@ -25,12 +25,29 @@ from zope.interface import implements
 
 from zope.app import zapi
 from zope.app.annotation.interfaces import IAttributeAnnotatable
+from zope.app.container.interfaces import IReadContainer, IContained
 from zope.app.dublincore.interfaces import IZopeDublinCore
 
 from zope.app.tests.functional import FunctionalDocFileSuite
 
 class File(Persistent):
     implements(IAttributeAnnotatable)
+
+class ReadOnlyContainer(Persistent):
+    implements(IReadContainer, IContained)
+    __parent__ = __name__ = None
+
+    def __init__(self): self.data = {}
+    def keys(self): return self.data.keys()
+    def __getitem__(self, key): return self.data[key]
+    def get(self, key, default=None): return self.data.get(key, default)
+    def __iter__(self): return iter(self.data)
+    def values(self): return self.data.values()
+    def __len__(self): return len(self.data)
+    def items(self): return self.data.items()
+    def __contains__(self, key): return key in self.data
+    def has_key(self, key): return self.data.has_key(key)
+
 
 class Test(BrowserTestCase):
 
@@ -258,6 +275,13 @@ class Test(BrowserTestCase):
         self.assertEqual(response.getStatus(), 200)
         root._p_jar.sync()
         self.assertEqual(tuple(root.keys()), ('bar', 'bar-2'))
+
+    def test_readonly_display(self):
+        root = self.getRootFolder()
+        root['foo'] = ReadOnlyContainer()
+        get_transaction().commit()
+        response = self.publish('/foo/@@contents.html', basic='mgr:mgrpw')
+        self.assertEqual(response.getStatus(), 200)
 
 
 def test_suite():

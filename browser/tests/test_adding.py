@@ -137,7 +137,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         container = Container()
         adding = Adding(container, TestRequest())
         adding.nextURL = lambda: '.'
-        adding.namesAccepted = lambda: True
+        adding.nameAllowed = lambda: True
 
         # we can't use a private factory:
         self.assertRaises(ForbiddenAttribute, 
@@ -158,7 +158,7 @@ class Test(PlacelessSetup, unittest.TestCase):
             type_name='***', id='bar')
 
         # alternative add - id is provided internally instead of from user
-        adding.namesAccepted = lambda: False
+        adding.nameAllowed = lambda: False
         adding.contentName = 'baz'
         adding.action(type_name='foo')
         self.assert_('baz' in container)

@@ -43,7 +43,7 @@ from zope.app.publisher.browser import BrowserView
 from zope.app.publisher.browser.menu import getMenu
 from zope.app.publisher.interfaces.browser import AddMenu
 
-class BasicAdding(BrowserView):
+class Adding(BrowserView):
     implements(IAdding, IPublishTraverse)
 
     def add(self, content):
@@ -111,7 +111,7 @@ class BasicAdding(BrowserView):
 
         factory = zapi.queryUtility(IFactory, name)
         if factory is None:
-            return super(BasicAdding, self).publishTraverse(request, name)
+            return super(Adding, self).publishTraverse(request, name)
 
         return factory
 
@@ -159,15 +159,9 @@ class BasicAdding(BrowserView):
         self.add(content)
         self.request.response.redirect(self.nextURL())
 
-    def namesAccepted(self):
-        return not IContainerNamesContainer.providedBy(self.context)
-
     def nameAllowed(self):
         """Return whether names can be input by the user."""
         return not IContainerNamesContainer.providedBy(self.context)
-
-
-class Adding(BasicAdding):
 
     menu_id = None
     index = ViewPageTemplateFile("add.pt")
@@ -209,6 +203,8 @@ class Adding(BasicAdding):
                return True
        return False
 
+
 class ContentAdding(Adding):
 
     menu_id = "add_content"
+

@@ -33,7 +33,7 @@ from zope.app.copypastemove.interfaces import IObjectCopier
 from zope.app.copypastemove.interfaces import IObjectMover
 from zope.app.copypastemove import rename
 
-from zope.app.container.browser.adding import BasicAdding
+from zope.app.container.browser.adding import Adding
 from zope.app.container.interfaces import IContainer
 from zope.app.container.interfaces import IContainerNamesContainer
 
@@ -216,6 +216,11 @@ class Contents(BrowserView):
         dc = IDCDescriptiveProperties(item)
         dc.title = new
 
+    def hasAdding(self):
+        """Returns true if an adding view is available."""
+        adding = zapi.queryView(self.context, "+", self.request)
+        return (adding is not None)
+
     def addObject(self):
         request = self.request
         if IContainerNamesContainer.providedBy(self.context):
@@ -225,7 +230,7 @@ class Contents(BrowserView):
 
         adding = zapi.queryView(self.context, "+", request)
         if adding is None:
-            adding = BasicAdding(self.context, request)
+            adding = Adding(self.context, request)
         else:
             # Set up context so that the adding can build a url
             # if the type name names a view.

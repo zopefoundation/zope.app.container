@@ -215,7 +215,20 @@ class IAdding(IView):
 
     def nameAllowed():
         """Return whether names can be input by the user."""
+
+    def addingInfo():
+        """Returns add menu data as a sequence of mappings.
+
+        Each mapping contains 'action', 'title', and possibly other keys.
+
+        The result is sorted by title.
+        """
+
+    def isSingleMenuItem():
+        "Return whether there is single menu item or not."
     
+    def hasCustomAddView():
+       "This should be called only if there is `singleMenuItem` else return 0"
 
 
 class INameChooser(Interface):

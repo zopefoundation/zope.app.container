@@ -2,9 +2,9 @@
            condition="addingInfo" i18n:domain="zope">
 
   <tal:block repeat="info addingInfo"
-	define="namesRequired context/@@+/namesAccepted">
+	define="namesRequired context/@@+/nameAllowed">
     <div tal:define="oddrow repeat/info/odd;
-		     namesRequired context/@@+/namesAccepted;
+		     namesRequired context/@@+/nameAllowed;
         has_custom_add_view python:'has_custom_add_view' in info"
       	tal:attributes="class python:oddrow and 'content even' or 'content odd'"
 	class="even">
