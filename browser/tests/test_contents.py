@@ -21,7 +21,7 @@ from zope.app.site.tests.placefulsetup import PlacefulSetup
 
 from zope.app.copypastemove.interfaces import IObjectMover
 
-from zope.app.traversing import traverse
+from zope.app.traversing.api import traverse
 from zope.app.copypastemove.interfaces import IObjectMover, IObjectCopier
 
 from zope.app.copypastemove import ObjectMover, ObjectCopier

@@ -18,7 +18,7 @@ $Id$
 # XXX this needs to be looked up in a registry
 from zope.app.container.find import SimpleIdFindFilter
 from zope.app.container.interfaces import IFind
-from zope.app.traversing import getName
+from zope.app.traversing.api import getName
 from zope.component import getView
 from zope.app.publisher.browser import BrowserView
 
