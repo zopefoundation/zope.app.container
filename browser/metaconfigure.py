@@ -22,6 +22,7 @@ from zope.app.publisher.browser.viewmeta import page, view
 from zope.app.container.browser.contents import Contents
 from zope.app.container.browser.adding import Adding
 from zope.app.i18n import ZopeMessageIDFactory as _
+from zope.app.security.fields import Permission
 
 class IContainerViews(Interface):
     """Define a container views"""
@@ -34,17 +35,17 @@ class IContainerViews(Interface):
         required=True
         )
      
-    contents = Id(
+    contents = Permission(
         title=u"The permission needed for content page.",
         required=False,
         )
 
-    index = Id(
+    index = Permission(
         title=u"The permission needed for index page.",
         required=False,
         )
 
-    add = Id(
+    add = Permission(
         title=u"The permission needed for add page.",
         required=False,
         )
