@@ -20,15 +20,14 @@ import unittest
 
 from persistent import Persistent
 from transaction import get_transaction
-from zope.app.tests.functional import BrowserTestCase
 from zope.interface import implements
 
-from zope.app import zapi
 from zope.app.annotation.interfaces import IAttributeAnnotatable
 from zope.app.container.interfaces import IReadContainer, IContained
 from zope.app.dublincore.interfaces import IZopeDublinCore
+from zope.app.testing.functional import BrowserTestCase
+from zope.app.testing.functional import FunctionalDocFileSuite
 
-from zope.app.tests.functional import FunctionalDocFileSuite
 
 class File(Persistent):
     implements(IAttributeAnnotatable)

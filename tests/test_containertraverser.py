@@ -18,12 +18,10 @@ $Id$
 import unittest
 from zope.app.container.traversal import ContainerTraverser
 from zope.app.container.interfaces import IReadContainer
-from zope.app.tests import ztapi
-from zope.app.tests.placelesssetup import PlacelessSetup
+from zope.app.testing import ztapi, placelesssetup
 from zope.publisher.interfaces import NotFound
 from zope.publisher.browser import TestRequest
 from zope.interface import implements
-from zope.publisher.interfaces.browser import IBrowserRequest 
 
 class TestContainer(object):
     implements(IReadContainer)
@@ -42,7 +40,7 @@ class View(object):
         self.request = request
 
 
-class TraverserTest(PlacelessSetup, unittest.TestCase):
+class TraverserTest(placelesssetup.PlacelessSetup, unittest.TestCase):
 
     # The following two methods exist, so that other container traversers can
     # use these tests as a base.

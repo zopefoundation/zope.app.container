@@ -61,8 +61,8 @@ class IContainerViews(Interface):
         required=False
         )
 
-
-def containerViews(_context, for_, contents=None, add=None, index=None, layer=IDefaultBrowserLayer):
+def containerViews(_context, for_, contents=None, add=None, index=None,
+                   layer=IDefaultBrowserLayer):
     """Set up container views for a given content type."""
 
     if for_ is None:

@@ -16,29 +16,24 @@
 $Id$
 """
 from unittest import TestCase, TestSuite, main, makeSuite
-from zope.app.tests import ztapi
-from zope.app.site.tests.placefulsetup import PlacefulSetup
 
-from zope.app.copypastemove.interfaces import IObjectMover
-
-from zope.app.traversing.api import traverse
-from zope.app.copypastemove.interfaces import IObjectMover, IObjectCopier
-from zope.app.copypastemove.interfaces import IContainerItemRenamer
-
-from zope.app.copypastemove import ObjectMover, ObjectCopier
-from zope.app.copypastemove import ContainerItemRenamer
-
-from zope.app.container.interfaces import IObjectRemovedEvent
 from zope.interface import Interface, implements
 
-from zope.app.copypastemove.interfaces import IPrincipalClipboard
+from zope.app.annotation.interfaces import IAnnotations
+from zope.app.component.testing import PlacefulSetup
+from zope.app.container.contained import contained
+from zope.app.copypastemove import ContainerItemRenamer
+from zope.app.copypastemove import ObjectMover, ObjectCopier
 from zope.app.copypastemove import PrincipalClipboard
-from zope.component import getGlobalServices
+from zope.app.copypastemove.interfaces import IContainerItemRenamer
+from zope.app.copypastemove.interfaces import IObjectMover, IObjectCopier
+from zope.app.copypastemove.interfaces import IPrincipalClipboard
 from zope.app.principalannotation import PrincipalAnnotationUtility
 from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
-from zope.app.annotation.interfaces import IAnnotations
-from zope.app.container.contained import contained
+from zope.app.testing import ztapi
+from zope.app.traversing.api import traverse
 from zope.app.container.interfaces import IContainer, IContained
+
 
 class BaseTestContentsBrowserView(PlacefulSetup):
     """Base class for testing browser contents.

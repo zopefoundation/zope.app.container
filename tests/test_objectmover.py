@@ -17,11 +17,11 @@ $Id$
 """
 from unittest import TestCase, TestSuite, main, makeSuite
 
-from zope.app.traversing.api import traverse
-from zope.app.site.tests.placefulsetup import PlacefulSetup
-from zope.app.tests import ztapi
-from zope.app.copypastemove.interfaces import IObjectMover
+from zope.app.component.testing import PlacefulSetup
 from zope.app.copypastemove import ObjectMover
+from zope.app.copypastemove.interfaces import IObjectMover
+from zope.app.testing import ztapi
+from zope.app.traversing.api import traverse
 
 class File(object):
     pass

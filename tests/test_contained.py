@@ -11,6 +11,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""Contained Tests
+
+$Id$
+"""
 import unittest
 import gc
 from ZODB.DemoStorage import DemoStorage
@@ -21,8 +25,8 @@ from persistent import Persistent
 import zope.interface
 from zope.testing import doctest
 
-from zope.app.tests.placelesssetup import setUp, tearDown
 from zope.app.container.contained import ContainedProxy
+from zope.app.testing import placelesssetup
 
 class MyOb(Persistent):
     pass
@@ -290,7 +294,8 @@ def test_proxy_cache_interaction():
 def test_suite():
     return unittest.TestSuite((
         doctest.DocTestSuite('zope.app.container.contained',
-                             setUp=setUp, tearDown=tearDown),
+                             setUp=placelesssetup.setUp,
+                             tearDown=placelesssetup.tearDown),
         doctest.DocTestSuite(optionflags=doctest.NORMALIZE_WHITESPACE),
         ))
 

@@ -13,20 +13,18 @@
 ##############################################################################
 """Test the OrderedContainer.
 
-
 $Id$
 """
-
 import unittest
-from zope.interface import *
+
 from zope.testing.doctestunit import DocTestSuite
-from zope.interface import Interface
-from zope.app.tests.placelesssetup import setUp, tearDown
+from zope.app.testing import placelesssetup
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(DocTestSuite("zope.app.container.ordered",
-                               setUp=setUp, tearDown=tearDown))
+                               setUp=placelesssetup.setUp,
+                               tearDown=placelesssetup.tearDown))
 
     return suite
 

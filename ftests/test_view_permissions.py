@@ -20,7 +20,7 @@ from transaction import get_transaction
 
 from zope.security.interfaces import Unauthorized
 
-from zope.app.tests.functional import BrowserTestCase
+from zope.app.testing.functional import BrowserTestCase
 from zope.app.file import File
 from zope.app.dublincore.interfaces import IZopeDublinCore
 from zope.app.securitypolicy.interfaces import IRolePermissionManager

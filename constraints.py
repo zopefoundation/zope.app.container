@@ -153,7 +153,6 @@ __docformat__ = 'restructuredtext'
 
 import sys
 
-import zope.interface.advice
 import zope.schema
 
 from zope.interface import providedBy

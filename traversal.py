@@ -27,7 +27,6 @@ from zope.app import zapi
 from zope.app.container.interfaces import ISimpleReadContainer, IItemContainer
 from zope.app.container.interfaces import IReadContainer
 from zope.app.traversing.interfaces import ITraversable
-from zope.app.traversing.namespace import UnexpectedParameters
 
 # Note that the next two classes are included here because they
 # can be used for multiple view types.
@@ -46,7 +45,7 @@ class ContainerTraverser(object):
         """See zope.publisher.interfaces.IPublishTraverse"""
         subob = self.context.get(name, None)
         if subob is None:
-            view = zapi.queryView(self.context, name, request)
+            view = zapi.queryMultiAdapter((self.context, request), name=name)
             if view is not None:
                 return view
 
@@ -72,7 +71,7 @@ class ItemTraverser(ContainerTraverser):
         try:
             return self.context[name]
         except KeyError:
-            view = zapi.queryView(self.context, name, request)
+            view = zapi.queryMultiAdapter((self.context, request), name=name)
             if view is not None:
                 return view
 

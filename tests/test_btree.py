@@ -17,7 +17,7 @@ $Id$
 """
 from unittest import TestCase, main, makeSuite, TestSuite
 from zope.testing.doctestunit import DocTestSuite
-from zope.app.tests.placelesssetup import setUp, tearDown
+from zope.app.testing import placelesssetup
 from test_icontainer import TestSampleContainer
 
 class TestBTreeContainer(TestSampleContainer, TestCase):
@@ -31,7 +31,8 @@ def test_suite():
     return TestSuite((
         makeSuite(TestBTreeContainer),
         DocTestSuite('zope.app.container.btree',
-                     setUp=setUp, tearDown=tearDown),
+                     setUp=placelesssetup.setUp,
+                     tearDown=placelesssetup.tearDown),
         ))
 
 if __name__=='__main__':

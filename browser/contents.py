@@ -156,7 +156,7 @@ class Contents(BrowserView):
         info['retitle'] = id == retitle_id
 
 
-        zmi_icon = zapi.queryView(obj, 'zmi_icon', self.request)
+        zmi_icon = zapi.queryMultiAdapter((obj, self.request), name='zmi_icon')
         if zmi_icon is None:
             info['icon'] = None
         else:
@@ -222,7 +222,7 @@ class Contents(BrowserView):
 
     def hasAdding(self):
         """Returns true if an adding view is available."""
-        adding = zapi.queryView(self.context, "+", self.request)
+        adding = zapi.queryMultiAdapter((self.context, self.request), name="+")
         return (adding is not None)
 
     def addObject(self):
@@ -232,7 +232,7 @@ class Contents(BrowserView):
         else:
             new = request["new_value"]
 
-        adding = zapi.queryView(self.context, "+", request)
+        adding = zapi.queryMultiAdapter((self.context, self.request), name="+")
         if adding is None:
             adding = Adding(self.context, request)
         else:

@@ -17,7 +17,7 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import Interface, Attribute, implements, Invalid
+from zope.interface import Interface, Attribute, Invalid
 from zope.component.interfaces import IView
 from zope.interface.common.mapping import IItemMapping
 from zope.interface.common.mapping import IReadMapping, IEnumerableMapping

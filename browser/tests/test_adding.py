@@ -28,9 +28,10 @@ from zope.security.interfaces import ForbiddenAttribute
 from zope.testing.doctestunit import DocTestSuite
 
 from zope.app import zapi
-from zope.app.tests import ztapi
-from zope.app.tests.placelesssetup import PlacelessSetup, setUp, tearDown
+from zope.app.testing import ztapi
+from zope.app.testing.placelesssetup import PlacelessSetup, setUp, tearDown
 from zope.app.traversing.browser import AbsoluteURL
+from zope.app.traversing.browser.interfaces import IAbsoluteURL
 from zope.app.traversing.interfaces import IContainmentRoot
 from zope.app.exception.interfaces import UserError
 from zope.app.publisher.browser import BrowserView
@@ -80,10 +81,11 @@ class AbsoluteURL(BrowserView):
         if IContainmentRoot.providedBy(self.context):
             return ''
         name = self.context.__name__
-        url = str(zapi.getView(
-            zapi.getParent(self.context), 'absolute_url', self.request))
+        url = zapi.absoluteURL(zapi.getParent(self.context), self.request)
         url += '/' + name
         return url
+
+    __call__ = __str__
 
 def defineMenuItem(menuItemType, for_, action, title=u'', extra=None):
     newclass = type(title, (BrowserMenuItem,),
@@ -183,6 +185,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         adding.__name__ = '+'
         ztapi.browserView(IAdding, "Thing", CreationView)
         ztapi.browserView(Interface, "absolute_url", AbsoluteURL)
+        ztapi.browserView(None, '', AbsoluteURL, providing=IAbsoluteURL)
         self.assertRaises(UserError, adding.action, '', 'foo')
         adding.action('Thing', 'foo')
         self.assertEqual(adding.request.response._headers['location'],
