@@ -14,7 +14,7 @@
 """Ordered container implementation.
 
 Revision information:
-$Id: ordered.py,v 1.3 2003/06/24 10:33:59 stevea Exp $
+$Id: ordered.py,v 1.4 2003/08/01 19:46:46 garrett Exp $
 """
 
 from zope.app.interfaces.container import IOrderedContainer
@@ -22,7 +22,7 @@ from zope.interface import implements
 from persistence import Persistent
 from persistence.dict import PersistentDict
 from persistence.list import PersistentList
-from types import StringTypes
+from types import StringTypes, TupleType, ListType
 
 class OrderedContainer(Persistent):
     """ OrderedContainer maintains entries' order as added and moved.
@@ -253,24 +253,41 @@ class OrderedContainer(Persistent):
         >>> oc.updateOrder(1)
         Traceback (most recent call last):
         ...
-        TypeError: len() of unsized object
+        TypeError: order must be a tuple or a list.
+        >>> oc.updateOrder('bar')
+        Traceback (most recent call last):
+        ...
+        TypeError: order must be a tuple or a list.
         >>> oc.updateOrder(['baz', 'zork', 'quux'])
         Traceback (most recent call last):
         ...
         ValueError: Incompatible key set.
+        >>> del oc['baz']
+        >>> del oc['zork']
+        >>> del oc['foo']
+        >>> len(oc)
+        0
         """
 
+        if not isinstance(order, ListType) and \
+            not isinstance(order, TupleType):
+            raise TypeError('order must be a tuple or a list.')
+
+        order = list(order)
         if len(order) != len(self._order):
             raise ValueError("Incompatible key set.")
 
         was_dict = {}
         will_be_dict = {}
+        new_order = PersistentList()
 
         for i in range(len(order)):
             was_dict[self._order[i]] = 1
             will_be_dict[order[i]] = 1
+            new_order.append(order[i])
 
         if will_be_dict != was_dict:
             raise ValueError("Incompatible key set.")
 
-        self._order = order
+        self._order = new_order
+
