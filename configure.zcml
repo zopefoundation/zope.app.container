@@ -39,6 +39,10 @@
            provides="zope.app.interfaces.container.IZopeContainer"
            for="zope.app.interfaces.container.IContainer" />
 
+  <adapter factory="zope.app.container.size.ContainerSized"
+           provides="zope.app.interfaces.size.ISized"
+           for="zope.app.interfaces.container.IContainer" />
+           
   <event:subscribe 
       subscriber = ".dependency.CheckDependency"
       event_types = "zope.app.interfaces.event.IObjectRemovedEvent"
