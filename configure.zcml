@@ -1,9 +1,10 @@
-<zopeConfigure
+<configure
    xmlns='http://namespaces.zope.org/zope'
    xmlns:browser='http://namespaces.zope.org/browser'
    xmlns:xmlrpc='http://namespaces.zope.org/xmlrpc'
    xmlns:event="http://namespaces.zope.org/event"
->
+   i18n_domain="zope"
+   >
 
   <adapter
      provides="zope.app.interfaces.container.find.IFind"
@@ -81,4 +82,4 @@
       event_types="zope.app.interfaces.event.IObjectRemovedEvent"
       />
 
-</zopeConfigure>
+</configure>
