@@ -1,7 +1,7 @@
 <configure
-   xmlns='http://namespaces.zope.org/zope'
-   xmlns:browser='http://namespaces.zope.org/browser'
-   xmlns:xmlrpc='http://namespaces.zope.org/xmlrpc'
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
    xmlns:event="http://namespaces.zope.org/event"
    i18n_domain="zope"
    >
