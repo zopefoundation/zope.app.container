@@ -13,14 +13,14 @@
 ##############################################################################
 """Objects that take care of annotating dublin core meta data times
 
-$Id: dependency.py,v 1.3 2002/12/30 14:02:54 stevea Exp $
+$Id: dependency.py,v 1.4 2003/03/19 19:57:25 alga Exp $
 """
 from zope.component import queryAdapter
 from zope.app.interfaces.dependable import IDependable
 from zope.app.interfaces.dependable import DependencyError
 from zope.app.interfaces.event import ISubscriber
 from zope.proxy.introspection import removeAllProxies
-from zope.app.traversing import getPhysicalPathString, locationAsUnicode
+from zope.app.traversing import getPath, locationAsUnicode
 
 class DependencyChecker:
     """Checking dependency  while deleting object
@@ -36,7 +36,7 @@ class DependencyChecker:
         if dependency is not None:
             dependents = dependency.dependents()
             if dependents:
-                objectpath = getPhysicalPathString(event.object)
+                objectpath = getPath(event.object)
                 dependents = map(locationAsUnicode, dependents)
                 raise DependencyError("Removal of object (%s)"
                                       " which has dependents (%s)"
