@@ -44,7 +44,7 @@
       />
 
   <subscriber
-      factory=".dependency.CheckDependency"
+      handler=".dependency.CheckDependency"
       for="zope.app.container.interfaces.IObjectRemovedEvent"
       trusted="y"
       />
@@ -52,7 +52,7 @@
   <subscriber
       for="zope.app.location.interfaces.ILocation
            zope.app.container.interfaces.IObjectMovedEvent"
-      factory=".contained.dispatchToSublocations"
+      handler=".contained.dispatchToSublocations"
       >
       Handler dispatches moved events to sublocations of the original object.
   </subscriber>
