@@ -23,8 +23,10 @@ from zope.app.copypastemove.interfaces import IObjectMover
 
 from zope.app.traversing.api import traverse
 from zope.app.copypastemove.interfaces import IObjectMover, IObjectCopier
+from zope.app.copypastemove.interfaces import IContainerItemRenamer
 
 from zope.app.copypastemove import ObjectMover, ObjectCopier
+from zope.app.copypastemove import ContainerItemRenamer
 
 from zope.app.container.interfaces import IObjectRemovedEvent
 from zope.interface import Interface, implements
@@ -36,6 +38,7 @@ from zope.app.principalannotation import PrincipalAnnotationUtility
 from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.app.annotation.interfaces import IAnnotations
 from zope.app.container.contained import contained
+from zope.app.container.interfaces import IContainer, IContained
 
 class BaseTestContentsBrowserView(PlacefulSetup):
     """Base class for testing browser contents.
@@ -50,9 +53,11 @@ class BaseTestContentsBrowserView(PlacefulSetup):
     def setUp(self):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
-        
-        ztapi.provideAdapter(None, IObjectCopier, ObjectCopier)
-        ztapi.provideAdapter(None, IObjectMover, ObjectMover)
+
+        ztapi.provideAdapter(IContained, IObjectCopier, ObjectCopier)
+        ztapi.provideAdapter(IContained, IObjectMover, ObjectMover)
+        ztapi.provideAdapter(IContainer, IContainerItemRenamer,
+            ContainerItemRenamer)
 
         ztapi.provideAdapter(IAnnotations, IPrincipalClipboard,
                              PrincipalClipboard)
@@ -88,7 +93,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         container = self._TestView__newContext()
         subcontainer = self._TestView__newContext()
         container[u'f\xf6\xf6'] = subcontainer
-        
+
         fc = self._TestView__newView(container)
         info_list = fc.listContentInfo()
 
@@ -160,7 +165,7 @@ class Document(object):
 
 
 class Principal(object):
-    
+
     id = 'bob'
 
 
@@ -169,8 +174,10 @@ class TestCutCopyPaste(PlacefulSetup, TestCase):
     def setUp(self):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
-        ztapi.provideAdapter(None, IObjectCopier, ObjectCopier)
-        ztapi.provideAdapter(None, IObjectMover, ObjectMover)
+        ztapi.provideAdapter(IContained, IObjectCopier, ObjectCopier)
+        ztapi.provideAdapter(IContained, IObjectMover, ObjectMover)
+        ztapi.provideAdapter(IContainer, IContainerItemRenamer,
+            ContainerItemRenamer)
 
         ztapi.provideAdapter(IAnnotations, IPrincipalClipboard,
                              PrincipalClipboard)
