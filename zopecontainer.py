@@ -14,23 +14,23 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.9 2003/02/11 15:59:41 sidnei Exp $
+$Id: zopecontainer.py,v 1.10 2003/02/11 18:04:16 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
 from zope.app.interfaces.container import IOptionalNamesContainer
 from zope.app.interfaces.container import IContainerNamesContainer
-from zope.component import queryAdapter
+from zope.component import queryAdapter, getAdapter
 from zope.proxy.context import ContextWrapper
 from zope.app.event import publish
-from zope.app.event.objectevent \
-     import ObjectRemovedEvent, ObjectModifiedEvent, ObjectAddedEvent, \
-            ObjectMovedEvent
 from zope.app.interfaces.container import IAddNotifiable
 from zope.app.interfaces.container import IDeleteNotifiable
 from zope.app.interfaces.copy import IObjectMover
 from types import StringTypes
 from zope.proxy.introspection import removeAllProxies
+from zope.app.event.objectevent \
+     import ObjectRemovedEvent, ObjectModifiedEvent, ObjectAddedEvent, \
+            ObjectMovedEvent
 
 _marker = object()
 
@@ -147,7 +147,7 @@ class ZopeContainerAdapter:
         '''See interface IReadContainer'''
         return iter(self.context)
 
-    def rename(currentKey, newKey):
+    def rename(self, currentKey, newKey):
         """Put the object found at 'currentKey' under 'newKey' instead.
         
         The container can choose different or modified 'newKey'. The
@@ -179,10 +179,7 @@ class ZopeContainerAdapter:
         if mover.moveable() and mover.moveableTo(target, newKey):
 
             # the mover will call manage_beforeDelete hook for us
-
-            mover = getAdapter(object, IObjectMover)
             mover.moveTo(target, newKey)
-
             # the mover will call the manage_afterAdd hook for us
             # the mover will publish an ObjectMovedEvent for us
 

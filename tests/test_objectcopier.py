@@ -12,9 +12,9 @@
 #
 ##############################################################################
 """
-
 Revision information:
-$Id: test_objectcopier.py,v 1.2 2003/02/11 15:59:42 sidnei Exp $
+
+$Id: test_objectcopier.py,v 1.3 2003/02/11 18:04:16 sidnei Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
