@@ -13,7 +13,7 @@
 ##############################################################################
 """Define view component for folder contents.
 
-$Id: traversal.py,v 1.5 2003/02/07 15:48:40 jim Exp $
+$Id: traversal.py,v 1.6 2003/02/11 15:59:41 sidnei Exp $
 """
 
 from zope.publisher.interfaces.browser import IBrowserPublisher

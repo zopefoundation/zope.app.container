@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.8 2003/02/03 17:13:48 sidnei Exp $
+$Id: zopecontainer.py,v 1.9 2003/02/11 15:59:41 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -28,13 +28,7 @@ from zope.app.event.objectevent \
             ObjectMovedEvent
 from zope.app.interfaces.container import IAddNotifiable
 from zope.app.interfaces.container import IDeleteNotifiable
-from zope.app.interfaces.container import IMoveNotifiable
-from zope.app.interfaces.container import IMoveSource
-from zope.app.interfaces.container import IPasteTarget
-from zope.app.interfaces.container import IPasteTarget
-from zope.app.interfaces.container import IContainerCopyPasteMoveSupport
 from zope.app.interfaces.copy import IObjectMover
-from zope.app.interfaces.traversing import IPhysicallyLocatable
 from types import StringTypes
 from zope.proxy.introspection import removeAllProxies
 
@@ -42,7 +36,7 @@ _marker = object()
 
 class ZopeContainerAdapter:
 
-    __implements__ =  (IZopeContainer, IContainerCopyPasteMoveSupport)
+    __implements__ = IZopeContainer
 
     def __init__(self, container):
         self.context = container
@@ -180,27 +174,16 @@ class ZopeContainerAdapter:
         object = self.get(currentKey)
         mover = getAdapter(object, IObjectMover)
         container = self.context
-        target = getAdapter(container, IPasteTarget)
-
+        target = container
+        
         if mover.moveable() and mover.moveableTo(target, newKey):
-            physical = getAdapter(container, IPhysicallyLocatable)
-            target_path = physical.getPhysicalPath()
 
-            if queryAdapter(object, IMoveNotifiable):
-              object.manage_beforeDelete(object, container, \
-              movingTo=target_path)
-            elif queryAdapter(object, IDeleteNotifiable):
-              object.manage_beforeDelete(object, container)
-
-            source = getAdapter(container, IMoveSource)
-            object = source.removeObject(currentKey, target_path)
+            # the mover will call manage_beforeDelete hook for us
 
             mover = getAdapter(object, IObjectMover)
             mover.moveTo(target, newKey)
-          
-            publish(container, ObjectMovedEvent(object))
 
-
-
+            # the mover will call the manage_afterAdd hook for us
+            # the mover will publish an ObjectMovedEvent for us
 
            
