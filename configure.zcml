@@ -1,0 +1,47 @@
+<zopeConfigure
+   xmlns='http://namespaces.zope.org/zope'
+   xmlns:browser='http://namespaces.zope.org/browser'
+   xmlns:xmlrpc='http://namespaces.zope.org/xmlrpc'
+   xmlns:event="http://namespaces.zope.org/event"
+>
+
+  <adapter 
+     provides="zope.app.interfaces.container.find.IFind"
+     for="zope.app.interfaces.container.IReadContainer"
+     permission="zope.ManageContent" 
+     factory="zope.app.container.find.FindAdapter" />
+
+  <browser:view
+      name="_traverse" 
+      for="zope.app.interfaces.container.IItemContainer"
+      factory="zope.app.container.traversal.ItemTraverser" />
+
+  <browser:view
+      name="_traverse" 
+      for="zope.app.interfaces.container.ISimpleReadContainer"
+      factory="zope.app.container.traversal.ContainerTraverser" />
+
+  <xmlrpc:view
+      name="_traverse" 
+      for="zope.app.interfaces.container.IItemContainer"
+      factory="zope.app.container.traversal.ItemTraverser" />
+
+  <xmlrpc:view
+      name="_traverse" 
+      for="zope.app.interfaces.container.IReadContainer"
+      factory="zope.app.container.traversal.ContainerTraverser" />
+
+  <adapter factory="zope.app.container.traversal.ContainerTraversable"
+           provides="zope.app.interfaces.traversing.traversable.ITraversable"
+           for="zope.app.interfaces.container.IReadContainer" />
+
+  <adapter factory="zope.app.container.zopecontainer.ZopeContainerAdapter"
+           provides="zope.app.interfaces.container.IZopeContainer"
+           for="zope.app.interfaces.container.IContainer" />
+
+  <event:subscribe 
+      subscriber = ".dependency.CheckDependency"
+      event_types = "zope.app.interfaces.event.IObjectRemovedEvent"
+      />
+
+</zopeConfigure>
