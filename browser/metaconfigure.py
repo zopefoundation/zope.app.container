@@ -11,6 +11,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""
+$Id: metaconfigure.py,v 1.4 2004/04/29 10:11:34 philikon Exp $
+"""
 
 from zope.interface import Interface
 from zope.configuration.fields import GlobalObject
@@ -69,7 +72,3 @@ def containerViews(_context, for_, contents=None, add=None, index=None):
         viewObj.page(_context, name='index.html', attribute='index')
         viewObj.page(_context, name='action.html', attribute='action')
         viewObj()
-
-
-        
-
