@@ -209,7 +209,7 @@ def test_proxy_cache_interaction():
     And the proxy will be in the cache, because it's refernced from
     the root object:
 
-    >>> conn._cache.get(oid, None) is not None
+    >>> conn._cache.get(oid) is not None
     True
 
     But it's a ghost:
@@ -224,7 +224,7 @@ def test_proxy_cache_interaction():
     no longer be in the cache. To be sure, we'll call gc:
 
     >>> x = gc.collect()
-    >>> conn._cache.get(oid, None) is not None
+    >>> conn._cache.get(oid) is not None
     False
     
     """
