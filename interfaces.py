@@ -101,7 +101,7 @@ class IWriteContainer(Interface):
         """
 
     def __delitem__(name):
-        """Delete the nameed object from the container.
+        """Delete the named object from the container.
 
         Raises a KeyError if the object is not found.
 

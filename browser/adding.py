@@ -54,7 +54,7 @@ class BasicAdding(BrowserView):
         checkObject(container, name, content)
 
         if IContainerNamesContainer.providedBy(container):
-            # The container pick's it's own names.
+            # The container picks its own names.
             # We need to ask it to pick one.
             name = chooser.chooseName(self.contentName or '', content)
         else:
@@ -79,13 +79,13 @@ class BasicAdding(BrowserView):
                 + '/@@contents.html')
 
     # set in BrowserView.__init__
-    request = None 
+    request = None
     context = None
 
     def renderAddButton(self):
         warn("The renderAddButton method is deprecated, use nameAllowed",
             DeprecationWarning, 2)
-    
+
 
     def publishTraverse(self, request, name):
         """See zope.app.container.interfaces.IAdding"""
@@ -120,7 +120,7 @@ class BasicAdding(BrowserView):
             type_name = type_name[2:]
 
         if '/' in type_name:
-            view_name  = type_name.split('/', 1)[0]
+            view_name = type_name.split('/', 1)[0]
         else:
             view_name = type_name
 
@@ -161,7 +161,7 @@ class BasicAdding(BrowserView):
     def nameAllowed(self):
         """Return whether names can be input by the user."""
         return not IContainerNamesContainer.providedBy(self.context)
-    
+
 
 class Adding(BasicAdding):
 
