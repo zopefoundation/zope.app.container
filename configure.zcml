@@ -49,4 +49,8 @@
       event_types="zope.app.interfaces.container.IObjectRemovedEvent"
       />
 
+  <content class=".constraints.ItemTypePrecondition">
+    <allow interface=".constraints.IItemTypePrecondition" />
+  </content>
+
 </configure>
