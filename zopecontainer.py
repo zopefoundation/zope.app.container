@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.24 2003/06/23 22:40:48 chrism Exp $
+$Id: zopecontainer.py,v 1.25 2003/07/07 17:14:47 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IZopeSimpleReadContainer
@@ -122,7 +122,7 @@ class ZopeItemWriteContainerDecorator(ZopeItemContainerDecorator):
         else:
             if not isinstance(key, StringTypes):
                 raise TypeError("Item name is not a string.")
-            
+
         # We remove the proxies from the object before adding it to
         # the container, because we can't store proxies.
         object = removeAllProxies(object)
