@@ -237,10 +237,10 @@ def setitem(container, setitemf, name, object):
     >>> from zope.app.tests import ztapi
 
     >>> ztapi.handle([IItem, IObjectAddedEvent],
-    ...              lambda event: event.object.setAdded(event))
+    ...              lambda obj, event: obj.setAdded(event))
 
-    >>> ztapi.handle([IItem, IObjectMovesEvent],
-    ...              lambda event: event.object.setMoved(event))
+    >>> ztapi.handle([IItem, IObjectMovedEvent],
+    ...              lambda obj, event: obj.setMoved(event))
     
     >>> item = Item()
 
