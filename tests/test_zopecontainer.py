@@ -11,21 +11,25 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""XXX short summary goes here.
+"""ZopeContainerDecorator tests
 
-XXX longer description goes here.
-
-$Id: test_zopecontainer.py,v 1.3 2003/06/15 16:38:29 stevea Exp $
+$Id: test_zopecontainer.py,v 1.4 2003/07/17 14:45:14 alga Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
 from zope.app.interfaces.container import IAddNotifiable
 from zope.app.interfaces.container import IDeleteNotifiable
+from zope.app.container.sample import SampleContainer
 from zope.app.container.tests.baseizopeitemcontainer import \
      BaseTestIZopeSimpleReadContainer, BaseTestIZopeReadContainer,\
      BaseTestIZopeWriteContainer
 from zope.app.tests.placelesssetup import PlacelessSetup
-from zope.interface import implements
+from zope.context import ContextAwareDescriptors
+from zope.app.context import ContextWrapper
+from zope.proxy import isProxy, getProxiedObject
+from zope.interface import implements, directlyProvides, directlyProvidedBy
+from zope.app.interfaces.container import IOptionalNamesContainer
+from zope.app.interfaces.container import IContainerNamesContainer
 
 class C:
     pass
@@ -49,6 +53,7 @@ class ItemContainer:
 
     def __setitem__(self, key, value):
         self._d[key] = value
+
 
 class TestZopeItemContainerDecorator(PlacelessSetup,
                                      BaseTestIZopeSimpleReadContainer,
@@ -112,7 +117,6 @@ class TestZopeItemWriteContainerDecorator(TestZopeItemContainerDecorator,
 
     def setUp(self):
         PlacelessSetup.setUp(self)
-        from zope.app.container.sample import SampleContainer
         self._container = SampleContainer()
 
     def _sampleMapping(self):
@@ -126,11 +130,11 @@ class TestZopeItemWriteContainerDecorator(TestZopeItemContainerDecorator,
             ZopeItemWriteContainerDecorator
         return ZopeItemWriteContainerDecorator(container)
 
-    __newItem = {'A': C(), 'B':C()}
+    __newItem = {'A': C(), 'B': C()}
     def _sample_newItem(self):
         return self.__newItem
 
-    __newItemHooked = {'B': H(), 'E':H()}
+    __newItemHooked = {'B': H(), 'E': H()}
     def _sample_newItemHooked(self):
         return self.__newItemHooked
 
@@ -143,6 +147,71 @@ class TestZopeContainerDecorator(TestZopeItemWriteContainerDecorator,
         return ZopeContainerDecorator(container)
 
 
+class ContextAwareContainer(SampleContainer):
+    '''A container that checks that its methods are context wrapped.
+    '''
+
+    ContextAwareDescriptors()
+
+    def __getitem__(self, key):
+        assert isProxy(self), "self is not wrapped"
+        return super(ContextAwareContainer, getProxiedObject(self)).__getitem__(key)
+
+    def __contains__(self, key):
+        assert isProxy(self), "self is not wrapped"
+        return super(ContextAwareContainer, getProxiedObject(self)).__contains__(key)
+
+    def __delitem__(self, key):
+        assert isProxy(self), "self is not wrapped"
+        return super(ContextAwareContainer, getProxiedObject(self)).__delitem__(key)
+
+    def get(self, key, default):
+        assert isProxy(self), "self is not wrapped"
+        return super(ContextAwareContainer, getProxiedObject(self)).get(key, default)
+
+    def items(self):
+        assert isProxy(self), "self is not wrapped"
+        return super(ContextAwareContainer, getProxiedObject(self)).items()
+
+    def values(self):
+        assert isProxy(self), "self is not wrapped"
+        return super(ContextAwareContainer, getProxiedObject(self)).values()
+
+    def setObject(self, key, value):
+        # XXX: setObject is called on a non-decorated container in the test fixtures
+        # assert isProxy(self), "self is not wrapped"
+        if key == '':
+            key = str(id(value))
+        return super(ContextAwareContainer, getProxiedObject(self)).setObject(key, value)
+
+
+class TestZopeContainerDecoratorWrapper(TestZopeContainerDecorator):
+
+    def setUp(self):
+        TestZopeContainerDecorator.setUp(self)
+        self._container = ContextAwareContainer()
+
+    def test_setObject_optional_names(self):
+        # Test that empty keys are allowed for containers which implement
+        # IOptionalNamesContainer or IContainerNamesContainer
+        container = ContextAwareContainer()
+        directlyProvides(container, directlyProvidedBy(container),
+                         IOptionalNamesContainer)
+        decorated = self.decorate(container)
+        decorated.setObject('', 'foo')
+
+        container = ContextAwareContainer()
+        directlyProvides(container, directlyProvidedBy(container),
+                         IContainerNamesContainer)
+        decorated = self.decorate(container)
+        name = decorated.setObject('', 'foo')
+        self.assert_(name != '')
+
+        container = ContextAwareContainer()
+        decorated = self.decorate(container)
+        self.assertRaises(ValueError, decorated.setObject, '', 'foo')
+
+
 def test_suite():
     return TestSuite((
         makeSuite(TestZopeItemContainerDecorator),
@@ -150,6 +219,7 @@ def test_suite():
         makeSuite(TestZopeReadContainerDecorator),
         makeSuite(TestZopeItemWriteContainerDecorator),
         makeSuite(TestZopeContainerDecorator),
+        makeSuite(TestZopeContainerDecoratorWrapper),
         ))
 
 if __name__=='__main__':
