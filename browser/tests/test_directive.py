@@ -28,6 +28,7 @@ atre = re.compile(' at [0-9a-fA-Fx]+')
 
 class Context(object):
     actions = ()
+    info = ''
     
     def action(self, discriminator, callable, args):
         self.actions += ((discriminator, callable, args), )
@@ -56,14 +57,20 @@ def test_containerViews():
     >>> containerViews(context, for_=I, contents='zope.ManageContent',
     ...                add='zope.ManageContent', index='zope.View')
     >>> context
-    ((None,
-      <function handler>,
-      ('Adapters',
-       'subscribe',
+    ((('adapter',
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.publisher.interfaces.browser.IBrowserRequest>),
        <InterfaceClass zope.app.menus.zmi_views>,
-       <function MenuItemFactory>)),
+       u'Contents'),
+      <function handler>,
+      ('Adapters',
+       'register',
+       (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+        <InterfaceClass zope.publisher.interfaces.browser.IBrowserRequest>),
+       <InterfaceClass zope.app.menus.zmi_views>,
+       u'Contents',
+       <function MenuItemFactory>,
+       '')),
      (None,
       <function provideInterface>,
       ('', <InterfaceClass zope.app.menus.zmi_views>)),
@@ -111,14 +118,20 @@ def test_containerViews():
        'index.html',
        <class 'zope.app.publisher.browser.viewmeta.Contents'>,
        'info')),
-     (None,
-      <function handler>,
-      ('Adapters',
-       'subscribe',
+     (('adapter',
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.publisher.interfaces.browser.IBrowserRequest>),
        <InterfaceClass zope.app.menus.zmi_actions>,
-       <function MenuItemFactory>)),
+       u'Add'),
+      <function handler>,
+      ('Adapters',
+       'register',
+       (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+        <InterfaceClass zope.publisher.interfaces.browser.IBrowserRequest>),
+       <InterfaceClass zope.app.menus.zmi_actions>,
+       u'Add',
+       <function MenuItemFactory>,
+       'info')),
      (None,
       <function provideInterface>,
       ('', <InterfaceClass zope.app.menus.zmi_actions>)),

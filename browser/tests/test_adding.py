@@ -90,7 +90,7 @@ def defineMenuItem(menuItemType, for_, action, title=u'', extra=None):
                     {'title':title, 'action':action,
                      '_for': for_, 'extra':extra})
     zope.interface.classImplements(newclass, menuItemType)
-    ztapi.subscribe((for_, IBrowserRequest), menuItemType, newclass)
+    ztapi.provideAdapter((for_, IBrowserRequest), menuItemType, newclass, title)
 
 
 class Test(PlacelessSetup, unittest.TestCase):
