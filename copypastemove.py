@@ -14,13 +14,13 @@
 """
 
 Revision information:
-$Id: copypastemove.py,v 1.4 2003/03/30 15:40:58 sidnei Exp $
+$Id: copypastemove.py,v 1.5 2003/03/31 14:48:40 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IOptionalNamesContainer
 from zope.app.interfaces.container import IContainerNamesContainer
 from zope.app.interfaces.container import IMoveSource
-from zope.app.interfaces.container import ICopySource
+from zope.app.interfaces.container import ICopySource, INoChildrenCopySource
 from zope.app.interfaces.container import IPasteTarget
 from zope.app.interfaces.container import IPasteNamesChooser
 from zope.app.interfaces.content.folder import ICloneWithoutChildren
@@ -132,7 +132,7 @@ class CopySource:
     def __init__(self, container):
         self.context = container
 
-    def copyObject(self, key, copyingTo, with_children=True):
+    def copyObject(self, key, copyingTo):
         '''Return the object with the given key, as the first part of a
         copy.
 
@@ -141,13 +141,29 @@ class CopySource:
         value = self.context.get(key, None)
         if value is not None:
             value = removeAllProxies(value)
-            if with_children:
-                value = copy.deepcopy(value)
-            else:
-                if ICloneWithoutChildren.isImplementedBy(value):
-                    value = value.cloneWithoutChildren()
-                else:
-                    raise NotImplementedError(value, ICloneWithoutChildren)
+            value = copy.deepcopy(value)
+            return ContextWrapper(value, self.context, name=key)
+
+
+class NoChildrenCopySource:
+
+    __implements__ = INoChildrenCopySource
+
+    def __init__(self, container):
+        self.context = container
+
+    def copyObjectWithoutChildren(self, key, copyingTo):
+        '''Return the object with the given key, without children, as
+        the first part of a copy.
+
+        copyingTo is the unicode path for where the copy is to.
+        '''
+        value = self.context.get(key, None)
+        if value is not None:
+            value = removeAllProxies(value)
+            if not ICloneWithoutChildren.isImplementedBy(value):
+                return None
+            value = value.cloneWithoutChildren()
             return ContextWrapper(value, self.context, name=key)
 
 class PasteNamesChooser:

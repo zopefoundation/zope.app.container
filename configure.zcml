@@ -47,6 +47,13 @@
      />
 
   <adapter 
+     provides="zope.app.interfaces.container.INoChildrenCopySource"
+     for="zope.app.interfaces.content.folder.IFolder"
+     permission="zope.ManageContent" 
+     factory="zope.app.container.copypastemove.NoChildrenCopySource" 
+     />
+
+  <adapter 
      provides="zope.app.interfaces.container.IMoveSource"
      for="zope.app.interfaces.content.folder.IFolder"
      permission="zope.ManageContent" 
