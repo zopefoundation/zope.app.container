@@ -13,7 +13,7 @@
 ##############################################################################
 """
 
-$Id: test_containertraversable.py,v 1.6 2004/03/03 10:38:39 philikon Exp $
+$Id: test_containertraversable.py,v 1.7 2004/04/17 17:15:32 jim Exp $
 """
 
 import unittest
@@ -56,11 +56,10 @@ class Test(CleanUp, unittest.TestCase):
         c   = Container({'foo': foo}, {'bar': bar, 'foo': baz})
 
         T = ContainerTraversable(c)
-        self.failUnless(T.traverse('foo', (), 'foo', []) is baz)
-        self.failUnless(T.traverse('bar', (), 'bar', []) is bar)
+        self.failUnless(T.traverse('foo', []) is baz)
+        self.failUnless(T.traverse('bar', []) is bar)
 
-        self.assertRaises(NotFoundError , T.traverse,
-                          'morebar', (), 'morebar', [])
+        self.assertRaises(NotFoundError , T.traverse, 'morebar', [])
 
 
 def test_suite():

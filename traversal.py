@@ -13,7 +13,7 @@
 ##############################################################################
 """Traversal components for containers
 
-$Id: traversal.py,v 1.12 2004/03/19 03:17:23 srichter Exp $
+$Id: traversal.py,v 1.13 2004/04/17 17:15:32 jim Exp $
 """
 from zope.interface import implements
 from zope.exceptions import NotFoundError
@@ -89,16 +89,13 @@ class ContainerTraversable:
         self._container = container
 
 
-    def traverse(self, name, parameters, original_name, furtherPath):
-        if parameters:
-            raise UnexpectedParameters(parameters)
-
+    def traverse(self, name, furtherPath):
         container = self._container
 
         v = container.get(name, _marker)
         if v is _marker:
             v = getattr(container, name, _marker)
             if v is _marker:
-                raise NotFoundError, original_name
+                raise NotFoundError, name
 
         return v
