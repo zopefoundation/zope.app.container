@@ -2,7 +2,6 @@
    xmlns="http://namespaces.zope.org/zope"
    xmlns:browser="http://namespaces.zope.org/browser"
    xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
-   xmlns:event="http://namespaces.zope.org/event"
    i18n_domain="zope"
    >
 
@@ -44,9 +43,9 @@
       factory=".contained.NameChooser"
       />
 
-  <event:subscribe
-      subscriber=".dependency.CheckDependency"
-      event_types="zope.app.container.interfaces.IObjectRemovedEvent"
+  <subscriber
+      factory=".dependency.CheckDependency"
+      for="zope.app.container.interfaces.IObjectRemovedEvent"
       />
 
   <content class=".constraints.ItemTypePrecondition">

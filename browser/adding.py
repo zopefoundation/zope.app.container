@@ -33,7 +33,7 @@ from zope.app.container.constraints import checkFactory, checkObject
 from zope.app import zapi
 from zope.app.event.objectevent import ObjectCreatedEvent
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.app.event import publish
+from zope.event import notify
 from zope.app.publisher.browser import BrowserView
 
 from zope.app.i18n import ZopeMessageIDFactory as _
@@ -150,7 +150,7 @@ class BasicAdding(BrowserView):
         # into unproxying an existing object,
         content = removeAllProxies(content)
 
-        publish(self.context, ObjectCreatedEvent(content))
+        notify(ObjectCreatedEvent(content))
 
         self.add(content)
         self.request.response.redirect(self.nextURL())

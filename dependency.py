@@ -15,31 +15,19 @@
 
 $Id$
 """
-from zope.proxy import removeAllProxies
-from zope.interface import implements
 
 from zope.app import zapi
 from zope.app.dependable.interfaces import IDependable, DependencyError
-from zope.app.event.interfaces import ISubscriber
+from zope.proxy import removeAllProxies
 
-class DependencyChecker:
-    """Checking dependency  while deleting object
-    """
-    implements(ISubscriber)
-
-    def __init__(self):
-        pass
-
-    def notify(self, event):
-        object = removeAllProxies(event.object)
-        dependency = IDependable(object, None)
-        if dependency is not None:
-            dependents = dependency.dependents()
-            if dependents:
-                objectpath = zapi.getPath(event.object)
-                raise DependencyError("Removal of object (%s)"
-                                      " which has dependents (%s)"
-                                      % (objectpath,
-                                         ", ".join(dependents)))
-
-CheckDependency = DependencyChecker()
+def CheckDependency(event):
+    object = removeAllProxies(event.object)
+    dependency = IDependable(object, None)
+    if dependency is not None:
+        dependents = dependency.dependents()
+        if dependents:
+            objectpath = zapi.getPath(event.object)
+            raise DependencyError("Removal of object (%s)"
+                                  " which has dependents (%s)"
+                                  % (objectpath,
+                                     ", ".join(dependents)))

@@ -27,7 +27,7 @@ from zope.interface import providedBy
 
 from zope.app.exception.interfaces import UserError
 from zope.app.event.objectevent import ObjectEvent, modified
-from zope.app.event import publish
+from zope.event import notify
 from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.app.container.interfaces import IContained
 from zope.app.container.interfaces import INameChooser
@@ -232,20 +232,16 @@ def setitem(container, setitemf, name, object):
     ...     def setMoved(self, event):
     ...         self.moved = event
 
-    >>> from zope.app.event.objectevent import objectEventCallbackHelper
     >>> from zope.app.container.interfaces import IObjectAddedEvent
     >>> from zope.app.container.interfaces import IObjectMovedEvent
-    >>> from zope.component import getService
-    >>> from zope.app.servicenames import Adapters
-    >>> from zope.app.event.interfaces import ISubscriber
-    >>> factory = objectEventCallbackHelper(
-    ...     lambda event: event.object.setAdded(event))
-    >>> getService(None, Adapters).subscribe(
-    ...     [IItem,IObjectAddedEvent], ISubscriber, factory)
-    >>> factory = objectEventCallbackHelper(
-    ...     lambda event: event.object.setMoved(event))
-    >>> getService(None, Adapters).subscribe(
-    ...     [IItem, IObjectMovedEvent], ISubscriber, factory)
+    >>> from zope.app.tests import ztapi
+
+    >>> ztapi.handle([IItem, IObjectAddedEvent],
+    ...              lambda obj, event: obj.setAdded(event))
+
+    >>> ztapi.handle([IItem, IObjectMovedEvent],
+    ...              lambda obj, event: obj.setMoved(event))
+    
     >>> item = Item()
 
     >>> container = {}
@@ -445,7 +441,7 @@ def setitem(container, setitemf, name, object):
     object, event = containedEvent(object, container, name)
     setitemf(name, object)
     if event:
-        publish(container, event)
+        notify(event)
         modified(container)
 
 fixing_up = False
@@ -546,7 +542,7 @@ def uncontained(object, container, name=None):
         return
 
     event = ObjectRemovedEvent(object, oldparent, oldname)
-    publish(container, event)
+    notify(event)
 
     object.__parent__ = None
     object.__name__ = None
