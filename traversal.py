@@ -13,7 +13,7 @@
 ##############################################################################
 """Define view component for folder contents.
 
-$Id: traversal.py,v 1.2 2002/12/25 14:12:46 jim Exp $
+$Id: traversal.py,v 1.3 2002/12/28 14:13:23 stevea Exp $
 """
 
 from zope.publisher.interfaces.browser import IBrowserPublisher
@@ -22,6 +22,12 @@ from zope.publisher.interfaces import NotFound
 from zope.app.interfaces.container import ISimpleReadContainer, IItemContainer
 from zope.component import queryView
 from zope.component import getDefaultViewName
+
+from zope.app.interfaces.traversing import ITraversable
+from zope.app.traversing.exceptions import UnexpectedParameters
+from zope.app.interfaces.container import IReadContainer
+from zope.exceptions import NotFoundError
+from zope.component.exceptions import ComponentLookupError
 
 
 class ContainerTraverser:
@@ -70,18 +76,6 @@ class ItemTraverser(ContainerTraverser):
                 return view
 
         raise NotFound(context, name, request)
-
-
-"""
-Revision:
-$Id: traversal.py,v 1.2 2002/12/25 14:12:46 jim Exp $
-"""
-
-from zope.app.interfaces.traversing.traversable import ITraversable
-from zope.app.traversing.exceptions import UnexpectedParameters
-from zope.app.interfaces.container import IReadContainer
-from zope.exceptions import NotFoundError
-from zope.component.exceptions import ComponentLookupError
 
 _marker = object()
 
