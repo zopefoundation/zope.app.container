@@ -11,16 +11,14 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
-This module provides a sample container implementation.
+"""This module provides a sample container implementation.
 
 This is primarily for testing purposes.
 
 It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
-Revision information:
-$Id: btree.py,v 1.8 2004/03/17 16:38:12 srichter Exp $
+$Id: btree.py,v 1.9 2004/03/17 17:59:39 srichter Exp $
 """
 
 from persistent import Persistent
