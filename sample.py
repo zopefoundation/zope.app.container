@@ -19,7 +19,7 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: sample.py,v 1.8 2003/09/21 17:31:35 jim Exp $
+$Id: sample.py,v 1.9 2003/11/20 07:26:45 philikon Exp $
 """
 
 from types import StringTypes
@@ -32,8 +32,7 @@ class SampleContainer(Contained):
     """Sample container implementation suitable for testing.
 
     It is not suitable, directly as a base class unless the subclass
-    overrides _Container__newData to return a persistent mapping
-    object.
+    overrides _newContainerData to return a persistent mapping object.
     """
     implements(IContainer)
 
