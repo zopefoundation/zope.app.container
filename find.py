@@ -13,10 +13,10 @@
 ##############################################################################
 """Find Support
 
-$Id: find.py,v 1.6 2003/08/06 14:45:04 srichter Exp $
+$Id: find.py,v 1.7 2003/09/05 18:43:20 jim Exp $
 """
 
-from zope.app.interfaces.container.find import IFind, IIdFindFilter
+from zope.app.interfaces.find import IFind, IIdFindFilter
 from zope.app.interfaces.container import IReadContainer
 from zope.interface import implements
 # XXX need to do this manually to wrap objects

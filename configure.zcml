@@ -7,7 +7,7 @@
    >
 
   <adapter
-     provides="zope.app.interfaces.container.find.IFind"
+     provides="zope.app.interfaces.find.IFind"
      for="zope.app.interfaces.container.IReadContainer"
      permission="zope.ManageContent"
      factory="zope.app.container.find.FindAdapter"
