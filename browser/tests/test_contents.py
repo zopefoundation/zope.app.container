@@ -86,6 +86,18 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         self.failIf(filter(None, map(lambda x: x['icon'], info_list)))
 
+    def testInfoUnicode(self):
+        # If the id contains non-ASCII characters, url has to be quoted
+        container = self._TestView__newContext()
+        subcontainer = self._TestView__newContext()
+        container[u'f\xf6\xf6'] = subcontainer
+
+        fc = self._TestView__newView(container)
+        info_list = fc.listContentInfo()
+
+        urls = map(lambda x: x['url'], info_list)
+        self.assert_('f%C3%B6%C3%B6' in urls)
+
     def testInfoWDublinCore(self):
         container = self._TestView__newContext()
         document = Document()
