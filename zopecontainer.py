@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.14 2003/05/01 19:35:09 faassen Exp $
+$Id: zopecontainer.py,v 1.15 2003/05/08 10:57:55 stevea Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -149,25 +149,25 @@ class ZopeContainerAdapter:
 
     def rename(self, currentKey, newKey):
         """Put the object found at 'currentKey' under 'newKey' instead.
-        
+
         The container can choose different or modified 'newKey'. The
         'newKey' that was used is returned.
-        
+
         If the object at 'currentKey' is IMoveNotifiable, its
         beforeDeleteHook method is called, with a movingTo
         argument of the container's path plus the 'newKey'.
         Otherwise, if the object at 'currentKey' is IDeleteNotifiable,
         its beforeDeleteHook method is called.
-        
+
         Then, the object is removed from the container using the
         container's __del__ method.
-        
+
         Then, If the object is IMoveNotifiable, its afterAddHook
         method is called, with a movedFrom argument of the container's
         path plus the 'currentKey'.
         Otherwise, if the object is IAddNotifiable, its afterAddHook
         method is called.
-        
+
         Then, an IObjectMovedEvent is published.
         """
 
@@ -176,15 +176,13 @@ class ZopeContainerAdapter:
             raise NotFoundError(self.context, currentKey)
         mover = getAdapter(object, IObjectMover)
         target = self.context
-        
+
         if target.__contains__(newKey):
             raise DuplicationError("name, %s, is already in use" % newKey)
 
         if mover.moveable() and mover.moveableTo(target, newKey):
-
             # the mover will call beforeDeleteHook hook for us
             mover.moveTo(target, newKey)
             # the mover will call the afterAddHook hook for us
             # the mover will publish an ObjectMovedEvent for us
 
-           
