@@ -11,82 +11,86 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Container Traverser Tests
 
-$Id: test_containertraverser.py,v 1.9 2003/11/21 17:11:31 jim Exp $
+$Id: test_containertraverser.py,v 1.10 2004/02/14 03:01:48 srichter Exp $
 """
-
 import unittest
-from zope.component.tests.request import Request
-from zope.component import getService
-from zope.app.services.servicenames import Presentation
 from zope.app.container.traversal import ContainerTraverser
-from zope.interface import Interface, implements
-from zope.exceptions import NotFoundError
-from zope.app.interfaces.container import IContainer
+from zope.app.interfaces.container import IReadContainer
+from zope.app.tests import ztapi
 from zope.app.tests.placelesssetup import PlacelessSetup
+from zope.component.tests.request import Request
+from zope.exceptions import NotFoundError
+from zope.interface import implements
+from zope.publisher.interfaces.browser import IBrowserRequest 
 
-class I(Interface):
-    pass
-
-
-class Container:
-    implements(IContainer)
+class TestContainer:
+    implements(IReadContainer)
 
     def __init__(self, **kw):
-        for k in kw:
-            setattr(self, k , kw[k])
+        for name, value in kw.items():
+            setattr(self, name , value)
 
     def get(self, name, default=None):
         return getattr(self, name, default)
 
 
-
-class Request(Request):
-    def getEffectiveURL(self):
-        return ''
-
-
 class View:
-    def __init__(self, comp, request):
-        self._comp = comp
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
 
 
-class Test(PlacelessSetup, unittest.TestCase):
-    def testAttr(self):
-        # test container traver
-        foo = Container()
-        c   = Container(foo=foo)
-        req = Request(I, '')
+class TraverserTest(PlacelessSetup, unittest.TestCase):
 
-        T = ContainerTraverser(c, req)
-        self.failUnless(T.publishTraverse(req,'foo') is foo)
+    # The following two methods exist, so that other container traversers can
+    # use these tests as a base.
+    def _getTraverser(self, context, request):
+        return ContainerTraverser(context, request)
 
-        self.assertRaises(NotFoundError , T.publishTraverse, req ,'morebar')
+    def _getContainer(self, **kw):
+        return TestContainer(**kw)
 
+    def setUp(self):
+        super(TraverserTest, self).setUp()
+        # Create a small object tree
+        self.foo = self._getContainer()
+        foo2 = self._getContainer(Foo=self.foo)
+        # Initiate a request
+        self.request = Request(IBrowserRequest, '')
+        # Create the traverser
+        self.traverser = self._getTraverser(foo2, self.request)
+        # Define a simple view for the container
+        ztapi.browserView(IReadContainer, 'viewfoo', [View])
+        
+    def test_itemTraversal(self):
+        self.assertEqual(
+            self.traverser.publishTraverse(self.request, 'Foo'),
+            self.foo)
+        self.assertRaises(
+            NotFoundError,
+            self.traverser.publishTraverse, self.request, 'morebar')
 
-    def testView(self):
-        # test getting a view
-        foo = Container()
-        c   = Container(foo=foo)
-        req = Request(I, '')
-
-        T = ContainerTraverser(c, req)
-        getService(None, Presentation).provideView(
-            IContainer, 'viewfoo', I, [View])
-
-        self.failUnless(T.publishTraverse(req,'viewfoo').__class__ is View )
-        self.failUnless(T.publishTraverse(req,'foo') is foo)
-
-        self.assertRaises(NotFoundError , T.publishTraverse, req, 'morebar')
-        self.assertRaises(NotFoundError , T.publishTraverse, req,
-                          '@@morebar')
+    def test_viewTraversal(self):
+        self.assertEquals(
+            self.traverser.publishTraverse(self.request, 'viewfoo').__class__,
+            View)
+        self.assertEquals(
+            self.traverser.publishTraverse(self.request, 'Foo'),
+            self.foo)
+        self.assertRaises(
+            NotFoundError,
+            self.traverser.publishTraverse, self.request, 'morebar')
+        self.assertRaises(
+            NotFoundError,
+            self.traverser.publishTraverse, self.request, '@@morebar')
 
 
 def test_suite():
-    loader = unittest.TestLoader()
-    return loader.loadTestsFromTestCase(Test)
-
+    return unittest.TestSuite((
+        unittest.makeSuite(TraverserTest),
+        ))
 
 if __name__ == '__main__':
-    unittest.TextTestRunner().run(test_suite())
+    unittest.main(defaultTest='test_suite')
