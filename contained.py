@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.17 2004/03/13 15:21:12 srichter Exp $
+$Id: contained.py,v 1.18 2004/03/13 18:01:11 srichter Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -729,8 +729,8 @@ from zope.app.site.interfaces import IPossibleSite, ISiteManager
 from zope.app.container.interfaces import IContainer
 from transaction import get_transaction
 from zope.component.exceptions import ComponentLookupError
-from zope.app.interfaces.services.registration import IRegistry
-from zope.app.services.registration import RegistrationStack
+from zope.app.registration.interfaces import IRegistry
+from zope.app.registration.registration import RegistrationStack
 
 def parentgeddonFixup(event):
     """Fixup databases to work with the result of parentgeddon.
