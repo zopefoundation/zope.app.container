@@ -14,7 +14,7 @@
 """
 Revision information:
 
-$Id: test_objectcopier.py,v 1.7 2003/05/01 19:35:09 faassen Exp $
+$Id: test_objectcopier.py,v 1.8 2003/06/08 16:39:46 srichter Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -25,7 +25,6 @@ from zope.component.adapter import provideAdapter
 from zope.app.traversing import IObjectName
 from zope.app.traversing.adapters import ObjectName
 from zope.app.interfaces.copypastemove import IObjectCopier, INoChildrenObjectCopier
-from zope.app.interfaces.content.folder import IFolder
 from zope.app.interfaces.container import CopyException
 from zope.app.interfaces.container import IContainer
 from zope.app.interfaces.container import IPasteTarget
@@ -44,10 +43,10 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
         provideAdapter(None, IObjectCopier, ObjectCopier)
-        provideAdapter(IFolder, IPasteTarget, PasteTarget)
-        provideAdapter(IFolder, ICopySource, CopySource)
+        provideAdapter(IContainer, IPasteTarget, PasteTarget)
+        provideAdapter(IContainer, ICopySource, CopySource)
         provideAdapter(None, IObjectName, ObjectName)
-        provideAdapter(IFolder, IPasteNamesChooser, PasteNamesChooser)
+        provideAdapter(IContainer, IPasteNamesChooser, PasteNamesChooser)
  
     def test_copytosame(self):
         root = self.rootFolder
@@ -171,14 +170,13 @@ class NoChildrenObjectCopierTest(PlacefulSetup, TestCase):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
         provideAdapter(None, IObjectCopier, ObjectCopier)
-        provideAdapter(IFolder, INoChildrenObjectCopier, NoChildrenObjectCopier)
-        provideAdapter(IContainer, INoChildrenObjectCopier, NoChildrenObjectCopier)
-        provideAdapter(IFolder, IPasteTarget, PasteTarget)
-        provideAdapter(IFolder, ICopySource, CopySource)
-        provideAdapter(IFolder, INoChildrenCopySource, NoChildrenCopySource)
+        provideAdapter(IContainer, INoChildrenObjectCopier,
+                       NoChildrenObjectCopier)
+        provideAdapter(IContainer, IPasteTarget, PasteTarget)
+        provideAdapter(IContainer, ICopySource, CopySource)
         provideAdapter(IContainer, INoChildrenCopySource, NoChildrenCopySource)
         provideAdapter(None, IObjectName, ObjectName)
-        provideAdapter(IFolder, IPasteNamesChooser, PasteNamesChooser)
+        provideAdapter(IContainer, IPasteNamesChooser, PasteNamesChooser)
  
     def test_copytosame(self):
         root = self.rootFolder

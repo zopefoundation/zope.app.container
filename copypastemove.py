@@ -14,12 +14,13 @@
 """
 
 Revision information:
-$Id: copypastemove.py,v 1.9 2003/06/07 06:37:22 stevea Exp $
+$Id: copypastemove.py,v 1.10 2003/06/08 16:39:46 srichter Exp $
 """
 
 from types import StringTypes
 from zope.app.event import publish
 from zope.app.event.objectevent import ObjectModifiedEvent
+from zope.app.interfaces.container import IContainer
 from zope.app.interfaces.container import IContainerNamesContainer
 from zope.app.interfaces.container import ICopySource, INoChildrenCopySource
 from zope.app.interfaces.container import IMoveSource
@@ -36,6 +37,7 @@ import copy
 class PasteTarget:
 
     implements(IPasteTarget)
+    __used_for__ = IContainer
 
     def __init__(self, container):
         self.context = container
