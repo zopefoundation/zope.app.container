@@ -13,7 +13,7 @@
 ##############################################################################
 """Traversal components for containers
 
-$Id: traversal.py,v 1.10 2004/03/03 10:38:39 philikon Exp $
+$Id: traversal.py,v 1.11 2004/03/13 21:03:08 srichter Exp $
 """
 from zope.interface import implements
 from zope.exceptions import NotFoundError
@@ -24,7 +24,7 @@ from zope.publisher.interfaces import NotFound
 from zope.app import zapi
 from zope.app.container.interfaces import ISimpleReadContainer, IItemContainer
 from zope.app.container.interfaces import IReadContainer
-from zope.app.interfaces.traversing import ITraversable
+from zope.app.traversing.interfaces import ITraversable
 from zope.app.traversing.namespace import UnexpectedParameters
 
 # Note that the next two classes are included here because they

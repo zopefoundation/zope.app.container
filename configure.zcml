@@ -27,7 +27,7 @@
 
   <adapter
       factory="zope.app.container.traversal.ContainerTraversable"
-      provides="zope.app.interfaces.traversing.ITraversable"
+      provides="zope.app.traversing.interfaces.ITraversable"
       for="zope.app.container.interfaces.IReadContainer"
       />
 
