@@ -23,21 +23,20 @@ Cloner
 
 $Id$
 """
-__metaclass__ = type
-
 import zope.app.filerepresentation.interfaces
 from zope.proxy import removeAllProxies
 from zope.interface import implements
 
 def noop(container):
-    """XXX adapt an IContainer to an IWriteDirectory by just returning it
+    """Adapt an IContainer to an IWriteDirectory by just returning it
 
     This "works" because IContainer and IWriteDirectory have the same
-    methods, however, the output doesn't actually imlement IWriteDirectory.
+    methods, however, the output doesn't actually implement IWriteDirectory.
     """
     return container
 
-class Cloner:
+
+class Cloner(object):
     """IContainer to IDirectoryFactory adapter that clones
 
     This adapter provides a factory that creates a new empty container
