@@ -19,13 +19,15 @@ factory screen.
 $Id$
 """
 __docformat__ = 'restructuredtext'
-
 from warnings import warn
+
 import zope.security.checker
+from zope.component.interfaces import IFactory
+from zope.event import notify
+from zope.i18n import translate
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 from zope.security.proxy import removeSecurityProxy
-from zope.component.interfaces import IFactory
 
 from zope.app.exception.interfaces import UserError
 from zope.app.container.interfaces import IAdding, INameChooser
@@ -34,13 +36,12 @@ from zope.app.container.constraints import checkFactory, checkObject
 
 from zope.app import zapi
 from zope.app.event.objectevent import ObjectCreatedEvent
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.event import notify
-from zope.app.publisher.browser import BrowserView
-
 from zope.app.i18n import ZopeMessageIDFactory as _
-from zope.i18n import translate
 from zope.app.location import LocationProxy
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.app.publisher.browser import BrowserView
+from zope.app.publisher.browser.menu import getMenu
+from zope.app.publisher.interfaces.browser import AddMenu
 
 class BasicAdding(BrowserView):
     implements(IAdding, IPublishTraverse)
@@ -177,12 +178,11 @@ class Adding(BasicAdding):
         This is sorted by title.
         """
         container = self.context
-        menu_service = zapi.getService("BrowserMenu")
         result = []
-        for menu_id in (self.menu_id, 'zope.app.container.add'):
+        for menu_id in (self.menu_id, AddMenu):
             if not menu_id:
                 continue
-            for item in menu_service.getMenu(menu_id, self, self.request):
+            for item in getMenu(menu_id, self, self.request):
                 extra = item.get('extra')
                 if extra:
                     factory = extra.get('factory')

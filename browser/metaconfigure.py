@@ -60,16 +60,18 @@ def containerViews(_context, for_, contents=None, add=None, index=None):
             raise ValueError("A for interface must be specified.")
 
     if contents is not None:
+        from zope.app.menus import zmi_views
         page(_context, name='contents.html', permission=contents,
              for_=for_, class_=Contents, attribute='contents',
-             menu='zmi_views', title=_('Contents'))
+             menu=zmi_views, title=_('Contents'))
             
     if index is not None:
         page(_context, name='index.html', permission=index, for_=for_, 
              class_=Contents, attribute='index')
 
     if add is not None:
-        viewObj = view(_context, name='+', menu='zmi_actions',
+        from zope.app.menus import zmi_actions
+        viewObj = view(_context, name='+', menu=zmi_actions,
                        title=_('Add'), for_=for_, permission=add,
                        class_=Adding)
         viewObj.page(_context, name='index.html', attribute='index')
