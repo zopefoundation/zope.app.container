@@ -14,7 +14,7 @@
 """
 Revision information:
 
-$Id: test_rename.py,v 1.4 2003/05/01 19:35:09 faassen Exp $
+$Id: test_rename.py,v 1.5 2003/06/05 12:03:15 stevea Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -36,7 +36,6 @@ from zope.app.container.copypastemove import PasteNamesChooser
 from zope.app.copypastemove import ObjectMover
 from zope.app.content.file import File
 from zope.exceptions import NotFoundError, DuplicationError
-from zope.app.container.zopecontainer import ZopeContainerAdapter
 
 class RenameTest(PlacefulSetup, TestCase):
 
@@ -48,8 +47,7 @@ class RenameTest(PlacefulSetup, TestCase):
         provideAdapter(IContainer, IMoveSource, MoveSource)
         provideAdapter(None, IObjectName, ObjectName)
         provideAdapter(IContainer, IPasteNamesChooser, PasteNamesChooser)
-        provideAdapter(IContainer, IZopeContainer, ZopeContainerAdapter)
- 
+
     def test_simplerename(self):
         root = self.rootFolder
         folder1 = traverse(root, 'folder1')
@@ -60,7 +58,6 @@ class RenameTest(PlacefulSetup, TestCase):
         self.failIf('file1' in container)
         self.failUnless('my_file1' in container)
 
-
     def test_renamenonexisting(self):
         root = self.rootFolder
         folder1 = traverse(root, 'folder1')
@@ -68,7 +65,6 @@ class RenameTest(PlacefulSetup, TestCase):
         container = getAdapter(folder1, IZopeContainer)
         self.assertRaises(NotFoundError, container.rename, \
                           'file1', 'my_file1')
-
 
     def test_renamesamename(self):
         root = self.rootFolder
