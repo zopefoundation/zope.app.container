@@ -55,11 +55,12 @@ class IContainerViews(Interface):
 
     layer = LayerField(
         title=_("The layer the view is in."),
-        description=_("""A skin is composed of layers. It is common to put 
+        description=_("""A skin is composed of layers. It is common to put
         skin specific views in a layer named after the skin. If the 'layer'
         attribute is not supplied, it defaults to 'default'."""),
         required=False
         )
+
 
 def containerViews(_context, for_, contents=None, add=None, index=None,
                    layer=IDefaultBrowserLayer):
