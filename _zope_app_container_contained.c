@@ -32,7 +32,7 @@
 
 
 #include "Python.h"
-#include "persistent/cPersistence.h"
+#include "cPersistence.h"
 
 static PyObject *str_p_deactivate;
 
@@ -61,7 +61,7 @@ typedef struct {
 #define _proxy_H_ 1
 
 /* Incude the proxy C source */
-#include "zope/proxy/_zope_proxy_proxy.c"
+#include "_zope_proxy_proxy.c"
 
 #define SPECIAL(NAME) (                        \
     *(NAME) == '_' &&                          \
