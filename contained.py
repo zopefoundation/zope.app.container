@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.18 2004/03/13 18:01:11 srichter Exp $
+$Id: contained.py,v 1.19 2004/03/13 23:54:58 srichter Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -238,7 +238,7 @@ def setitem(container, setitemf, name, object):
     >>> from zope.app.container.interfaces import IObjectAddedEvent
     >>> from zope.app.container.interfaces import IObjectMovedEvent
     >>> from zope.component import getService
-    >>> from zope.app.services.servicenames import Adapters
+    >>> from zope.app.servicenames import Adapters
     >>> from zope.app.event.interfaces import ISubscriber
     >>> factory = objectEventCallbackHelper(
     ...     lambda event: event.object.setAdded(event))
