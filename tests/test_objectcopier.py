@@ -14,14 +14,14 @@
 """
 Revision information:
 
-$Id: test_objectcopier.py,v 1.10 2003/09/21 17:31:41 jim Exp $
+$Id: test_objectcopier.py,v 1.11 2003/11/21 17:12:00 jim Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
 from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
 from zope.component import getAdapter, ComponentLookupError
-from zope.component.adapter import provideAdapter
+from zope.app.tests import ztapi
 from zope.app.interfaces.copypastemove import IObjectCopier
 from zope.app.copypastemove import ObjectCopier
 from zope.app.interfaces.container import IContainer
@@ -33,7 +33,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
     def setUp(self):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
-        provideAdapter(None, IObjectCopier, ObjectCopier)
+        ztapi.provideAdapter(None, IObjectCopier, ObjectCopier)
 
     def test_copytosame(self):
         root = self.rootFolder

@@ -14,14 +14,14 @@
 """
 
 Revision information:
-$Id: test_objectmover.py,v 1.7 2003/09/21 17:31:42 jim Exp $
+$Id: test_objectmover.py,v 1.8 2003/11/21 17:12:00 jim Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
 from zope.app.traversing import traverse
 from zope.app.services.tests.placefulsetup import PlacefulSetup
 from zope.component import getAdapter
-from zope.component.adapter import provideAdapter
+from zope.app.tests import ztapi
 from zope.app.interfaces.copypastemove import IObjectMover
 from zope.app.interfaces.content.folder import IFolder
 from zope.app.copypastemove import ObjectMover
@@ -32,7 +32,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
     def setUp(self):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
-        provideAdapter(None, IObjectMover, ObjectMover)
+        ztapi.provideAdapter(None, IObjectMover, ObjectMover)
  
     def test_movetosame(self):
         # Should be a noop, because "moving" to same location
