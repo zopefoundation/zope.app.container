@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: test_icontainer.py,v 1.2 2002/12/25 14:12:47 jim Exp $
+$Id: test_icontainer.py,v 1.3 2002/12/27 15:59:43 rdmurray Exp $
 """
 
 from unittest import TestCase, main, makeSuite
@@ -24,12 +24,12 @@ from zope.interface.verify import verifyObject
 class BaseTestIContainer:
     """Base test cases for containers.
 
-    Subclasses need to define a method, '_Test__new', that
-    takes no arguments and that returns a new empty test container.
+    Subclasses must define a makeTestObject that takes no
+    arguments and that returns a new empty test container.
     """
 
     def __setUp(self):
-        self.__container = container = self._Test__new()
+        self.__container = container = self.makeTestObject()
         for k,v in [('3', '0'), ('2', '1'), ('4', '2'), ('6', '3'), ('0', '4'),
                     ('5', '5'), ('1', '6'), ('8', '7'), ('7', '8'), ('9', '9')]:
             container.setObject(k, v)
@@ -39,11 +39,11 @@ class BaseTestIContainer:
     # Interface-driven tests:
 
     def testIContainerVerify(self):
-        verifyObject(IContainer, self._Test__new())
+        verifyObject(IContainer, self.makeTestObject())
 
     def test_keys(self):
         # See interface IReadContainer
-        container = self._Test__new()
+        container = self.makeTestObject()
         data = container.keys()
         self.assertEqual(list(data), [])
 
@@ -56,7 +56,7 @@ class BaseTestIContainer:
 
     def test_get(self):
         # See interface IReadContainer
-        container = self._Test__new()
+        container = self.makeTestObject()
         self.assertRaises(KeyError, container.__getitem__, '1')
         self.assertEqual(container.get('1', '99'), '99')
 
@@ -70,7 +70,7 @@ class BaseTestIContainer:
 
     def test_values(self):
         # See interface IReadContainer
-        container = self._Test__new()
+        container = self.makeTestObject()
         data = container.values()
         self.assertEqual(list(data), [])
 
@@ -81,7 +81,7 @@ class BaseTestIContainer:
 
     def test_len(self):
         # See interface IReadContainer
-        container = self._Test__new()
+        container = self.makeTestObject()
         self.assertEqual(len(container), 0)
 
         container = self.__setUp()
@@ -89,7 +89,7 @@ class BaseTestIContainer:
 
     def test_items(self):
         # See interface IReadContainer
-        container = self._Test__new()
+        container = self.makeTestObject()
         data = container.items()
         self.assertEqual(list(data), [])
 
@@ -105,7 +105,7 @@ class BaseTestIContainer:
 
     def test___contains__(self):
         # See interface IReadContainer
-        container = self._Test__new()
+        container = self.makeTestObject()
         self.assertEqual(not not ('1' in container), 0)
 
         container = self.__setUp()
@@ -116,7 +116,7 @@ class BaseTestIContainer:
 
     def test_delObject(self):
         # See interface IWriteContainer
-        container = self._Test__new()
+        container = self.makeTestObject()
         self.assertRaises(KeyError, container.__delitem__, '1')
 
         container = self.__setUp()
@@ -134,7 +134,7 @@ class BaseTestIContainer:
     # Tests from Folder
 
     def testEmpty(self):
-        folder = self._Test__new()
+        folder = self.makeTestObject()
         self.failIf(folder.keys())
         self.failIf(folder.values())
         self.failIf(folder.items())
@@ -147,13 +147,13 @@ class BaseTestIContainer:
         self.assertRaises(KeyError, folder.__delitem__, 'foo')
 
     def testBadKeyTypes(self):
-        folder = self._Test__new()
+        folder = self.makeTestObject()
         value = []
         self.assertRaises(TypeError, folder.setObject, None, value)
         self.assertRaises(TypeError, folder.setObject, ['foo'], value)
 
     def testOneItem(self):
-        folder = self._Test__new()
+        folder = self.makeTestObject()
         foo = []
         folder.setObject('foo', foo)
 
@@ -198,7 +198,7 @@ class BaseTestIContainer:
         self.assertRaises(KeyError, folder.__delitem__, 'foo')
 
     def testManyItems(self):
-        folder = self._Test__new()
+        folder = self.makeTestObject()
         objects = [ [0], [1], [2], [3] ]
         folder.setObject('foo', objects[0])
         folder.setObject('bar', objects[1])
@@ -271,7 +271,7 @@ class BaseTestIContainer:
 
 
 class Test(BaseTestIContainer, TestCase):
-    def _Test__new(self):
+    def makeTestObject(self):
         from zope.app.container.sample import SampleContainer
         return SampleContainer()
 
