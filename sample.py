@@ -19,12 +19,13 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: sample.py,v 1.6 2003/05/01 19:35:09 faassen Exp $
+$Id: sample.py,v 1.7 2003/06/03 14:19:31 stevea Exp $
 """
 
 from types import StringTypes
 
 from zope.app.interfaces.container import IContainer
+from zope.interface import implements
 
 class SampleContainer(object):
     """Sample container implementation suitable for testing.
@@ -33,8 +34,7 @@ class SampleContainer(object):
     overrides _Container__newData to return a persistent mapping
     object.
     """
-
-    __implements__ =  IContainer
+    implements(IContainer)
 
     def __init__(self):
         self.__data = self._newContainerData()
