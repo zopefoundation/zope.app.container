@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.19 2004/03/13 23:54:58 srichter Exp $
+$Id: contained.py,v 1.20 2004/03/14 04:03:30 srichter Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -719,98 +719,4 @@ class ContainedProxy(ContainedProxyBase):
     __Security_checker__ = DecoratedSecurityCheckerDescriptor()
 
 
-##############################################################################
-# Parentgeddon fixup:
-
-from zope.app.event.function import Subscriber
-from zope.app.folder.interfaces import IRootFolder
-from zope.app.container.interfaces import IWriteContainer
-from zope.app.site.interfaces import IPossibleSite, ISiteManager
-from zope.app.container.interfaces import IContainer
-from transaction import get_transaction
-from zope.component.exceptions import ComponentLookupError
-from zope.app.registration.interfaces import IRegistry
-from zope.app.registration.registration import RegistrationStack
-
-def parentgeddonFixup(event):
-    """Fixup databases to work with the result of parentgeddon.
-    """
-
-    database = event.database
-    connection = database.open()
-    app = connection.root().get('Application')
-    if app is None:
-        # No old data
-        return
-
-    if IRootFolder.providedBy(app):
-        # already did fixup
-        return
-
-    print "Fixing up data for parentgeddon"
-
-    zope.interface.directlyProvides(
-        app, IRootFolder,
-        zope.interface.directlyProvidedBy(app))
-
-    global fixing_up
-    fixing_up = True
-
-    try:
-        fixcontainer(app)
-        get_transaction().commit()
-    finally:
-        get_transaction().abort()
-        fixing_up = False
-        connection.close()
-
-parentgeddonFixup = Subscriber(parentgeddonFixup)
-
-def fixcontainer(container):
-
-    # Step 1: fix items:
-    for name in container:
-        ob = container[name]
-
-        if not IContained.providedBy(ob):
-            # remove the old item and reassign it
-            del container[name]
-            ob = contained(ob, container, name)
-            container[name] = ob
-        elif ob.__parent__ is not container:
-            ob.__parent__ = container
-            ob.__name__ = name
-
-        if IContainer.providedBy(ob):
-            fixcontainer(ob)
-
-        if IRegistry.providedBy(ob):
-            fixregistry(ob)
-
-    if IPossibleSite.providedBy(container):
-        try:
-            sm = container.getSiteManager()
-        except ComponentLookupError:
-            pass # nothing to do
-        else:
-            fixupsitemanager(sm, container)
-
-def fixupsitemanager(sm, container):
-    sm.__parent__ = container
-    sm.__name__ = '++etc++site'
-    sm._SampleContainer__data = sm.Packages._SampleContainer__data
-    del sm.Packages
-    fixregistry(sm)
-    fixcontainer(sm)
-
-def fixregistry(registry):
-    if ISiteManager.providedBy(registry):
-        for name in registry.listRegistrationNames():
-            stack = registry.queryRegistrations(name)
-            stack.__parent__ = registry
-        return
-    for data in registry.getRegisteredMatching():
-        for ob in data:
-            if isinstance(ob, RegistrationStack):
-                ob.__parent__ = registry
 
