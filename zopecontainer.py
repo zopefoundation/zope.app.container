@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.7 2003/02/03 17:10:57 sidnei Exp $
+$Id: zopecontainer.py,v 1.8 2003/02/03 17:13:48 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -149,6 +149,9 @@ class ZopeContainerAdapter:
 
         return key
 
+    def __iter__(self):
+        '''See interface IReadContainer'''
+        return iter(self.context)
 
     def rename(currentKey, newKey):
         """Put the object found at 'currentKey' under 'newKey' instead.
