@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.8 2004/03/02 17:51:51 philikon Exp $
+$Id: contained.py,v 1.9 2004/03/02 18:50:57 philikon Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -239,7 +239,7 @@ def setitem(container, setitemf, name, object):
     >>> from zope.app.interfaces.container import IObjectMovedEvent
     >>> from zope.component import getService
     >>> from zope.app.services.servicenames import Adapters
-    >>> from zope.app.interfaces.event import ISubscriber
+    >>> from zope.app.event.interfaces import ISubscriber
     >>> factory = objectEventCallbackHelper(
     ...     lambda event: event.object.setAdded(event))
     >>> getService(None, Adapters).provideSubscriptionAdapter(
@@ -263,7 +263,7 @@ def setitem(container, setitemf, name, object):
     track the events generated:
 
     >>> from zope.app.event.tests.placelesssetup import getEvents
-    >>> from zope.app.interfaces.event import IObjectModifiedEvent
+    >>> from zope.app.event.interfaces import IObjectModifiedEvent
 
     We have an added event:
 
@@ -466,7 +466,7 @@ def uncontained(object, container, name=None):
 
     >>> from zope.app.event.tests.placelesssetup import getEvents
     >>> from zope.app.interfaces.container import IObjectRemovedEvent
-    >>> from zope.app.interfaces.event import IObjectModifiedEvent
+    >>> from zope.app.event.interfaces import IObjectModifiedEvent
 
     We'll start by creating a container with an item:
 

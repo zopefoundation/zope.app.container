@@ -13,14 +13,15 @@
 ##############################################################################
 """Objects that take care of annotating dublin core meta data times
 
-$Id: dependency.py,v 1.10 2003/08/21 19:22:38 fdrake Exp $
+$Id: dependency.py,v 1.11 2004/03/02 18:50:57 philikon Exp $
 """
+from zope.proxy import removeAllProxies
+from zope.interface import implements
+
 from zope.app import zapi
 from zope.app.interfaces.dependable import IDependable
 from zope.app.interfaces.dependable import DependencyError
-from zope.app.interfaces.event import ISubscriber
-from zope.proxy import removeAllProxies
-from zope.interface import implements
+from zope.app.event.interfaces import ISubscriber
 
 class DependencyChecker:
     """Checking dependency  while deleting object
