@@ -7,20 +7,20 @@
    >
 
   <adapter
-     provides="zope.app.interfaces.find.IFind"
-     for="zope.app.container.interfaces.IReadContainer"
+     provides=".interfaces.IFind"
+     for=".interfaces.IReadContainer"
      permission="zope.ManageContent"
      factory="zope.app.container.find.FindAdapter"
      />
 
   <adapter
-      for="zope.app.container.interfaces.IReadContainer"
+      for=".interfaces.IReadContainer"
       provides="zope.app.interfaces.file.IReadDirectory"
       factory=".directory.noop"
       />
 
   <adapter
-      for="zope.app.container.interfaces.IWriteContainer"
+      for=".interfaces.IWriteContainer"
       provides="zope.app.interfaces.file.IWriteDirectory"
       factory=".directory.noop"
       />
@@ -39,7 +39,7 @@
       />
 
   <adapter
-      provides="zope.app.container.interfaces.INameChooser"
+      provides=".interfaces.INameChooser"
       for="zope.app.container.interfaces.IWriteContainer"
       factory=".contained.NameChooser"
       />

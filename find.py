@@ -13,12 +13,11 @@
 ##############################################################################
 """Find Support
 
-$Id: find.py,v 1.10 2004/03/05 22:08:59 jim Exp $
+$Id: find.py,v 1.11 2004/03/13 22:02:15 srichter Exp $
 """
-
-from zope.app.interfaces.find import IFind, IIdFindFilter
-from zope.app.container.interfaces import IReadContainer
 from zope.interface import implements
+from interfaces import IFind, IIdFindFilter
+from interfaces import IReadContainer
 
 class FindAdapter(object):
 

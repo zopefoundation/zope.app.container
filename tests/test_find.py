@@ -12,12 +12,12 @@
 #
 ##############################################################################
 """
-$Id: test_find.py,v 1.8 2004/03/05 22:09:00 jim Exp $
+$Id: test_find.py,v 1.9 2004/03/13 22:02:15 srichter Exp $
 """
 
 from unittest import TestCase, main, makeSuite
 from zope.app.container.interfaces import IReadContainer
-from zope.app.interfaces.find import IObjectFindFilter
+from zope.app.container.interfaces import IObjectFindFilter
 from zope.app.container.find import FindAdapter, SimpleIdFindFilter
 from zope.interface import implements
 

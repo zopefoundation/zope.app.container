@@ -13,7 +13,7 @@
 ##############################################################################
 """Container-related interfaces
 
-$Id: interfaces.py,v 1.1 2004/03/03 10:38:39 philikon Exp $
+$Id: interfaces.py,v 1.2 2004/03/13 22:02:15 srichter Exp $
 """
 from zope.interface import Interface, Attribute, implements, Invalid
 from zope.component.interfaces import IView
@@ -262,3 +262,29 @@ class IRemoveNotifiable(Interface):
 
     def removeNotify(object, container):
         """Hook method will call before object is removed from container."""
+
+
+##############################################################################
+# Finding objects
+
+class IFind(Interface):
+    """
+    Find support for containers.
+    """
+
+    def find(id_filters=None, object_filters=None):
+        """Find object that matches all filters in all sub objects,
+        not including this container itself.
+        """
+
+class IObjectFindFilter(Interface):
+
+    def matches(object):
+        """Returns true if the object matches the filter criteria.
+        """
+
+class IIdFindFilter(Interface):
+
+    def matches(id):
+        """Returns true if the id matches the filter criteria.
+        """
