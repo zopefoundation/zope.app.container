@@ -745,7 +745,7 @@ class NameChooser(object):
             i += 1
             n = name + u'-' + unicode(i) + suffix
 
-        # Make sure tha name is valid.  We may have started with something bad.
+        # Make sure the name is valid.  We may have started with something bad.
         self.checkName(n, object)
 
         return n
