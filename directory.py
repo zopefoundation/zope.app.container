@@ -24,7 +24,7 @@ Cloner
 $Id$
 """
 import zope.app.filerepresentation.interfaces
-from zope.proxy import removeAllProxies
+from zope.security.proxy import removeSecurityProxy
 from zope.interface import implements
 
 def noop(container):
@@ -49,7 +49,12 @@ class Cloner(object):
         self.context = context
 
     def __call__(self, name):
-        # We remove all of the proxies so we can actually
-        # call the class. This should be OK as we are only
-        # calling this for objects that get this adapter.
-        return removeAllProxies(self.context).__class__()
+        
+        # We remove the security proxy so we can actually call the
+        # class and return an unproxied new object.  (We can't use a
+        # trusted adapter, because the result must be unproxied.)  By
+        # registering this adapter, one effectively gives permission
+        # to clone the class.  Don't use this for classes that have
+        # exciting side effects as a result of instantiation. :)
+
+        return removeSecurityProxy(self.context).__class__()
