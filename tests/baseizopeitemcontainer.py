@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: baseizopeitemcontainer.py,v 1.5 2003/06/15 16:10:43 stevea Exp $
+$Id: baseizopeitemcontainer.py,v 1.6 2003/07/16 17:02:59 alga Exp $
 """
 
 from zope.context import getWrapperContainer, getWrapperData
@@ -30,12 +30,12 @@ class BaseTestIZopeItemContainer:
     def _sampleMapping(self):
         """Return a new instance to be tested
         """
-        raise TypeError('_new was not implemented')
+        raise TypeError('_sampleMapping was not implemented')
 
     def _sampleDict(self):
         """Return a sequence of items that should be in the container
         """
-        raise TypeError('_newItems was not implemented')
+        raise TypeError('_sampleDict was not implemented')
 
     def _absentKeys(self):
         """This should return the keys not in the container
