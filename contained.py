@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.3 2003/09/22 21:05:12 sidnei Exp $
+$Id: contained.py,v 1.4 2004/02/09 09:07:43 dunny Exp $
 """
 
 from zope.app import zapi
@@ -21,12 +21,12 @@ from zope.app.event.objectevent import ObjectEvent, modified
 from zope.app.event import publish
 from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.app.interfaces.container import IAddNotifiable, IMoveNotifiable
+from zope.app.interfaces.container import IRemoveNotifiable
 from zope.app.interfaces.container import IContained
 from zope.app.interfaces.container import INameChooser
 from zope.app.interfaces.container import IObjectAddedEvent
 from zope.app.interfaces.container import IObjectMovedEvent
 from zope.app.interfaces.container import IObjectRemovedEvent
-from zope.app.interfaces.container import IRemoveNotifiable
 from zope.app.interfaces.location import ILocation
 from zope.exceptions import DuplicationError
 from zope.proxy import ProxyBase, getProxiedObject
@@ -91,8 +91,8 @@ def containedEvent(object, container, name=None):
     ContainedProxy around the original object. The event is an added
     event, a moved event, or None.
 
-    If the object implements IContained, simply set it's __parent__
-    and __name attributes:
+    If the object implements IContained, simply set its __parent__
+    and __name__ attributes:
 
     >>> container = {}
     >>> item = Contained()
@@ -224,13 +224,29 @@ def setitem(container, setitemf, name, object):
     If the item implements IContained, simply set it's __parent__
     and __name attributes:
 
+    >>> class IItem(zope.interface.Interface):
+    ...     pass
     >>> class Item(Contained):
-    ...     zope.interface.implements(IAddNotifiable, IMoveNotifiable)
-    ...     def addNotify(self, event):
+    ...     zope.interface.implements(IItem)
+    ...     def setAdded(self, event):
     ...         self.added = event
-    ...     def moveNotify(self, event):
+    ...     def setMoved(self, event):
     ...         self.moved = event
 
+    >>> from zope.app.event.objectevent import objectEventCallbackHelper
+    >>> from zope.app.interfaces.container import IObjectAddedEvent
+    >>> from zope.app.interfaces.container import IObjectMovedEvent
+    >>> from zope.component import getService
+    >>> from zope.app.services.servicenames import Adapters
+    >>> from zope.app.interfaces.event import ISubscriber
+    >>> factory = objectEventCallbackHelper(
+    ...     lambda event: event.object.setAdded(event))
+    >>> getService(None, Adapters).provideSubscriptionAdapter(
+    ...     IItem, ISubscriber, [factory], with=[IObjectAddedEvent])
+    >>> factory = objectEventCallbackHelper(
+    ...     lambda event: event.object.setMoved(event))
+    >>> getService(None, Adapters).provideSubscriptionAdapter(
+    ...     IItem, ISubscriber, [factory], with=[IObjectMovedEvent])
     >>> item = Item()
 
     >>> container = {}
@@ -246,7 +262,6 @@ def setitem(container, setitemf, name, object):
     track the events generated:
 
     >>> from zope.app.event.tests.placelesssetup import getEvents
-    >>> from zope.app.interfaces.container import IObjectAddedEvent
     >>> from zope.app.interfaces.event import IObjectModifiedEvent
 
     We have an added event:
@@ -303,7 +318,6 @@ def setitem(container, setitemf, name, object):
     1
     >>> len(getEvents(IObjectModifiedEvent))
     2
-    >>> from zope.app.interfaces.container import IObjectMovedEvent
     >>> len(getEvents(IObjectMovedEvent))
     2
 
