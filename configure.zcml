@@ -5,79 +5,88 @@
    xmlns:event="http://namespaces.zope.org/event"
 >
 
-  <adapter 
+  <adapter
      provides="zope.app.interfaces.container.find.IFind"
      for="zope.app.interfaces.container.IReadContainer"
-     permission="zope.ManageContent" 
-     factory="zope.app.container.find.FindAdapter" 
+     permission="zope.ManageContent"
+     factory="zope.app.container.find.FindAdapter"
      />
 
-  <adapter 
+  <adapter
       for="zope.app.interfaces.container.IReadContainer"
       provides="zope.app.interfaces.file.IReadDirectory"
       factory=".directory.noop"
       />
 
-  <adapter 
+  <adapter
       for="zope.app.interfaces.container.IWriteContainer"
       provides="zope.app.interfaces.file.IWriteDirectory"
       factory=".directory.noop"
       />
 
-  <adapter factory="zope.app.container.traversal.ContainerTraversable"
-           provides="zope.app.interfaces.traversing.ITraversable"
-           for="zope.app.interfaces.container.IReadContainer" 
-           />
+  <adapter
+      factory="zope.app.container.traversal.ContainerTraversable"
+      provides="zope.app.interfaces.traversing.ITraversable"
+      for="zope.app.interfaces.container.IReadContainer"
+      />
 
-  <adapter factory="zope.app.container.zopecontainer.ZopeContainerAdapter"
-           provides="zope.app.interfaces.container.IZopeContainer"
-           for="zope.app.interfaces.container.IContainer" 
-           />
+  <adapter
+      factory="zope.app.container.zopecontainer.ZopeContainerAdapter"
+      provides="zope.app.interfaces.container.IZopeContainer"
+      for="zope.app.interfaces.container.IContainer"
+      />
 
-  <adapter factory="zope.app.container.size.ContainerSized"
-           provides="zope.app.interfaces.size.ISized"
-           for="zope.app.interfaces.container.IContainer" 
-           />
+  <adapter
+      factory="zope.app.container.zopecontainer.ZopeContainerDecorator"
+      provides="zope.app.interfaces.context.IZopeContextWrapper"
+      for="zope.app.interfaces.container.IContainer"
+      />
 
-  <adapter 
+  <adapter
+      factory="zope.app.container.size.ContainerSized"
+      provides="zope.app.interfaces.size.ISized"
+      for="zope.app.interfaces.container.IContainer"
+      />
+
+  <adapter
      provides="zope.app.interfaces.container.ICopySource"
      for="zope.app.interfaces.content.folder.IFolder"
-     permission="zope.ManageContent" 
-     factory="zope.app.container.copypastemove.CopySource" 
+     permission="zope.ManageContent"
+     factory="zope.app.container.copypastemove.CopySource"
      />
 
-  <adapter 
+  <adapter
      provides="zope.app.interfaces.container.INoChildrenCopySource"
      for="zope.app.interfaces.content.folder.IFolder"
-     permission="zope.ManageContent" 
-     factory="zope.app.container.copypastemove.NoChildrenCopySource" 
+     permission="zope.ManageContent"
+     factory="zope.app.container.copypastemove.NoChildrenCopySource"
      />
 
-  <adapter 
+  <adapter
      provides="zope.app.interfaces.container.IMoveSource"
      for="zope.app.interfaces.content.folder.IFolder"
-     permission="zope.ManageContent" 
-     factory="zope.app.container.copypastemove.MoveSource" 
+     permission="zope.ManageContent"
+     factory="zope.app.container.copypastemove.MoveSource"
      />
 
-  <adapter 
+  <adapter
      provides="zope.app.interfaces.container.IPasteTarget"
      for="zope.app.interfaces.content.folder.IFolder"
-     permission="zope.ManageContent" 
-     factory="zope.app.container.copypastemove.PasteTarget" 
+     permission="zope.ManageContent"
+     factory="zope.app.container.copypastemove.PasteTarget"
      />
-           
-  <adapter 
+
+  <adapter
      provides="zope.app.interfaces.container.IPasteNamesChooser"
      for="zope.app.interfaces.content.folder.IFolder"
-     permission="zope.ManageContent" 
-     factory="zope.app.container.copypastemove.PasteNamesChooser" 
+     permission="zope.ManageContent"
+     factory="zope.app.container.copypastemove.PasteNamesChooser"
      />
 
 
-  <event:subscribe 
-      subscriber = ".dependency.CheckDependency"
-      event_types = "zope.app.interfaces.event.IObjectRemovedEvent"
+  <event:subscribe
+      subscriber=".dependency.CheckDependency"
+      event_types="zope.app.interfaces.event.IObjectRemovedEvent"
       />
 
 </zopeConfigure>
