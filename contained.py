@@ -30,7 +30,7 @@ from zope.app.exception.interfaces import UserError
 from zope.app.event.objectevent import ObjectEvent, modified
 from zope.event import notify
 from zope.app.i18n import ZopeMessageIDFactory as _
-from zope.app.container.interfaces import IContained, IReadContainer
+from zope.app.container.interfaces import IContained
 from zope.app.container.interfaces import INameChooser
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.app.container.interfaces import IObjectMovedEvent

@@ -22,7 +22,6 @@ from zope.app.testing import ztapi, placelesssetup
 from zope.publisher.interfaces import NotFound
 from zope.publisher.browser import TestRequest
 from zope.interface import implements
-from zope.publisher.interfaces.browser import IBrowserRequest 
 
 class TestContainer(object):
     implements(IReadContainer)

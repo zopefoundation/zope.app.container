@@ -24,7 +24,6 @@ from warnings import warn
 import zope.security.checker
 from zope.component.interfaces import IFactory
 from zope.event import notify
-from zope.i18n import translate
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 from zope.security.proxy import removeSecurityProxy

@@ -22,7 +22,6 @@ from zope.interface import Interface, implements
 from zope.app.annotation.interfaces import IAnnotations
 from zope.app.component.testing import PlacefulSetup
 from zope.app.container.contained import contained
-from zope.app.container.interfaces import IObjectRemovedEvent
 from zope.app.copypastemove import ObjectMover, ObjectCopier
 from zope.app.copypastemove import PrincipalClipboard
 from zope.app.copypastemove.interfaces import IObjectMover, IObjectCopier
