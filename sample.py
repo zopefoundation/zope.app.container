@@ -26,6 +26,7 @@ from zope.app.container.interfaces import IContainer
 from zope.interface import implements
 from zope.app.container.contained import Contained, setitem, uncontained
 
+
 class SampleContainer(Contained):
     """Sample container implementation suitable for testing.
 

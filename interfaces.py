@@ -24,6 +24,7 @@ from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
 from zope.app.location.interfaces import ILocation
 from zope.app.event.interfaces import IObjectEvent
 
+
 class DuplicateIDError(KeyError):
     pass
 
@@ -31,32 +32,31 @@ class ContainerError(Exception):
     """An error of a container with one of its components."""
 
 class InvalidContainerType(Invalid, TypeError):
-    """The type of a container is not valid
-    """
+    """The type of a container is not valid."""
 
 class InvalidItemType(Invalid, TypeError):
-    """The type of an item is not valid
-    """
+    """The type of an item is not valid."""
 
 class InvalidType(Invalid, TypeError):
-    """The type of an object is not valid
-    """
+    """The type of an object is not valid."""
+
+
 
 class IContained(ILocation):
-    """Objects contained in containers
-    """
+    """Objects contained in containers."""
+
 
 class IItemContainer(IItemMapping):
-    """Minimal readable container
-    """
+    """Minimal readable container."""
+
 
 class ISimpleReadContainer(IItemContainer, IReadMapping):
-    """Readable content containers
-    """
+    """Readable content containers."""
+
 
 class IReadContainer(ISimpleReadContainer, IEnumerableMapping):
-    """Readable containers that can be enumerated.
-    """
+    """Readable containers that can be enumerated."""
+
 
 class IWriteContainer(Interface):
     """An interface for the write aspects of a container."""
@@ -123,18 +123,21 @@ class IWriteContainer(Interface):
 
         """
 
+
 class IItemWriteContainer(IWriteContainer, IItemContainer):
     """A write container that also supports minimal reads."""
 
+
 class IContentContainer(IWriteContainer):
-    """Containers (like folders) that contain ordinary content"""
+    """Containers (like folders) that contain ordinary content."""
+
 
 class IContainer(IReadContainer, IWriteContainer):
     """Readable and writable content container."""
 
+
 class IOrderedContainer(IContainer):
-    """Containers whose contents are maintained in order
-    """
+    """Containers whose contents are maintained in order."""
 
     def updateOrder(order):
         """Revise the order of keys, replacing the current ordering.
@@ -148,21 +151,22 @@ class IOrderedContainer(IContainer):
         Raises ``ValueError`` if order contains an invalid set of keys.
         """
 
+
 class IContainerNamesContainer(IContainer):
-    """Containers that always choose names for their items
-    """
+    """Containers that always choose names for their items."""
 
 
 ##############################################################################
 # Moving Objects
 
 class IObjectMovedEvent(IObjectEvent):
-    """An object has been moved"""
+    """An object has been moved."""
 
     oldParent = Attribute("The old location parent for the object.")
     oldName = Attribute("The old location name for the object.")
     newParent = Attribute("The new location parent for the object.")
     newName = Attribute("The new location name for the object.")
+
 
 ##############################################################################
 # Adding objects
@@ -179,8 +183,10 @@ class UnaddableError(ContainerError):
         return ("%(obj)s cannot be added "
                 "to %(container)s%(message)s" % self.__dict__)
 
+
 class IObjectAddedEvent(IObjectMovedEvent):
     """An object has been added to a container."""
+
 
 class IAdding(IView):
 
@@ -217,7 +223,7 @@ class IAdding(IView):
         """Return whether names can be input by the user."""
 
     def addingInfo():
-        """Returns add menu data as a sequence of mappings.
+        """Return add menu data as a sequence of mappings.
 
         Each mapping contains 'action', 'title', and possibly other keys.
 
@@ -225,10 +231,10 @@ class IAdding(IView):
         """
 
     def isSingleMenuItem():
-        "Return whether there is single menu item or not."
-    
+        """Return whether there is single menu item or not."""
+
     def hasCustomAddView():
-       "This should be called only if there is `singleMenuItem` else return 0"
+        "This should be called only if there is `singleMenuItem` else return 0"
 
 
 class INameChooser(Interface):
@@ -236,7 +242,7 @@ class INameChooser(Interface):
     def checkName(name, object):
         """Check whether an object name is valid.
 
-        Raise a user error if the name is not valid.
+        Raises a user error if the name is not valid.
         """
 
     def chooseName(name, object):
@@ -244,15 +250,16 @@ class INameChooser(Interface):
 
         The given name and object may be taken into account when
         choosing the name.
-
         """
+
 
 ##############################################################################
 # Removing objects
 
 
 class IObjectRemovedEvent(IObjectMovedEvent):
-    """An object has been removed from a container"""
+    """An object has been removed from a container."""
+
 
 ##############################################################################
 # Finding objects
@@ -263,18 +270,19 @@ class IFind(Interface):
     """
 
     def find(id_filters=None, object_filters=None):
-        """Find object that matches all filters in all sub objects,
-        not including this container itself.
+        """Find object that matches all filters in all sub-objects.
+
+        This container itself is not included.
         """
+
 
 class IObjectFindFilter(Interface):
 
     def matches(object):
-        """Returns true if the object matches the filter criteria.
-        """
+        """Return True if the object matches the filter criteria."""
+
 
 class IIdFindFilter(Interface):
 
     def matches(id):
-        """Returns true if the id matches the filter criteria.
-        """
+        """Return True if the id matches the filter criteria."""

@@ -127,7 +127,7 @@ def dispatchToSublocations(object, event):
          ...         ),
          ...       L(13),
          ...       )
-         
+
        Now, if we call the dispatcher, it should call event handlers
        for all of the objects.
 
@@ -146,7 +146,7 @@ def dispatchToSublocations(object, event):
          >>> ztapi.handle([None, IObjectMovedEvent], handler)
 
        We also register our dispatcher:
-       
+
          >>> ztapi.handle([None, IObjectMovedEvent], dispatchToSublocations)
 
        We can then call the dispatcher for the root object:
@@ -169,7 +169,7 @@ def dispatchToSublocations(object, event):
        This suggests that location event handlers need to be aware that
        the objects they are called on and the event objects could be
        different.
-       
+
        """
     subs = ISublocations(object, None)
     if subs is not None:
@@ -196,7 +196,7 @@ class ContainerSublocations(object):
          >>> sublocations.sort()
          >>> sublocations
          [1, 2, 42]
-      
+
        """
 
     def __init__(self, container):
@@ -250,7 +250,7 @@ def containedEvent(object, container, name=None):
         True
         >>> item.__name__
         u'foo'
-    
+
     We don't get a new added event:
 
         >>> event
@@ -361,7 +361,7 @@ def setitem(container, setitemf, name, object):
     This helper is needed, in part, because the events need to get
     published after the `object` has been added to the `container`.
 
-    If the item implements `IContained`, simply set it's `__parent__`
+    If the item implements `IContained`, simply set its `__parent__`
     and `__name__` attributes:
 
     >>> class IItem(zope.interface.Interface):
@@ -382,7 +382,7 @@ def setitem(container, setitemf, name, object):
 
     >>> ztapi.handle([IItem, IObjectMovedEvent],
     ...              lambda obj, event: obj.setMoved(event))
-    
+
     >>> item = Item()
 
     >>> container = {}
@@ -560,7 +560,6 @@ def setitem(container, setitemf, name, object):
     ValueError: empty names are not allowed
 
     """
-
     # Do basic name check:
     if isinstance(name, str):
         try:
