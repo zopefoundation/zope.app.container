@@ -313,11 +313,13 @@ class Contents(BrowserView):
             else:
                 if item['action'] == 'cut':
                     mover = IObjectMover(obj)
-                    if not mover.moveableTo(target):
+                    moveableTo = self.safe_getattr(mover, 'moveableTo', None)
+                    if moveableTo is None or not moveableTo(target):
                         return False
                 elif item['action'] == 'copy':
                     copier = IObjectCopier(obj)
-                    if not copier.copyableTo(target):
+                    copyableTo = self.safe_getattr(copier, 'copyableTo', None)
+                    if copyableTo is None or not copyableTo(target):
                         return False
                 else:
                     raise
