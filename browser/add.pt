@@ -1,4 +1,4 @@
-<html metal:use-macro="views/standard_macros/page">
+<html metal:use-macro="views/standard_macros/addingdialog">
 <body>
 <div metal:fill-slot="body">
 
