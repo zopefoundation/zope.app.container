@@ -302,11 +302,27 @@ def containedEvent(object, container, name=None):
         True
         >>> x.__name__
         'foo'
+
+    Make sure we don't lose existing directly provided interfaces.
+
+        >>> from zope.interface import Interface, directlyProvides
+        >>> class IOther(Interface):
+        ...     pass
+        >>> from zope.app.location import Location
+        >>> item = Location()
+        >>> directlyProvides(item, IOther)
+        >>> IOther.providedBy(item)
+        True
+        >>> x, event = containedEvent(item, container, 'foo')
+        >>> IOther.providedBy(item)
+        True
     """
 
     if not IContained.providedBy(object):
         if ILocation.providedBy(object):
-            zope.interface.directlyProvides(object, IContained)
+            zope.interface.directlyProvides(
+                object, IContained,
+                zope.interface.directlyProvidedBy(object))
         else:
             object = ContainedProxy(object)
 
