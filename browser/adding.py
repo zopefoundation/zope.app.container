@@ -22,7 +22,7 @@ from warnings import warn
 import zope.security.checker
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
-from zope.proxy import removeAllProxies
+from zope.security.proxy import removeSecurityProxy
 from zope.component.interfaces import IFactory
 
 from zope.app.exception.interfaces import UserError
@@ -149,7 +149,7 @@ class BasicAdding(BrowserView):
         # Note that it is important to do this here, rather than
         # in add, otherwise, someone might be able to trick add
         # into unproxying an existing object,
-        content = removeAllProxies(content)
+        content = removeSecurityProxy(content)
 
         notify(ObjectCreatedEvent(content))
 
