@@ -17,7 +17,8 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.exceptions import NotFoundError, Unauthorized
+from zope.exceptions import NotFoundError
+from zope.security.interfaces import Unauthorized
 from zope.security import checkPermission
 
 from zope.app import zapi

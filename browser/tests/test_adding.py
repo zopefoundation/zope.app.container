@@ -24,7 +24,7 @@ import zope.interface
 from zope.interface import implements, Interface, directlyProvides
 from zope.publisher.browser import TestRequest
 import zope.security.checker
-from zope.exceptions import ForbiddenAttribute
+from zope.security.interfaces import ForbiddenAttribute
 from zope.app import zapi
 from zope.app.tests import ztapi
 from zope.app.tests.placelesssetup import PlacelessSetup, setUp, tearDown
