@@ -1,0 +1,36 @@
+<zope:configure
+   xmlns:zope="http://namespaces.zope.org/zope"
+   xmlns="http://namespaces.zope.org/browser">
+
+  <view
+      for="zope.app.container.interfaces.IContentContainer"
+      name="+"
+      menu="zmi_actions" title="Add"
+      class="zope.app.container.browser.adding.ContentAdding"
+      permission="zope.ManageContent"
+      allowed_attributes="addingInfo isSingleMenuItem hasCustomAddView"
+      usage="addingdialog">
+
+    <page name="index.html"  template="add.pt" />
+    <page name="action.html" attribute="action" />
+
+  </view>
+
+  <page
+      for="zope.app.container.interfaces.IReadContainer"
+      name="find.html"
+      permission="zope.ManageContent"
+      class="zope.app.container.browser.find.Find"
+      template="find.pt"
+      menu="zmi_actions" title="Find" />
+
+  <page
+      for="zope.app.container.interfaces.IWriteContainer"
+      permission="zope.ManageContent"
+      name="commonTasks"
+      class="zope.app.container.browser.contents.Contents"
+      template="commontasks.pt" />
+
+
+
+</zope:configure>
