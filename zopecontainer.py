@@ -14,12 +14,12 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.22 2003/06/15 16:10:43 stevea Exp $
+$Id: zopecontainer.py,v 1.23 2003/06/15 16:38:29 stevea Exp $
 """
 
 from zope.app.interfaces.container import IZopeSimpleReadContainer
 from zope.app.interfaces.container import IZopeReadContainer
-from zope.app.interfaces.container import IZopeWriteContainer
+from zope.app.interfaces.container import IZopeItemWriteContainer
 from zope.app.interfaces.container import IZopeContainer
 from zope.app.interfaces.container import IOptionalNamesContainer
 from zope.app.interfaces.container import IContainerNamesContainer
@@ -100,11 +100,15 @@ class ZopeReadContainerDecorator(ZopeSimpleReadContainerDecorator):
         return result
 
 
-class ZopeWriteContainerDecorator(ZopeItemContainerDecorator):
-    # Both setObject and __delitem__ depend on the decorator having
-    # __getitem__
+class ZopeItemWriteContainerDecorator(ZopeItemContainerDecorator):
+    # Both 'setObject' and '__delitem__' depend on the decorator having
+    # '__getitem__'
+    #
+    # A ZopeWriteContainerDecorator could be written to work with other
+    # means for getting objects from a container. However, in most cases,
+    # IZopeWriteContainer depends on IItemContainer.
 
-    implements(IZopeWriteContainer)
+    implements(IZopeItemWriteContainer)
 
     def setObject(self, key, object):
         "See IZopeWriteContainer"
@@ -167,7 +171,7 @@ class ZopeWriteContainerDecorator(ZopeItemContainerDecorator):
         return key
 
 
-class ZopeContainerDecorator(ZopeWriteContainerDecorator,
+class ZopeContainerDecorator(ZopeItemWriteContainerDecorator,
                              ZopeReadContainerDecorator):
     implements(IZopeContainer)
 

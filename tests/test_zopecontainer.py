@@ -15,7 +15,7 @@
 
 XXX longer description goes here.
 
-$Id: test_zopecontainer.py,v 1.2 2003/06/15 16:10:43 stevea Exp $
+$Id: test_zopecontainer.py,v 1.3 2003/06/15 16:38:29 stevea Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -102,9 +102,9 @@ class TestZopeReadContainerDecorator(TestZopeSimpleReadContainerDecorator,
             ZopeReadContainerDecorator
         return ZopeReadContainerDecorator(container)
 
-class TestZopeWriteContainerDecorator(TestZopeItemContainerDecorator,
-                                      BaseTestIZopeWriteContainer):
-    # The ZopeWriteContainerDecorator depends on the container also being
+class TestZopeItemWriteContainerDecorator(TestZopeItemContainerDecorator,
+                                          BaseTestIZopeWriteContainer):
+    # The ZopeItemWriteContainerDecorator depends on the container also being
     # an IItemContainer. It needs this to get values that are to be deleted
     # so they can be sent in events.
     # So, this unit test tests that the decorator implementation properly
@@ -123,8 +123,8 @@ class TestZopeWriteContainerDecorator(TestZopeItemContainerDecorator,
 
     def decorate(self, container):
         from zope.app.container.zopecontainer import \
-            ZopeWriteContainerDecorator
-        return ZopeWriteContainerDecorator(container)
+            ZopeItemWriteContainerDecorator
+        return ZopeItemWriteContainerDecorator(container)
 
     __newItem = {'A': C(), 'B':C()}
     def _sample_newItem(self):
@@ -135,7 +135,8 @@ class TestZopeWriteContainerDecorator(TestZopeItemContainerDecorator,
         return self.__newItemHooked
 
 
-class TestZopeContainerDecorator(TestZopeWriteContainerDecorator):
+class TestZopeContainerDecorator(TestZopeItemWriteContainerDecorator,
+                                 TestZopeReadContainerDecorator):
 
     def decorate(self, container):
         from zope.app.container.zopecontainer import ZopeContainerDecorator
@@ -147,7 +148,7 @@ def test_suite():
         makeSuite(TestZopeItemContainerDecorator),
         makeSuite(TestZopeSimpleReadContainerDecorator),
         makeSuite(TestZopeReadContainerDecorator),
-        makeSuite(TestZopeWriteContainerDecorator),
+        makeSuite(TestZopeItemWriteContainerDecorator),
         makeSuite(TestZopeContainerDecorator),
         ))
 

@@ -30,6 +30,30 @@
       for="zope.app.interfaces.container.IReadContainer"
       />
 
+  <!-- Decorators for different flavours of container -->
+  <adapter
+      factory="zope.app.container.zopecontainer.ZopeItemContainerDecorator"
+      provides="zope.app.interfaces.context.IZopeContextWrapper"
+      for="zope.app.interfaces.container.IItemContainer"
+      />
+  <adapter
+      factory="
+      zope.app.container.zopecontainer.ZopeSimpleReadContainerDecorator"
+      provides="zope.app.interfaces.context.IZopeContextWrapper"
+      for="zope.app.interfaces.container.ISimpleReadContainer"
+      />
+  <adapter
+      factory="
+      zope.app.container.zopecontainer.ZopeReadContainerDecorator"
+      provides="zope.app.interfaces.context.IZopeContextWrapper"
+      for="zope.app.interfaces.container.IReadContainer"
+      />
+  <adapter
+      factory="
+      zope.app.container.zopecontainer.ZopeItemWriteContainerDecorator"
+      provides="zope.app.interfaces.context.IZopeContextWrapper"
+      for="zope.app.interfaces.container.IItemWriteContainer"
+      />
   <adapter
       factory="zope.app.container.zopecontainer.ZopeContainerDecorator"
       provides="zope.app.interfaces.context.IZopeContextWrapper"
@@ -49,7 +73,7 @@
   <adapter
       factory="zope.app.container.size.ContainerSized"
       provides="zope.app.interfaces.size.ISized"
-      for="zope.app.interfaces.container.IContainer"
+      for="zope.app.interfaces.container.IReadContainer"
       />
 
   <event:subscribe
