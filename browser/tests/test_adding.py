@@ -13,7 +13,7 @@
 ##############################################################################
 """Adding implementation tests
 
-$Id: test_adding.py,v 1.7 2004/05/10 14:35:00 BjornT Exp $
+$Id$
 """
 import unittest
 from zope.testing.doctestunit import DocTestSuite

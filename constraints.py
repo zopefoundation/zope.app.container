@@ -147,7 +147,7 @@
    >>> checkFactory(c1, "Zbob", factory)
    False
 
-   $Id: constraints.py,v 1.7 2004/04/11 10:34:40 srichter Exp $
+   $Id$
    """
 
 import zope.interface

@@ -13,7 +13,7 @@
 ##############################################################################
 """Test Container Contents
 
-$Id: test_contents.py,v 1.1 2004/03/14 02:17:03 srichter Exp $
+$Id$
 """
 from unittest import TestCase, TestSuite, main, makeSuite
 from zope.app.tests import ztapi

@@ -13,7 +13,7 @@
 ##############################################################################
 """Objects that take care of annotating dublin core meta data times
 
-$Id: dependency.py,v 1.13 2004/03/13 22:02:15 srichter Exp $
+$Id$
 """
 from zope.proxy import removeAllProxies
 from zope.interface import implements

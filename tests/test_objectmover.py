@@ -12,7 +12,7 @@
 #
 ##############################################################################
 """
-$Id: test_objectmover.py,v 1.13 2004/03/13 15:21:13 srichter Exp $
+$Id$
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite

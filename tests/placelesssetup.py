@@ -13,7 +13,7 @@
 ##############################################################################
 """Unit test logic for setting up and tearing down basic infrastructure
 
-$Id: placelesssetup.py,v 1.5 2004/03/03 10:38:39 philikon Exp $
+$Id$
 """
 from zope.app.tests import ztapi
 from zope.app.container.interfaces import IWriteContainer, INameChooser

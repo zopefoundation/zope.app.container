@@ -14,7 +14,7 @@
 """Test the OrderedContainer.
 
 
-$Id: test_ordered.py,v 1.3 2003/09/21 17:31:44 jim Exp $
+$Id$
 """
 
 import unittest

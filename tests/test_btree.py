@@ -13,7 +13,7 @@
 ##############################################################################
 """BTree Container Tests
 
-$Id: test_btree.py,v 1.1 2004/03/17 16:38:12 srichter Exp $
+$Id$
 """
 from unittest import TestCase, main, makeSuite, TestSuite
 from zope.testing.doctestunit import DocTestSuite

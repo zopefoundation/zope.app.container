@@ -13,7 +13,7 @@
 ##############################################################################
 """Container-related interfaces
 
-$Id: interfaces.py,v 1.4 2004/05/06 15:46:02 eddala Exp $
+$Id$
 """
 from zope.interface import Interface, Attribute, implements, Invalid
 from zope.component.interfaces import IView

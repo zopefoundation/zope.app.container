@@ -18,7 +18,7 @@ This is primarily for testing purposes.
 It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
-$Id: sample.py,v 1.11 2004/03/03 10:38:39 philikon Exp $
+$Id$
 """
 from zope.app.container.interfaces import IContainer
 from zope.interface import implements

@@ -14,7 +14,7 @@
 ##############################################################################
 """Adapters that give the size of an object.
 
-$Id: size.py,v 1.5 2004/03/03 11:03:57 philikon Exp $
+$Id$
 """
 from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.app.size.interfaces import ISized

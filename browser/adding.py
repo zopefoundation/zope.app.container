@@ -16,7 +16,7 @@
 The Adding View is used to add new objects to a container. It is sort of a
 factory screen.
 
-$Id: adding.py,v 1.6 2004/05/10 14:34:58 BjornT Exp $
+$Id$
 """
 from warnings import warn
 import zope.security.checker

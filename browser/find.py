@@ -13,7 +13,7 @@
 ##############################################################################
 """Find View Class
 
-$Id: find.py,v 1.1 2004/03/14 02:17:02 srichter Exp $
+$Id$
 """
 # XXX this needs to be looked up in a registry
 from zope.app.container.find import SimpleIdFindFilter

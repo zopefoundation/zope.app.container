@@ -18,7 +18,7 @@ This is primarily for testing purposes.
 It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
-$Id: btree.py,v 1.9 2004/03/17 17:59:39 srichter Exp $
+$Id$
 """
 
 from persistent import Persistent

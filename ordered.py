@@ -13,7 +13,7 @@
 ##############################################################################
 """Ordered container implementation.
 
-$Id: ordered.py,v 1.9 2004/03/05 22:08:59 jim Exp $
+$Id$
 """
 
 from zope.app.container.interfaces import IOrderedContainer

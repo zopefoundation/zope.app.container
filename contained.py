@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.22 2004/03/23 16:18:01 maru Exp $
+$Id$
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError

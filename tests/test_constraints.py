@@ -13,7 +13,7 @@
 ##############################################################################
 """Container constraint tests
 
-$Id: test_constraints.py,v 1.1 2003/12/01 16:19:21 jim Exp $
+$Id$
 """
 import unittest
 from zope.testing.doctestunit import DocTestSuite

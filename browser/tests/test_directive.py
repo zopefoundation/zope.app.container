@@ -13,7 +13,7 @@
 ##############################################################################
 """'containerView' directive test
 
-$Id: test_directive.py,v 1.5 2004/04/15 13:25:25 srichter Exp $
+$Id$
 """
 import re
 import pprint

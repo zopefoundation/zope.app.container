@@ -12,7 +12,7 @@
 #
 ##############################################################################
 """
-$Id: test_find.py,v 1.9 2004/03/13 22:02:15 srichter Exp $
+$Id$
 """
 
 from unittest import TestCase, main, makeSuite

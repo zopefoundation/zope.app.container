@@ -12,7 +12,7 @@
 #
 ##############################################################################
 """
-$Id: metaconfigure.py,v 1.4 2004/04/29 10:11:34 philikon Exp $
+$Id$
 """
 
 from zope.interface import Interface

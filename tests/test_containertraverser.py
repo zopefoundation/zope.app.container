@@ -13,7 +13,7 @@
 ##############################################################################
 """Container Traverser Tests
 
-$Id: test_containertraverser.py,v 1.12 2004/03/15 20:42:04 jim Exp $
+$Id$
 """
 import unittest
 from zope.app.container.traversal import ContainerTraverser

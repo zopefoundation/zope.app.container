@@ -13,7 +13,7 @@
 ##############################################################################
 """Test the IContainer interface.
 
-$Id: test_icontainer.py,v 1.9 2004/03/17 16:38:12 srichter Exp $
+$Id$
 """
 from unittest import TestCase, main, makeSuite
 from zope.app.container.interfaces import IContainer

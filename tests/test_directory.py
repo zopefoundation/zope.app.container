@@ -15,7 +15,7 @@
 
 XXX longer description goes here.
 
-$Id: test_directory.py,v 1.1 2003/02/03 15:08:31 jim Exp $
+$Id$
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite

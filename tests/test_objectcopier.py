@@ -14,7 +14,7 @@
 """
 Revision information:
 
-$Id: test_objectcopier.py,v 1.16 2004/03/13 15:21:13 srichter Exp $
+$Id$
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite

@@ -13,7 +13,7 @@
 ##############################################################################
 """View Class for the Container's Contents view.
 
-$Id: contents.py,v 1.1 2004/03/14 02:17:02 srichter Exp $
+$Id$
 """
 
 from zope.exceptions import NotFoundError

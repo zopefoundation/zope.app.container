@@ -21,7 +21,7 @@ noop
 Cloner
   An IDirectoryFactory adapter that just clones the original object.
 
-$Id: directory.py,v 1.6 2004/03/15 13:10:44 srichter Exp $
+$Id$
 """
 __metaclass__ = type
 

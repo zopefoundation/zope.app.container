@@ -13,7 +13,7 @@
 ##############################################################################
 """Traversal components for containers
 
-$Id: traversal.py,v 1.13 2004/04/17 17:15:32 jim Exp $
+$Id$
 """
 from zope.interface import implements
 from zope.exceptions import NotFoundError
