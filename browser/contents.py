@@ -118,6 +118,7 @@ class Contents(BrowserView):
 
         self.supportsCut = info
         self.supportsCopy = info
+        self.supportsDelete = info
         self.supportsPaste = self.pasteable()
         self.supportsRename = (
             self.supportsCut and

@@ -133,10 +133,9 @@
                />
         <input type="submit" name="container_delete_button" value="Delete"
                i18n:attributes="value container-delete-button"
-			   tal:condition="container_contents"
+               tal:condition="view/supportsDelete"
                i18n:domain="zope"
                />
-
 
 	<div tal:condition="context/@@+/isSingleMenuItem" tal:omit-tag="" 
 	     tal:define="has_custom_add_view context/@@+/hasCustomAddView; 
