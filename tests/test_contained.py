@@ -12,18 +12,19 @@
 #
 ##############################################################################
 import unittest
+import gc
 from zope.testing.doctestunit import DocTestSuite
 from zope.app.tests.placelesssetup import setUp, tearDown
 from zope.app.container.contained import ContainedProxy
-from zodb.storage.memory import MemoryMinimalStorage
-from zodb.db import DB
+from ZODB.DemoStorage import DemoStorage
+from ZODB.DB import DB
 from transaction import get_transaction
-from persistence import Persistent
+from persistent import Persistent
 
 class MyOb(Persistent):
     pass
 
-def test_basic_attribute_management_and_picklability():
+def test_basic_proxy_attribute_management_and_picklability():
     """Contained-object proxy
 
     This is a picklable proxy that can be put around objects that
@@ -50,12 +51,12 @@ def test_basic_attribute_management_and_picklability():
     'p'
     """
     
-def test_basic_persistence_w_non_perssitent_proxied():
+def test_basic_persistent_w_non_persitent_proxied():
     """
     >>> p = ContainedProxy([1])
     >>> p.__parent__ = 2;
     >>> p.__name__ = 'test'
-    >>> db = DB(MemoryMinimalStorage('test_storage'));
+    >>> db = DB(DemoStorage('test_storage'));
     >>> c = db.open()
     >>> c.root()['p'] = p
     >>> get_transaction().commit()
@@ -79,7 +80,7 @@ def test_basic_persistence_w_non_perssitent_proxied():
     >>> db.close()
     """
     
-def test_basic_persistence_w_perssitent_proxied():
+def test_basic_persistent_w_persitent_proxied():
     """
 
     Here, we'll verify that shared references work and
@@ -109,7 +110,7 @@ def test_basic_persistence_w_perssitent_proxied():
 
     Now we'll save the data:
     
-    >>> db = DB(MemoryMinimalStorage('test_storage'));
+    >>> db = DB(DemoStorage('test_storage'));
     >>> c1 = db.open()
     >>> c1.root()['parent'] = parent
     >>> c1.root()['other'] = other
@@ -165,6 +166,69 @@ def test_basic_persistence_w_perssitent_proxied():
         
     >>> db.close()
     """
+
+def test_proxy_cache_interaction():
+    """Test to make sure the proxy properly interacts with the object cache
+
+    Persistent objects are their own weak refs.  Thier deallocators
+    need to notify their connection's cache that their object is being
+    deallocated, so that it is removed from the cache.
+
+    >>> from ZODB.tests.util import DB
+    >>> db = DB()
+    >>> db.setCacheSize(5)
+    >>> conn = db.open()
+    >>> conn.root()['p'] = ContainedProxy(None)
+
+    We need to create some filler objects to push our proxy out of the cache:
+
+    >>> for i in range(10):
+    ...     conn.root()[i] = MyOb()
+
+    >>> get_transaction().commit()
+
+    Let's get the oid of our proxy:
+
+    >>> oid = conn.root()['p']._p_oid
+
+    Now, we'll access the filler object's:
+
+    >>> x = [getattr(conn.root()[i], 'x', 0) for i in range(10)]
+
+    We've also accessed the root object. If we garbage-collect the
+    cache:
+
+    >>> conn._cache.incrgc()
+
+    Then the root object will still be active, because it was accessed
+    recently:
+
+    >>> conn.root()._p_changed
+    0
+
+    And the proxy will be in the cache, because it's refernced from
+    the root object:
+
+    >>> conn._cache.get(oid, None) is not None
+    True
+
+    But it's a ghost:
+
+    >>> conn.root()['p']._p_changed
+
+    If we deactivate the root object:
+
+    >>> conn.root()._p_deactivate()
+
+    Then we'll release the last reference to the proxy and it should
+    no longer be in the cache. To be sure, we'll call gc:
+
+    >>> x = gc.collect()
+    >>> conn._cache.get(oid, None) is not None
+    False
+    
+    """
+
 
 def test_suite():
     return unittest.TestSuite((

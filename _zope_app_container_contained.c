@@ -12,12 +12,30 @@
 #
 ############################################################################*/
 
+/* Contained Proxy Base class
+
+ Contained proxies provide __parent__ and __name__ attributes for
+ objects without them.
+
+ There is something strange and, possibly cool, going on here, wrt
+ persistence.  To reuse the base proxy implementation we don't treat
+ the proxied object as part of the persistent state of the proxy.
+ This means that the proxy still operates as a proxy even if it is a
+ ghost.  
+
+ The proxy will only be unghostified if you need to access one of the
+ attributes provided by the proxy.
+
+ */
+
+
 #include "Python.h"
-#include "persistence/persistence.h"
-#include "persistence/persistenceAPI.h"
+#include "persistent/cPersistence.h"
+
+static PyObject *str_p_deactivate;
 
 typedef struct {
-  PyPersist_HEAD                 
+  cPersistent_HEAD               
   PyObject *po_serial;            
   PyObject *po_weaklist;          
   PyObject *proxy_object;
@@ -32,7 +50,11 @@ typedef struct {
     PyObject *(*getobject)(PyObject *proxy);
 } ProxyInterface;
 
+#define OBJECT(O) ((PyObject*)(O))
 #define Proxy_GET_OBJECT(ob)   (((ProxyObject *)(ob))->proxy_object)
+
+#define CLEAR(O) \
+  if (O) {PyObject *clr__tmp = O; O = NULL; Py_DECREF(clr__tmp); }
 
 /* Supress inclusion of the original proxy.h */
 #define _proxy_H_ 1
@@ -72,7 +94,7 @@ CP_getattro(PyObject *self, PyObject *name)
 
   if (SPECIAL(cname))
     /* delegate to persistent */
-    return PyPersist_TYPE->tp_getattro(self, name);
+    return cPersistenceCAPI->pertype->tp_getattro(self, name);
 
   /* Use the wrapper version to delegate */
   return wrap_getattro(self, name);
@@ -89,7 +111,7 @@ CP_setattro(PyObject *self, PyObject *name, PyObject *v)
 
   if (SPECIAL(cname))
     /* delegate to persistent */
-    return PyPersist_TYPE->tp_setattro(self, name, v);
+    return cPersistenceCAPI->pertype->tp_setattro(self, name, v);
 
   /* Use the wrapper version to delegate */
   return wrap_setattro(self, name, v);
@@ -113,10 +135,20 @@ CP_getnewargs(ProxyObject *self)
 static PyObject *
 CP_setstate(ProxyObject *self, PyObject *state)
 {
-  if(! PyArg_ParseTuple(state, "OO", &self->__parent__, &self->__name__))
+  PyObject *parent, *name;
+
+  if(! PyArg_ParseTuple(state, "OO", &parent, &name))
     return NULL;
-  Py_INCREF(self->__parent__);
-  Py_INCREF(self->__name__);
+
+  CLEAR(self->__parent__);
+  CLEAR(self->__name__);
+
+  Py_INCREF(parent);
+  Py_INCREF(name);
+
+  self->__parent__ = parent;
+  self->__name__ = name;
+
   Py_INCREF(Py_None);
   return Py_None;
 }
@@ -124,12 +156,17 @@ CP_setstate(ProxyObject *self, PyObject *state)
 static PyObject *
 CP_reduce(ProxyObject *self)
 {
-  return Py_BuildValue("O(O)(OO)",
-                       self->ob_type,
-                       self->proxy_object,
-                       self->__parent__ ? self->__parent__ : Py_None,
-                       self->__name__   ? self->__name__   : Py_None
-                       );
+  PyObject *result;
+  if (! PER_USE(self))
+    return NULL;
+  result = Py_BuildValue("O(O)(OO)",
+                         self->ob_type,
+                         self->proxy_object,
+                         self->__parent__ ? self->__parent__ : Py_None,
+                         self->__name__   ? self->__name__   : Py_None
+                         );
+  PER_ALLOW_DEACTIVATION(self);
+  return result;
 }
 
 static PyObject *
@@ -139,48 +176,25 @@ CP_reduce_ex(ProxyObject *self, PyObject *proto)
 }
 
 static PyObject *
-CP__p_deactivate(ProxyObject *self, PyObject *args, PyObject *keywords)
+CP__p_deactivate(ProxyObject *self)
 {
-    int ghostify = 1;
-    PyObject *force = NULL;
+  PyObject *result;
 
-    if (args && PyTuple_GET_SIZE(args) > 0) {
-	PyErr_SetString(PyExc_TypeError, 
-			"_p_deactivate takes not positional arguments");
-	return NULL;
-    }
-    if (keywords) {
-	int size = PyDict_Size(keywords);
-	force = PyDict_GetItemString(keywords, "force");
-	if (force)
-	    size--;
-	if (size) {
-	    PyErr_SetString(PyExc_TypeError, 
-			    "_p_deactivate only accepts keyword arg force");
-	    return NULL;
-	}
+  result = PyObject_CallMethodObjArgs(OBJECT(cPersistenceCAPI->pertype), 
+                                      str_p_deactivate,
+                                      self, NULL);
+  if (result == NULL)
+    return NULL;
+
+  if (self->jar && self->oid && self->state == cPersistent_UPTODATE_STATE)
+    {
+      Py_XDECREF(self->__parent__);
+      self->__parent__ = NULL;
+      Py_XDECREF(self->__name__);
+      self->__name__ = NULL;
     }
 
-    if (self->po_dm && self->po_oid) {
-	ghostify = self->po_state == UPTODATE;
-	if (!ghostify && force) {
-	    if (PyObject_IsTrue(force))
-		ghostify = 1;
-	    if (PyErr_Occurred())
-		return NULL;
-	}
-	if (ghostify) {
-            Py_XDECREF(self->__parent__);
-            self->__parent__ = NULL;
-            Py_XDECREF(self->__name__);
-            self->__name__ = NULL;
-
-	    self->po_state = GHOST;
-	}
-    }
-
-    Py_INCREF(Py_None);
-    return Py_None;
+    return result;
 }
 
 
@@ -196,7 +210,7 @@ CP_methods[] = {
    "Reduce the object to constituent parts."},
   {"__reduce_ex__", (PyCFunction)CP_reduce_ex, METH_O, 
    "Reduce the object to constituent parts."},
-  {"_p_deactivate", (PyCFunction)CP__p_deactivate, METH_KEYWORDS, 
+  {"_p_deactivate", (PyCFunction)CP__p_deactivate, METH_NOARGS, 
    "Deactivate the object."},
   {NULL, NULL},
 };
@@ -216,7 +230,7 @@ static PyMemberDef CP_members[] = {
 static int
 CP_traverse(ProxyObject *self, visitproc visit, void *arg)
 {
-  if (PyPersist_TYPE->tp_traverse((PyObject *)self, visit, arg) < 0)
+  if (cPersistenceCAPI->pertype->tp_traverse((PyObject *)self, visit, arg) < 0)
     return -1;
   if (self->po_serial != NULL && visit(self->po_serial, arg) < 0)
     return -1;
@@ -241,16 +255,14 @@ CP_clear(ProxyObject *self)
      collector will call this method if it detects that this
      object is involved in a reference cycle.
   */
-  PyPersist_TYPE->tp_clear((PyObject*)self);
+  if (cPersistenceCAPI->pertype->tp_clear != NULL)
+    cPersistenceCAPI->pertype->tp_clear((PyObject*)self);
+  
+  CLEAR(self->po_serial);
+  CLEAR(self->proxy_object);
+  CLEAR(self->__parent__);
+  CLEAR(self->__name__);
 
-  Py_XDECREF(self->po_serial);
-  self->po_serial = NULL;
-  Py_XDECREF(self->proxy_object);
-  self->proxy_object = NULL;
-  Py_XDECREF(self->__parent__);
-  self->__parent__ = NULL;
-  Py_XDECREF(self->__name__);
-  self->__name__ = NULL;
   return 0;
 }
 
@@ -260,9 +272,12 @@ CP_dealloc(ProxyObject *self)
   if (self->po_weaklist != NULL)
     PyObject_ClearWeakRefs((PyObject *)self);
 
-  PyObject_GC_UnTrack((PyObject *)self);
-  CP_clear(self);
-  self->ob_type->tp_free((PyObject*)self);
+  CLEAR(self->po_serial);
+  CLEAR(self->proxy_object);
+  CLEAR(self->__parent__);
+  CLEAR(self->__name__);
+
+  cPersistenceCAPI->pertype->tp_dealloc((PyObject*)self);
 }
 
 #ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
@@ -272,6 +287,10 @@ PyMODINIT_FUNC
 init_zope_app_container_contained(void)
 {
   PyObject *m;
+
+  str_p_deactivate = PyString_FromString("_p_deactivate");
+  if (str_p_deactivate == NULL)
+    return;
         
   /* Try to fake out compiler nag function */
   if (0) init_zope_proxy_proxy();
@@ -286,14 +305,13 @@ init_zope_app_container_contained(void)
     empty_tuple = PyTuple_New(0);
 
   /* Initialize the PyPersist_C_API and the type objects. */
-  PyPersist_C_API = PyCObject_Import("persistence._persistence", "C_API");
-  if (PyPersist_C_API == NULL)
+  cPersistenceCAPI = PyCObject_Import("persistent.cPersistence", "CAPI");
+  if (cPersistenceCAPI == NULL)
     return;
 
-  
   ProxyType.tp_name = "zope.app.container.contained.ContainedProxyBase";
   ProxyType.ob_type = &PyType_Type;
-  ProxyType.tp_base = PyPersist_TYPE;
+  ProxyType.tp_base = cPersistenceCAPI->pertype;
   ProxyType.tp_getattro = CP_getattro;
   ProxyType.tp_setattro = CP_setattro;
   ProxyType.tp_members = CP_members;
