@@ -18,7 +18,7 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.interface import Interface
-from zope.configuration.fields import GlobalObject
+from zope.configuration.fields import GlobalInterface
 from zope.schema import Id
 from zope.app.publisher.browser.viewmeta import page, view
 from zope.app.container.browser.contents import Contents
@@ -29,7 +29,7 @@ from zope.app.security.fields import Permission
 class IContainerViews(Interface):
     """Define several container views for an `IContainer` implementation."""
 
-    for_ = GlobalObject(
+    for_ = GlobalInterface(
         title=u"The interface this containerViews are for.",
         description=u"""
         The containerViews will be for all objects that implement this
