@@ -13,9 +13,9 @@
 ##############################################################################
 """Objects that take care of annotating dublin core meta data times
 
-$Id: dependency.py,v 1.9 2003/08/17 06:06:21 philikon Exp $
+$Id: dependency.py,v 1.10 2003/08/21 19:22:38 fdrake Exp $
 """
-from zope.component import queryAdapter
+from zope.app import zapi
 from zope.app.interfaces.dependable import IDependable
 from zope.app.interfaces.dependable import DependencyError
 from zope.app.interfaces.event import ISubscriber
@@ -32,11 +32,11 @@ class DependencyChecker:
 
     def notify(self, event):
         object = removeAllProxies(event.object)
-        dependency = queryAdapter(object, IDependable)
+        dependency = zapi.queryAdapter(object, IDependable)
         if dependency is not None:
             dependents = dependency.dependents()
             if dependents:
-                objectpath = getPath(event.object)
+                objectpath = zapi.getPath(event.object)
                 raise DependencyError("Removal of object (%s)"
                                       " which has dependents (%s)"
                                       % (objectpath,
