@@ -13,8 +13,18 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.5 2004/02/15 03:07:17 srichter Exp $
+$Id: contained.py,v 1.6 2004/02/24 16:51:11 philikon Exp $
 """
+from zope.proxy import ProxyBase, getProxiedObject
+from zope.exceptions import DuplicationError
+from zope.security.checker import selectChecker, CombinedChecker
+
+import zope.interface
+from zope.interface.declarations import ObjectSpecificationDescriptor
+from zope.interface.declarations import getObjectSpecification
+from zope.interface.declarations import ObjectSpecification
+from zope.interface import providedBy
+
 from zope.app import zapi
 from zope.app.event.objectevent import ObjectEvent, modified
 from zope.app.event import publish
@@ -27,16 +37,8 @@ from zope.app.interfaces.container import IObjectAddedEvent
 from zope.app.interfaces.container import IObjectMovedEvent
 from zope.app.interfaces.container import IObjectRemovedEvent
 from zope.app.interfaces.location import ILocation
-from zope.exceptions import DuplicationError
-from zope.proxy import ProxyBase, getProxiedObject
-import zope.interface
 from zope.app.container._zope_app_container_contained import ContainedProxyBase
 from zope.app.container._zope_app_container_contained import getProxiedObject
-from zope.security.checker import selectChecker, CombinedChecker
-from zope.interface.declarations import ObjectSpecificationDescriptor
-from zope.interface.declarations import getObjectSpecification
-from zope.interface.declarations import ObjectSpecification
-from zope.interface import providedBy
 
 class Contained(object):
     """Stupid mix-in that defines __parent__ and __name__ attributes
@@ -721,7 +723,7 @@ class ContainedProxy(ContainedProxyBase):
 # Parentgeddon fixup:
 
 from zope.app.event.function import Subscriber
-from zope.app.interfaces.content.folder import IRootFolder
+from zope.app.folder.interfaces import IRootFolder
 from zope.app.interfaces.container import IWriteContainer
 from zope.app.interfaces.services.service import IPossibleSite
 from zope.app.interfaces.container import IContainer
