@@ -20,10 +20,10 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: btree.py,v 1.5 2003/09/21 17:30:43 jim Exp $
+$Id: btree.py,v 1.6 2004/02/20 16:57:24 fdrake Exp $
 """
 
-from persistence import Persistent
+from persistent import Persistent
 from zodb.btrees.OOBTree import OOBTree
 from zope.app.container.sample import SampleContainer
 

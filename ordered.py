@@ -14,14 +14,14 @@
 """Ordered container implementation.
 
 Revision information:
-$Id: ordered.py,v 1.6 2003/09/21 17:30:43 jim Exp $
+$Id: ordered.py,v 1.7 2004/02/20 16:57:24 fdrake Exp $
 """
 
 from zope.app.interfaces.container import IOrderedContainer
 from zope.interface import implements
-from persistence import Persistent
-from persistence.dict import PersistentDict
-from persistence.list import PersistentList
+from persistent import Persistent
+from persistent.dict import PersistentDict
+from persistent.list import PersistentList
 from types import StringTypes, TupleType, ListType
 from zope.app.container.contained import Contained, setitem, uncontained
 
