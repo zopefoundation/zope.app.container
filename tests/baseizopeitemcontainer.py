@@ -14,10 +14,10 @@
 """
 
 Revision information:
-$Id: baseizopeitemcontainer.py,v 1.3 2003/02/26 16:11:35 gvanrossum Exp $
+$Id: baseizopeitemcontainer.py,v 1.4 2003/05/27 14:18:13 jim Exp $
 """
 
-from zope.proxy.context import getWrapperContainer, getWrapperData
+from zope.context import getWrapperContainer, getWrapperData
 from zope.interface.common.tests.basemapping \
      import BaseTestIReadMapping, BaseTestIEnumerableMapping
 from zope.app.event.tests.placelesssetup import getEvents

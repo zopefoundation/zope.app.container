@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: copypastemove.py,v 1.5 2003/03/31 14:48:40 sidnei Exp $
+$Id: copypastemove.py,v 1.6 2003/05/27 14:18:13 jim Exp $
 """
 
 from zope.app.interfaces.container import IOptionalNamesContainer
@@ -27,7 +27,7 @@ from zope.app.interfaces.content.folder import ICloneWithoutChildren
 from zope.component import getAdapter
 from zope.proxy.introspection import removeAllProxies
 from zope.app.event.objectevent import ObjectModifiedEvent
-from zope.proxy.context import ContextWrapper
+from zope.context import ContextWrapper
 from zope.app.event import publish
 from zope.proxy.introspection import removeAllProxies
 from types import StringTypes

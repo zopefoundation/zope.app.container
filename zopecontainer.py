@@ -14,14 +14,14 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.15 2003/05/08 10:57:55 stevea Exp $
+$Id: zopecontainer.py,v 1.16 2003/05/27 14:18:13 jim Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
 from zope.app.interfaces.container import IOptionalNamesContainer
 from zope.app.interfaces.container import IContainerNamesContainer
 from zope.component import queryAdapter, getAdapter
-from zope.proxy.context import ContextWrapper
+from zope.context import ContextWrapper
 from zope.app.event import publish
 from zope.app.interfaces.container import IAddNotifiable
 from zope.app.interfaces.container import IDeleteNotifiable
