@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: copypastemove.py,v 1.3 2003/03/13 18:49:05 alga Exp $
+$Id: copypastemove.py,v 1.4 2003/03/30 15:40:58 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IOptionalNamesContainer
@@ -23,6 +23,7 @@ from zope.app.interfaces.container import IMoveSource
 from zope.app.interfaces.container import ICopySource
 from zope.app.interfaces.container import IPasteTarget
 from zope.app.interfaces.container import IPasteNamesChooser
+from zope.app.interfaces.content.folder import ICloneWithoutChildren
 from zope.component import getAdapter
 from zope.proxy.introspection import removeAllProxies
 from zope.app.event.objectevent import ObjectModifiedEvent
@@ -131,7 +132,7 @@ class CopySource:
     def __init__(self, container):
         self.context = container
 
-    def copyObject(self, key, copyingTo):
+    def copyObject(self, key, copyingTo, with_children=True):
         '''Return the object with the given key, as the first part of a
         copy.
 
@@ -140,7 +141,13 @@ class CopySource:
         value = self.context.get(key, None)
         if value is not None:
             value = removeAllProxies(value)
-            value = copy.deepcopy(value)
+            if with_children:
+                value = copy.deepcopy(value)
+            else:
+                if ICloneWithoutChildren.isImplementedBy(value):
+                    value = value.cloneWithoutChildren()
+                else:
+                    raise NotImplementedError(value, ICloneWithoutChildren)
             return ContextWrapper(value, self.context, name=key)
 
 class PasteNamesChooser:
