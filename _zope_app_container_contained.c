@@ -35,9 +35,8 @@
 static PyObject *str_p_deactivate;
 
 typedef struct {
-  cPersistent_HEAD               
-  PyObject *po_serial;            
-  PyObject *po_weaklist;          
+  cPersistent_HEAD
+  PyObject *po_weaklist;
   PyObject *proxy_object;
   PyObject *__parent__;
   PyObject *__name__;
@@ -221,7 +220,6 @@ CP_methods[] = {
 #include "structmember.h"
 
 static PyMemberDef CP_members[] = {
-  {"_p_serial", T_OBJECT, offsetof(ProxyObject, po_serial)},
   {"__parent__", T_OBJECT, offsetof(ProxyObject, __parent__)},
   {"__name__", T_OBJECT, offsetof(ProxyObject, __name__)},
   {NULL}	/* Sentinel */
@@ -231,8 +229,6 @@ static int
 CP_traverse(ProxyObject *self, visitproc visit, void *arg)
 {
   if (cPersistenceCAPI->pertype->tp_traverse((PyObject *)self, visit, arg) < 0)
-    return -1;
-  if (self->po_serial != NULL && visit(self->po_serial, arg) < 0)
     return -1;
   if (self->proxy_object != NULL && visit(self->proxy_object, arg) < 0)
     return -1;
@@ -258,7 +254,6 @@ CP_clear(ProxyObject *self)
   if (cPersistenceCAPI->pertype->tp_clear != NULL)
     cPersistenceCAPI->pertype->tp_clear((PyObject*)self);
   
-  CLEAR(self->po_serial);
   CLEAR(self->proxy_object);
   CLEAR(self->__parent__);
   CLEAR(self->__name__);
@@ -272,7 +267,6 @@ CP_dealloc(ProxyObject *self)
   if (self->po_weaklist != NULL)
     PyObject_ClearWeakRefs((PyObject *)self);
 
-  CLEAR(self->po_serial);
   CLEAR(self->proxy_object);
   CLEAR(self->__parent__);
   CLEAR(self->__name__);
