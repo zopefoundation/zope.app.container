@@ -13,7 +13,7 @@
 ##############################################################################
 """Adding implementation tests
 
-$Id: test_adding.py,v 1.6 2004/05/06 15:46:04 eddala Exp $
+$Id: test_adding.py,v 1.7 2004/05/10 14:35:00 BjornT Exp $
 """
 import unittest
 from zope.testing.doctestunit import DocTestSuite
@@ -180,6 +180,13 @@ class Test(PlacelessSetup, unittest.TestCase):
         self.assertEqual(adding.request.response._headers['location'],
                          '/container/+/Thing/screen1=foo')
 
+    def test_publishTraverse_factory(self):
+        factory = Factory()
+        ztapi.provideUtility(IFactory, factory, 'foo')
+        container = Container()
+        request = TestRequest()
+        adding = Adding(container, request)
+        self.assert_(adding.publishTraverse(request, 'foo') is factory)
 
 
 def test_constraint_driven_addingInfo():

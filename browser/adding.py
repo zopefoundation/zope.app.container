@@ -16,7 +16,7 @@
 The Adding View is used to add new objects to a container. It is sort of a
 factory screen.
 
-$Id: adding.py,v 1.5 2004/05/10 06:38:54 philikon Exp $
+$Id: adding.py,v 1.6 2004/05/10 14:34:58 BjornT Exp $
 """
 from warnings import warn
 import zope.security.checker
@@ -106,7 +106,7 @@ class BasicAdding(BrowserView):
         if view is not None:
             return view
 
-        factory = zapi.queryUtility(self.context, IFactory, name)
+        factory = zapi.queryUtility(self.context, IFactory, name=name)
         if factory is None:
             return super(BasicAdding, self).publishTraverse(request, name)
 
