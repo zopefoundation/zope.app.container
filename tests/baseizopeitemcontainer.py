@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: baseizopeitemcontainer.py,v 1.4 2003/05/27 14:18:13 jim Exp $
+$Id: baseizopeitemcontainer.py,v 1.5 2003/06/15 16:10:43 stevea Exp $
 """
 
 from zope.context import getWrapperContainer, getWrapperData
@@ -23,7 +23,6 @@ from zope.interface.common.tests.basemapping \
 from zope.app.event.tests.placelesssetup import getEvents
 from zope.app.interfaces.event \
      import IObjectRemovedEvent, IObjectModifiedEvent, IObjectAddedEvent
-
 
 
 class BaseTestIZopeItemContainer:
@@ -41,6 +40,7 @@ class BaseTestIZopeItemContainer:
     def _absentKeys(self):
         """This should return the keys not in the container
         """
+        # XXX Is this supposed to be pseudocode? It doesn't make sense.
         absent_key = ''
         for key, value in testItems:
             absent_key += key

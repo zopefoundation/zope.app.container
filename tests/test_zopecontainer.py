@@ -15,7 +15,7 @@
 
 XXX longer description goes here.
 
-$Id: test_zopecontainer.py,v 1.1 2003/06/04 14:57:57 stevea Exp $
+$Id: test_zopecontainer.py,v 1.2 2003/06/15 16:10:43 stevea Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -38,34 +38,93 @@ class H:
     def afterAddHook(self, object, container):
         self.notified += 1
 
-class Test(PlacelessSetup,
-           BaseTestIZopeSimpleReadContainer,
-           BaseTestIZopeReadContainer,
-           BaseTestIZopeWriteContainer,
-           TestCase):
+class ItemContainer:
+    "Container that implements only __getitem__ for reading."
+
+    def __init__(self):
+        self._d = {}
+
+    def __getitem__(self, key):
+        return self._d[key]
+
+    def __setitem__(self, key, value):
+        self._d[key] = value
+
+class TestZopeItemContainerDecorator(PlacelessSetup,
+                                     BaseTestIZopeSimpleReadContainer,
+                                     TestCase):
+    # Note that this test derives from BaseTestIZopeSimpleReadContainer.
+    # This is because the ZopeItemContainerDecorator decorates IItemContainer,
+    # and as well as providing context-awareness, it upgrades IItemContainer
+    # to ISimpleReadContainer.
+
+    def setUp(self):
+        PlacelessSetup.setUp(self)
+        self._container = ItemContainer()
+
+    def decorate(self, container):
+        from zope.app.container.zopecontainer import ZopeItemContainerDecorator
+        return ZopeItemContainerDecorator(container)
+
+    def _sampleMapping(self):
+        container = self._container
+        for k, v in self._sampleDict().items():
+            container[k] = v
+        return self.decorate(container)
+
+    def _sampleContainer(self):
+        return self._container
+
+    _sample = {'Z': C(), 'O': C(),'P': C()}
+    def _sampleDict(self):
+        return self._sample
+
+    def _absentKeys(self):
+        return 'zc', 'ny'
+
+class TestZopeSimpleReadContainerDecorator(TestZopeItemContainerDecorator,
+                                           BaseTestIZopeSimpleReadContainer):
+
+    def setUp(self):
+        PlacelessSetup.setUp(self)
+        self._container = {}
+
+    def decorate(self, container):
+        from zope.app.container.zopecontainer import \
+            ZopeSimpleReadContainerDecorator
+        return ZopeSimpleReadContainerDecorator(container)
+
+class TestZopeReadContainerDecorator(TestZopeSimpleReadContainerDecorator,
+                                     BaseTestIZopeReadContainer):
+
+    def decorate(self, container):
+        from zope.app.container.zopecontainer import \
+            ZopeReadContainerDecorator
+        return ZopeReadContainerDecorator(container)
+
+class TestZopeWriteContainerDecorator(TestZopeItemContainerDecorator,
+                                      BaseTestIZopeWriteContainer):
+    # The ZopeWriteContainerDecorator depends on the container also being
+    # an IItemContainer. It needs this to get values that are to be deleted
+    # so they can be sent in events.
+    # So, this unit test tests that the decorator implementation properly
+    # decorates IZopeItemContainer and IZopeWriteContainer.
 
     def setUp(self):
         PlacelessSetup.setUp(self)
         from zope.app.container.sample import SampleContainer
-        self.__container = SampleContainer()
+        self._container = SampleContainer()
 
     def _sampleMapping(self):
-        from zope.app.container.zopecontainer import ZopeContainerDecorator
-        container = self.__container
+        container = self._container
         for k, v in self._sampleDict().items():
             container.setObject(k, v)
-        return ZopeContainerDecorator(container)
+        return self.decorate(container)
 
-    def _sampleContainer(self):
-        return self.__container
-
-    __sample = {'Z': C(), 'O': C(),'P': C()}
-    def _sampleDict(self):
-        return self.__sample
-
-
-    def _absentKeys(self):
-        return 'zc', 'ny'
+    def decorate(self, container):
+        from zope.app.container.zopecontainer import \
+            ZopeWriteContainerDecorator
+        return ZopeWriteContainerDecorator(container)
 
     __newItem = {'A': C(), 'B':C()}
     def _sample_newItem(self):
@@ -76,9 +135,20 @@ class Test(PlacelessSetup,
         return self.__newItemHooked
 
 
+class TestZopeContainerDecorator(TestZopeWriteContainerDecorator):
+
+    def decorate(self, container):
+        from zope.app.container.zopecontainer import ZopeContainerDecorator
+        return ZopeContainerDecorator(container)
+
+
 def test_suite():
     return TestSuite((
-        makeSuite(Test),
+        makeSuite(TestZopeItemContainerDecorator),
+        makeSuite(TestZopeSimpleReadContainerDecorator),
+        makeSuite(TestZopeReadContainerDecorator),
+        makeSuite(TestZopeWriteContainerDecorator),
+        makeSuite(TestZopeContainerDecorator),
         ))
 
 if __name__=='__main__':

@@ -14,9 +14,12 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.21 2003/06/14 14:41:16 stevea Exp $
+$Id: zopecontainer.py,v 1.22 2003/06/15 16:10:43 stevea Exp $
 """
 
+from zope.app.interfaces.container import IZopeSimpleReadContainer
+from zope.app.interfaces.container import IZopeReadContainer
+from zope.app.interfaces.container import IZopeWriteContainer
 from zope.app.interfaces.container import IZopeContainer
 from zope.app.interfaces.container import IOptionalNamesContainer
 from zope.app.interfaces.container import IContainerNamesContainer
@@ -34,15 +37,38 @@ from zope.app.event.objectevent import ObjectModifiedEvent, ObjectAddedEvent
 from zope.interface import implements
 
 _marker = object()
+class ZopeItemContainerDecorator(Wrapper):
+    """Decorates an IItemContainer object for context-awareness.
 
-class ZopeContainerDecorator(Wrapper):
-    implements(IZopeContainer)
+    Also, upgrades it to IZopeSimpleReadContainer.
+    """
+    implements(IZopeSimpleReadContainer)
 
     def __getitem__(self, key):
         "See IZopeItemContainer"
+        return ContextWrapper(getProxiedObject(self)[key], self, name=key)
+
+    def get(self, key, default=None):
+        "See IZopeSimpleReadContainer"
+        # 'get' defined in terms of __getitem__
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def __contains__(self, key):
+        "See IReadMapping"
+        # '__contains__' in terms of __getitem__ on the proxied object
         container = getProxiedObject(self)
-        value = container[key]
-        return ContextWrapper(value, self, name=key)
+        try:
+            container[key]
+            return True
+        except KeyError:
+            return False
+
+
+class ZopeSimpleReadContainerDecorator(ZopeItemContainerDecorator):
+    implements(IZopeSimpleReadContainer)
 
     def get(self, key, default=None):
         "See IZopeSimpleReadContainer"
@@ -52,6 +78,10 @@ class ZopeContainerDecorator(Wrapper):
             return ContextWrapper(value, self, name=key)
         else:
             return default
+
+
+class ZopeReadContainerDecorator(ZopeSimpleReadContainerDecorator):
+    implements(IZopeReadContainer)
 
     def values(self):
         "See IZopeReadContainer"
@@ -68,6 +98,13 @@ class ZopeContainerDecorator(Wrapper):
         for key, value in container.items():
             result.append((key, ContextWrapper(value, self, name=key)))
         return result
+
+
+class ZopeWriteContainerDecorator(ZopeItemContainerDecorator):
+    # Both setObject and __delitem__ depend on the decorator having
+    # __getitem__
+
+    implements(IZopeWriteContainer)
 
     def setObject(self, key, object):
         "See IZopeWriteContainer"
@@ -92,6 +129,8 @@ class ZopeContainerDecorator(Wrapper):
         # We explicitly get the object back from the container with
         # container[key], because some kinds of container may choose
         # to store a different object than the exact one we added.
+        #
+        # Dependency Note: This is a dependency on IItemContainer
         object = self[key]
         publish(self, ObjectAddedEvent(object))
 
@@ -107,6 +146,7 @@ class ZopeContainerDecorator(Wrapper):
         "See IZopeWriteContainer"
         container = getProxiedObject(self)
 
+        # Dependency Note: This is a dependency on IItemContainer
         object = ContextWrapper(container[key], self, name=key)
 
         # Call the before delete hook, if necessary
@@ -126,6 +166,15 @@ class ZopeContainerDecorator(Wrapper):
 
         return key
 
+
+class ZopeContainerDecorator(ZopeWriteContainerDecorator,
+                             ZopeReadContainerDecorator):
+    implements(IZopeContainer)
+
+    # XXX: rename should really be in IZopeWriteContainer, and should
+    #      lose its dependence on decorator.get(). However, the whole
+    #      renaming business will be refactored soon, so this method
+    #      will go away at that point.
     def rename(self, currentKey, newKey):
         """Put the object found at 'currentKey' under 'newKey' instead.
 
