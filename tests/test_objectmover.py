@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: test_objectmover.py,v 1.3 2003/02/17 15:10:40 sidnei Exp $
+$Id: test_objectmover.py,v 1.4 2003/03/30 16:22:32 sidnei Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -118,6 +118,47 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         file = traverse(root, 'folder1/file1')
         mover = getAdapter(file, IObjectMover)
         self.failUnless(mover.moveableTo(container, 'file1'))
+
+    def test_movefoldertosibling(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder2')
+        source = traverse(root, '/folder1/folder1_1')
+        mover = getAdapter(source, IObjectMover)
+        mover.moveTo(target)
+        self.failUnless('folder1_1' in target)
+
+    def test_movefoldertosame(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder1')
+        source = traverse(root, '/folder1/folder1_1')
+        mover = getAdapter(source, IObjectMover)
+        mover.moveTo(target)
+        self.failUnless('folder1_1' in target)
+
+    def test_movefoldertosame2(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder1/folder1_1')
+        source = traverse(root, '/folder1/folder1_1/folder1_1_1')
+        mover = getAdapter(source, IObjectMover)
+        mover.moveTo(target)
+        self.failUnless('folder1_1_1' in target)
+
+    def test_movefolderfromroot(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder2')
+        source = traverse(root, '/folder1')
+        mover = getAdapter(source, IObjectMover)
+        mover.moveTo(target)
+        self.failUnless('folder1' in target)
+
+    def test_movefolderfromroot2(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder2/folder2_1/folder2_1_1')
+        source = traverse(root, '/folder1')
+        mover = getAdapter(source, IObjectMover)
+        mover.moveTo(target)
+        self.failUnless('folder1' in target)
+
         
 def test_suite():
     return TestSuite((

@@ -14,7 +14,7 @@
 """
 Revision information:
 
-$Id: test_objectcopier.py,v 1.4 2003/02/17 15:10:40 sidnei Exp $
+$Id: test_objectcopier.py,v 1.5 2003/03/30 16:22:32 sidnei Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -123,6 +123,46 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
         copier = getAdapter(file, IObjectCopier)
         self.failUnless(copier.copyableTo(container, 'file1'))
         
+    def test_copyfoldertosibling(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder2')
+        source = traverse(root, '/folder1/folder1_1')
+        copier = getAdapter(source, IObjectCopier)
+        copier.copyTo(target)
+        self.failUnless('folder1_1' in target)
+
+    def test_copyfoldertosame(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder1')
+        source = traverse(root, '/folder1/folder1_1')
+        copier = getAdapter(source, IObjectCopier)
+        copier.copyTo(target)
+        self.failUnless('folder1_1' in target)
+
+    def test_copyfoldertosame2(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder1/folder1_1')
+        source = traverse(root, '/folder1/folder1_1/folder1_1_1')
+        copier = getAdapter(source, IObjectCopier)
+        copier.copyTo(target)
+        self.failUnless('folder1_1_1' in target)
+
+    def test_copyfolderfromroot(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder2')
+        source = traverse(root, '/folder1')
+        copier = getAdapter(source, IObjectCopier)
+        copier.copyTo(target)
+        self.failUnless('folder1' in target)
+
+    def test_copyfolderfromroot2(self):
+        root = self.rootFolder
+        target = traverse(root, '/folder2/folder2_1/folder2_1_1')
+        source = traverse(root, '/folder1')
+        copier = getAdapter(source, IObjectCopier)
+        copier.copyTo(target)
+        self.failUnless('folder1' in target)
+
 def test_suite():
     return TestSuite((
         makeSuite(ObjectCopierTest),
