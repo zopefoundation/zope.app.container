@@ -11,28 +11,27 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Define view component for folder contents.
+"""Traversal components for containers
 
-$Id: traversal.py,v 1.8 2003/06/07 06:37:22 stevea Exp $
+$Id: traversal.py,v 1.9 2004/02/14 02:58:29 srichter Exp $
 """
-
+from zope.interface import implements
+from zope.exceptions import NotFoundError
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.xmlrpc import IXMLRPCPublisher
 from zope.publisher.interfaces import NotFound
-from zope.app.interfaces.container import ISimpleReadContainer, IItemContainer
-from zope.component import queryView
-from zope.component import getDefaultViewName
 
+from zope.app import zapi
+from zope.app.interfaces.container import ISimpleReadContainer, IItemContainer
+from zope.app.interfaces.container import IReadContainer
 from zope.app.interfaces.traversing import ITraversable
 from zope.app.traversing.namespace import UnexpectedParameters
-from zope.app.interfaces.container import IReadContainer
-from zope.exceptions import NotFoundError
-from zope.interface import implements
 
 # Note that the next two classes are included here because they
 # can be used for multiple view types.
 
 class ContainerTraverser:
+    """A traverser that knows how to look up objects by name in a container."""
 
     implements(IBrowserPublisher, IXMLRPCPublisher)
     __used_for__ = ISimpleReadContainer
@@ -42,48 +41,46 @@ class ContainerTraverser:
         self.request = request
 
     def publishTraverse(self, request, name):
-        c = self.context
-
-        subob = c.get(name, None)
+        """See zope.publisher.interfaces.IPublishTraverse"""
+        subob = self.context.get(name, None)
         if subob is None:
-
-            view = queryView(c, name, request)
+            view = zapi.queryView(self.context, name, request)
             if view is not None:
                 return view
 
-            raise NotFound(c, name, request)
+            raise NotFound(self.context, name, request)
 
         return subob
 
     def browserDefault(self, request):
-        c = self.context
-        view_name = getDefaultViewName(c, request)
-        view_uri = "@@%s" % view_name
-        return c, (view_uri,)
+        """See zope.publisher.browser.interfaces.IBrowserPublisher"""
+        view_name = zapi.getDefaultViewName(self.context, request)
+        view_uri = "@@%s" %view_name
+        return self.context, (view_uri,)
 
 
 class ItemTraverser(ContainerTraverser):
+    """A traverser that knows how to look up objects by name in an item
+    container."""
 
     __used_for__ = IItemContainer
 
     def publishTraverse(self, request, name):
-        context = self.context
-
+        """See zope.publisher.interfaces.IPublishTraverse"""
         try:
-            return context[name]
-
+            return self.context[name]
         except KeyError:
-            view = queryView(context, name, request)
+            view = zapi.queryView(self.context, name, request)
             if view is not None:
                 return view
 
         raise NotFound(context, name, request)
 
+
 _marker = object()
 
 class ContainerTraversable:
-    """Traverses containers via getattr and get.
-    """
+    """Traverses containers via getattr and get."""
 
     implements(ITraversable)
     __used_for__ = IReadContainer
