@@ -17,7 +17,8 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.exceptions import NotFoundError
+from zope.exceptions import NotFoundError, Unauthorized
+from zope.security import checkPermission
 
 from zope.app import zapi
 from zope.app.size.interfaces import ISized
@@ -158,21 +159,22 @@ class Contents(BrowserView):
 
         dc = IZopeDublinCore(obj, None)
         if dc is not None:
-            info['retitleable'] = id != retitle_id
+            info['retitleable'] = checkPermission(
+                'zope.app.dublincore.change', dc) and id != retitle_id
             info['plaintitle'] = 0
 
-            title = dc.title
+            title = self.safe_getattr(dc, 'title', None)
             if title:
                 info['title'] = title
 
             formatter = self.request.locale.dates.getFormatter(
                 'dateTime', 'short')
 
-            created = dc.created
+            created = self.safe_getattr(dc, 'created', None)
             if created is not None:
                 info['created'] = formatter.format(created)
 
-            modified = dc.modified
+            modified = self.safe_getattr(dc, 'modified', None)
             if modified is not None:
                 info['modified'] = formatter.format(modified)
         else:
@@ -184,6 +186,13 @@ class Contents(BrowserView):
         if sized_adapter is not None:
             info['size'] = sized_adapter
         return info
+
+    def safe_getattr(self, obj, attr, default):
+        """Attempts to read the attr, returning default if Unauthorized."""
+        try:
+            return getattr(obj, attr, default)
+        except Unauthorized:
+            return default
 
     def renameObjects(self):
         """Given a sequence of tuples of old, new ids we rename"""

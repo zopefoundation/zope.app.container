@@ -100,9 +100,8 @@
                  >&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </td>
 
-            <td><span tal:attributes="size item/size/sizeForSorting"
-                      tal:content="item/size/sizeForDisplay"
-                      >&nbsp;</span></td>
+            <td><span tal:content="item/size/sizeForDisplay|nothing">
+                      &nbsp;</span></td>
             <td><span tal:define="created item/created|default"
                       tal:content="created">&nbsp;</span></td>
             <td><span tal:define="modified item/modified|default"
