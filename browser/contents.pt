@@ -52,7 +52,8 @@
 
         <metal:block tal:define="supportsRename view/supportsRename"
                      tal:repeat="item container_contents">
-          <tr tal:define="oddrow repeat/item/odd; url item/url"
+          <tr tal:define="oddrow repeat/item/odd; url item/url;
+                          id_quoted item/id/url:quote"
               tal:attributes="class python:oddrow and 'even' or 'odd'" >
             <td>
               <input type="checkbox" class="noborder" name="ids:list" id="#"
@@ -80,7 +81,7 @@
                      >foo</a
                   ><a href="#"
                      tal:attributes="href
-                         string:${request/URL}?rename_ids:list=${item/id}"
+                         string:${request/URL}?rename_ids:list=${id_quoted}"
                      tal:condition="supportsRename"
                      >&nbsp;&nbsp;</a
                 ></span
@@ -92,7 +93,7 @@
                      />
               <a href="#"
                  tal:attributes="href
-                                 string:${request/URL}?retitle_id=${item/id}"
+                                 string:${request/URL}?retitle_id=${id_quoted}"
                  tal:condition="item/retitleable"
                  tal:content="item/title|default"
                  >&nbsp;&nbsp;&nbsp;&nbsp;</a>

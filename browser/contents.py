@@ -16,6 +16,8 @@
 $Id$
 """
 __docformat__ = 'restructuredtext'
+        
+import urllib
 
 from zope.app.traversing.interfaces import TraversalError
 from zope.security.interfaces import Unauthorized
@@ -148,7 +150,7 @@ class Contents(BrowserView):
         info['id'] = info['cb_id'] = id
         info['object'] = obj
 
-        info['url'] = id
+        info['url'] = urllib.quote(id.encode('utf-8'))
         info['rename'] = rename_ids.get(id)
         info['retitle'] = id == retitle_id
 
