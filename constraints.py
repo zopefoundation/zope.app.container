@@ -105,11 +105,19 @@
    whether an object produced by a factory can be added.  To do this, we
    use checkFactory:
 
-   >>> checkFactory(c1, "bob", O)
+   >>> class Factory:
+   ...     def __call__(self):
+   ...         return O()
+   ...     def getInterfaces(self):
+   ...         return zope.interface.implementedBy(O)
+
+   >>> factory = Factory()
+
+   >>> checkFactory(c1, "bob", factory)
    True
 
    >>> del c1.x
-   >>> checkFactory(c1, "bob", O)
+   >>> checkFactory(c1, "bob", factory)
    False
    
    Unlike checkObject, checkFactory:
@@ -122,7 +130,7 @@
    check the factory:
        
    >>> c1.x = 1
-   >>> checkFactory(c1, "bob", O)
+   >>> checkFactory(c1, "Zbob", factory)
    True
 
    To work with checkFactory, a container precondition has to
@@ -135,10 +143,10 @@
    We can do this (silly thing) because preNoZ doesn't use the object
    argument.
    
-   >>> checkFactory(c1, "bob", O)
+   >>> checkFactory(c1, "Zbob", factory)
    False
 
-   $Id: constraints.py,v 1.1 2003/12/01 16:19:21 jim Exp $
+   $Id: constraints.py,v 1.2 2003/12/03 05:41:19 jim Exp $
    """
 
 import zope.interface
@@ -181,12 +189,14 @@ def checkFactory(container, name, factory):
                 except AttributeError:
                     pass
                 else:
-                    if not precondition(container, name, factory):
+                    try:
+                        precondition(container, name, factory)
+                    except zope.interface.Invalid:
                         return False
             break
 
     # check the constraint on __parent__
-    for iface in zope.interface.implementedBy(factory):
+    for iface in factory.getInterfaces():
         __parent__ = iface.get('__parent__')
         if __parent__ is not None:
             try:
@@ -233,6 +243,14 @@ class ItemTypePrecondition:
     >>> class Ob:
     ...     pass
     >>> ob = Ob()
+
+    >>> class Factory:
+    ...     def __call__(self):
+    ...         return Ob()
+    ...     def getInterfaces(self):
+    ...         return zope.interface.implementedBy(Ob)
+
+    >>> factory = Factory()
     
     >>> try:
     ...     precondition(None, 'foo', ob)
@@ -243,16 +261,16 @@ class ItemTypePrecondition:
     None True True
     
     >>> try:
-    ...     precondition.factory(None, 'foo', Ob)
+    ...     precondition.factory(None, 'foo', factory)
     ... except InvalidItemType, v:
-    ...     print v[0], (v[1] is Ob), (v[2] == (I1, I2))
+    ...     print v[0], (v[1] is factory), (v[2] == (I1, I2))
     ... else:
     ...     print 'Should have failed'
     None True True
 
     >>> zope.interface.classImplements(Ob, I2)
     >>> precondition(None, 'foo', ob)
-    >>> precondition.factory(None, 'foo', Ob)
+    >>> precondition.factory(None, 'foo', factory)
 
     """ 
 
@@ -268,7 +286,7 @@ class ItemTypePrecondition:
         raise InvalidItemType(container, object, self.types)
 
     def factory(self, container, name, factory):
-        implemented = zope.interface.implementedBy(factory)
+        implemented = factory.getInterfaces()
         
         for iface in self.types:
             if implemented.isOrExtends(iface):
