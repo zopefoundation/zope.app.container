@@ -14,7 +14,7 @@
 """Ordered container implementation.
 
 Revision information:
-$Id: ordered.py,v 1.4 2003/08/01 19:46:46 garrett Exp $
+$Id: ordered.py,v 1.5 2003/08/01 19:56:49 garrett Exp $
 """
 
 from zope.app.interfaces.container import IOrderedContainer
@@ -242,6 +242,9 @@ class OrderedContainer(Persistent):
         >>> oc.updateOrder(['baz', 'zork', 'foo'])
         >>> oc.keys()
         ['baz', 'zork', 'foo']
+        >>> oc.updateOrder(('zork', 'foo', 'baz'))
+        >>> oc.keys()
+        ['zork', 'foo', 'baz']
         >>> oc.updateOrder(['baz', 'zork'])
         Traceback (most recent call last):
         ...
@@ -273,7 +276,6 @@ class OrderedContainer(Persistent):
             not isinstance(order, TupleType):
             raise TypeError('order must be a tuple or a list.')
 
-        order = list(order)
         if len(order) != len(self._order):
             raise ValueError("Incompatible key set.")
 
