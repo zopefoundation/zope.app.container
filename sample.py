@@ -19,15 +19,16 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: sample.py,v 1.7 2003/06/03 14:19:31 stevea Exp $
+$Id: sample.py,v 1.8 2003/09/21 17:31:35 jim Exp $
 """
 
 from types import StringTypes
 
 from zope.app.interfaces.container import IContainer
 from zope.interface import implements
+from zope.app.container.contained import Contained, setitem, uncontained
 
-class SampleContainer(object):
+class SampleContainer(Contained):
     """Sample container implementation suitable for testing.
 
     It is not suitable, directly as a base class unless the subclass
@@ -54,7 +55,7 @@ class SampleContainer(object):
         return self.__data.keys()
 
     def __iter__(self):
-        return iter(self.__data.keys())
+        return iter(self.__data)
 
     def __getitem__(self, key):
         '''See interface IReadContainer'''
@@ -82,24 +83,11 @@ class SampleContainer(object):
 
     has_key = __contains__
 
-    def setObject(self, key, object):
+    def __setitem__(self, key, object):
         '''See interface IWriteContainer'''
-        bad = False
-        if isinstance(key, StringTypes):
-            try:
-                unicode(key)
-            except UnicodeError:
-                bad = True
-        else:
-            bad = True
-        if bad: 
-            raise TypeError("'%s' is invalid, the key must be an "
-                            "ascii or unicode string" % key)
-        if len(key) == 0:
-            raise ValueError("The key cannot be an empty string")
-        self.__data[key] = object
-        return key
+        setitem(self, self.__data.__setitem__, key, object)
 
     def __delitem__(self, key):
         '''See interface IWriteContainer'''
+        uncontained(self.__data[key], self, key)
         del self.__data[key]
