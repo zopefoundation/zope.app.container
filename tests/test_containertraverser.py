@@ -21,7 +21,7 @@ from zope.app.container.interfaces import IReadContainer
 from zope.app.tests import ztapi
 from zope.app.tests.placelesssetup import PlacelessSetup
 from zope.component.tests.request import Request
-from zope.exceptions import NotFoundError
+from zope.publisher.interfaces import NotFound
 from zope.interface import implements
 from zope.publisher.interfaces.browser import IBrowserRequest 
 
@@ -69,7 +69,7 @@ class TraverserTest(PlacelessSetup, unittest.TestCase):
             self.traverser.publishTraverse(self.request, 'Foo'),
             self.foo)
         self.assertRaises(
-            NotFoundError,
+            NotFound,
             self.traverser.publishTraverse, self.request, 'morebar')
 
     def test_viewTraversal(self):
@@ -80,10 +80,10 @@ class TraverserTest(PlacelessSetup, unittest.TestCase):
             self.traverser.publishTraverse(self.request, 'Foo'),
             self.foo)
         self.assertRaises(
-            NotFoundError,
+            NotFound,
             self.traverser.publishTraverse, self.request, 'morebar')
         self.assertRaises(
-            NotFoundError,
+            NotFound,
             self.traverser.publishTraverse, self.request, '@@morebar')
 
 
