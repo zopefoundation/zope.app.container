@@ -146,7 +146,7 @@
    >>> checkFactory(c1, "Zbob", factory)
    False
 
-   $Id: constraints.py,v 1.2 2003/12/03 05:41:19 jim Exp $
+   $Id: constraints.py,v 1.3 2003/12/04 13:48:01 jim Exp $
    """
 
 import zope.interface
@@ -315,6 +315,7 @@ class ContainerTypesConstraint:
 
     >>> zope.interface.classImplements(Ob, I2)
     >>> constraint(Ob())
+    True
        
     """ 
 
@@ -324,6 +325,6 @@ class ContainerTypesConstraint:
     def __call__(self, object):
        for iface in self.types:
            if iface.isImplementedBy(object):
-               return
+               return True
        else:
            raise InvalidContainerType(object, self.types)
