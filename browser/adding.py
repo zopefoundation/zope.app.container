@@ -76,7 +76,7 @@ class BasicAdding(BrowserView):
     def nextURL(self):
         """See zope.app.container.interfaces.IAdding"""
         return (str(zapi.getView(self.context, "absolute_url", self.request))
-                + '/@@contents.html')
+                + '/@@SelectedManagementView.html')
 
     # set in BrowserView.__init__
     request = None 
