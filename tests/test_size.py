@@ -11,9 +11,12 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""
+$Id: test_size.py,v 1.5 2004/03/03 11:03:58 philikon Exp $
+"""
 import unittest
 
-from zope.app.interfaces.size import ISized
+from zope.app.size.interfaces import ISized
 from zope.app.container.interfaces import IContainer
 from zope.interface import implements
 

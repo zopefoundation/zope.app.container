@@ -14,10 +14,10 @@
 ##############################################################################
 """Adapters that give the size of an object.
 
-$Id: size.py,v 1.4 2003/08/06 14:45:04 srichter Exp $
+$Id: size.py,v 1.5 2004/03/03 11:03:57 philikon Exp $
 """
 from zope.app.i18n import ZopeMessageIDFactory as _
-from zope.app.interfaces.size import ISized
+from zope.app.size.interfaces import ISized
 from zope.interface import implements
 
 __metaclass__ = type
