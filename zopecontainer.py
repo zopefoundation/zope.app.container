@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.2 2002/12/25 14:12:46 jim Exp $
+$Id: zopecontainer.py,v 1.3 2002/12/30 14:02:54 stevea Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -22,7 +22,7 @@ from zope.app.interfaces.container import IOptionalNamesContainer
 from zope.app.interfaces.container import IContainerNamesContainer
 from zope.component import queryAdapter
 from zope.proxy.context import ContextWrapper
-from zope.event import publish
+from zope.app.event import publish
 from zope.app.event.objectevent \
      import ObjectRemovedEvent, ObjectModifiedEvent, ObjectAddedEvent
 from zope.app.interfaces.container import IAddNotifiable
