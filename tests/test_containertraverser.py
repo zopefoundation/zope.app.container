@@ -20,8 +20,8 @@ from zope.app.container.traversal import ContainerTraverser
 from zope.app.container.interfaces import IReadContainer
 from zope.app.tests import ztapi
 from zope.app.tests.placelesssetup import PlacelessSetup
-from zope.component.tests.request import Request
 from zope.publisher.interfaces import NotFound
+from zope.publisher.browser import TestRequest
 from zope.interface import implements
 from zope.publisher.interfaces.browser import IBrowserRequest 
 
@@ -58,7 +58,7 @@ class TraverserTest(PlacelessSetup, unittest.TestCase):
         self.foo = self._getContainer()
         foo2 = self._getContainer(Foo=self.foo)
         # Initiate a request
-        self.request = Request(IBrowserRequest, '')
+        self.request = TestRequest()
         # Create the traverser
         self.traverser = self._getTraverser(foo2, self.request)
         # Define a simple view for the container
