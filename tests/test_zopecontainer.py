@@ -13,7 +13,7 @@
 ##############################################################################
 """ZopeContainerDecorator tests
 
-$Id: test_zopecontainer.py,v 1.4 2003/07/17 14:45:14 alga Exp $
+$Id: test_zopecontainer.py,v 1.5 2003/08/17 06:06:24 philikon Exp $
 """
 
 from unittest import TestCase, TestSuite, main, makeSuite
@@ -25,7 +25,6 @@ from zope.app.container.tests.baseizopeitemcontainer import \
      BaseTestIZopeWriteContainer
 from zope.app.tests.placelesssetup import PlacelessSetup
 from zope.context import ContextAwareDescriptors
-from zope.app.context import ContextWrapper
 from zope.proxy import isProxy, getProxiedObject
 from zope.interface import implements, directlyProvides, directlyProvidedBy
 from zope.app.interfaces.container import IOptionalNamesContainer
