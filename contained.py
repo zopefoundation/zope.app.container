@@ -31,7 +31,7 @@ from zope.app.exception.interfaces import UserError
 from zope.app.event.objectevent import ObjectEvent, modified
 from zope.event import notify
 from zope.app.i18n import ZopeMessageIDFactory as _
-from zope.app.container.interfaces import IContained
+from zope.app.container.interfaces import IContained, IReadContainer
 from zope.app.container.interfaces import INameChooser
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.app.container.interfaces import IObjectMovedEvent
@@ -176,7 +176,36 @@ def dispatchToSublocations(object, event):
         for sub in subs.sublocations():
             for ignored in zapi.subscribers((sub, event), None):
                 pass # They do work in the adapter fetch
-    
+
+class ContainerSublocations(object):
+    """Get the sublocations for a container
+
+       Obviously, this is the container values:
+
+         >>> class MyContainer:
+         ...     def __init__(self, **data):
+         ...         self.data = data
+         ...     def __iter__(self):
+         ...         return iter(self.data)
+         ...     def __getitem__(self, key):
+         ...         return self.data[key]
+
+         >>> container = MyContainer(x=1, y=2, z=42)
+         >>> adapter = ContainerSublocations(container)
+         >>> sublocations = list(adapter.sublocations())
+         >>> sublocations.sort()
+         >>> sublocations
+         [1, 2, 42]
+      
+       """
+
+    def __init__(self, container):
+        self.container = container
+
+    def sublocations(self):
+        container = self.container
+        for key in container:
+            yield container[key]
 
 
 def containedEvent(object, container, name=None):

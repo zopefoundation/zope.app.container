@@ -56,6 +56,11 @@
       Handler dispatches moved events to sublocations of the original object.
   </subscriber>
 
+  <adapter
+      provides="zope.app.location.interfaces.ISublocations"
+      for="zope.app.container.interfaces.IReadContainer"
+      factory=".contained.ContainerSublocations"
+      />
 
   <content class=".constraints.ItemTypePrecondition">
     <allow interface=".constraints.IItemTypePrecondition" />
