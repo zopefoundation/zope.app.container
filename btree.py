@@ -20,7 +20,7 @@ It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
 
 Revision information:
-$Id: btree.py,v 1.3 2002/12/30 20:43:49 jeremy Exp $
+$Id: btree.py,v 1.4 2003/06/03 14:16:05 stevea Exp $
 """
 
 from persistence import Persistent
@@ -29,7 +29,7 @@ from zope.app.container.sample import SampleContainer
 
 class BTreeContainer(SampleContainer, Persistent):
 
-    __implements__ = SampleContainer.__implements__, Persistent.__implements__
+    # implements(what my base classes implement)
 
     # XXX It appears that BTreeContainer uses SampleContainer only to
     # get the implementation of setObject().  All the other methods
