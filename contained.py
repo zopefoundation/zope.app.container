@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.12 2004/03/06 02:36:53 garrett Exp $
+$Id: contained.py,v 1.13 2004/03/06 04:17:22 garrett Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -155,7 +155,7 @@ def containedEvent(object, container, name=None):
 
         >>> from zope.app.location import Location
         >>> item = Location()
-        >>> IContained.isImplementedBy(item)
+        >>> IContained.providedBy(item)
         False
         >>> x, event = containedEvent(item, container, 'foo')
         >>> x is item
@@ -164,7 +164,7 @@ def containedEvent(object, container, name=None):
         True
         >>> item.__name__
         'foo'
-        >>> IContained.isImplementedBy(item)
+        >>> IContained.providedBy(item)
         True
 
 
