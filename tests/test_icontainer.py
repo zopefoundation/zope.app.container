@@ -171,18 +171,18 @@ class BaseTestIContainer(PlacelessSetup):
         data = self.makeTestData()
 
         foo = data[0][1]
-        folder['foo'] = foo
-        name = 'foo'
+        name = data[0][0]
+        folder[name] = foo
 
         self.assertEquals(len(folder.keys()), 1)
-        self.assertEquals(folder.keys()[0], 'foo')
+        self.assertEquals(folder.keys()[0], name)
         self.assertEquals(len(folder.values()), 1)
         self.assertEquals(folder.values()[0], foo)
         self.assertEquals(len(folder.items()), 1)
-        self.assertEquals(folder.items()[0], ('foo', foo))
+        self.assertEquals(folder.items()[0], (name, foo))
         self.assertEquals(len(folder), 1)
 
-        self.failUnless('foo' in folder)
+        self.failUnless(name in folder)
         # Use an arbitrary id frpm the data set; don;t just use any id, since
         # there might be restrictions on their form
         self.failIf(data[6][0] in folder)
@@ -194,7 +194,7 @@ class BaseTestIContainer(PlacelessSetup):
 
         foo2 = data[1][1]
         
-        name2 = 'foo2'
+        name2 = data[1][0]
         folder[name2] = foo2
 
         self.assertEquals(len(folder.keys()), 2)
@@ -222,14 +222,14 @@ class BaseTestIContainer(PlacelessSetup):
         folder = self.makeTestObject()
         data = self.makeTestData()
         objects = [ data[i][1] for i in range(4) ]
-        name0 = 'foo'
-        name1 = 'bar'
-        name2 = 'baz'
-        name3 = 'bam'
-        folder['foo'] = objects[0]
-        folder['bar'] = objects[1]
-        folder['baz'] = objects[2]
-        folder['bam'] = objects[3]
+        name0 = data[0][0]
+        name1 = data[1][0]
+        name2 = data[2][0]
+        name3 = data[3][0]
+        folder[name0] = objects[0]
+        folder[name1] = objects[1]
+        folder[name2] = objects[2]
+        folder[name3] = objects[3]
 
         self.assertEquals(len(folder.keys()), len(objects))
         self.failUnless(name0 in folder.keys())
