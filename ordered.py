@@ -14,7 +14,7 @@
 """Ordered container implementation.
 
 Revision information:
-$Id: ordered.py,v 1.2 2003/06/23 22:46:14 chrism Exp $
+$Id: ordered.py,v 1.3 2003/06/24 10:33:59 stevea Exp $
 """
 
 from zope.app.interfaces.container import IOrderedContainer
@@ -28,12 +28,12 @@ class OrderedContainer(Persistent):
     """ OrderedContainer maintains entries' order as added and moved.
 
     >>> oc = OrderedContainer()
-    >>> IOrderedContainer.isImplementedBy(oc)
-    True
+    >>> int(IOrderedContainer.isImplementedBy(oc))
+    1
     >>> len(oc)
     0
     """
-    
+
     implements(IOrderedContainer)
 
     def __init__(self):
@@ -180,7 +180,7 @@ class OrderedContainer(Persistent):
         """
 
         existed = self._data.has_key(key)
-        
+
         bad = False
         if isinstance(key, StringTypes):
             try:
@@ -272,5 +272,5 @@ class OrderedContainer(Persistent):
 
         if will_be_dict != was_dict:
             raise ValueError("Incompatible key set.")
-        
+
         self._order = order
