@@ -19,7 +19,7 @@ $Id$
 import unittest
 
 from persistent import Persistent
-from transaction import get_transaction
+import transaction
 from zope.interface import implements
 
 from zope.app.annotation.interfaces import IAttributeAnnotatable
@@ -79,7 +79,7 @@ class Test(BrowserTestCase):
         root = self.getRootFolder()
         root['foo'] = File()
         self.assert_('foo' in root)
-        get_transaction().commit()
+        transaction.commit()
 
         # Check that we don't change mode if there are no items selected
         
@@ -127,7 +127,7 @@ class Test(BrowserTestCase):
         root = self.getRootFolder()
         root['foo'] = File()
         self.assert_('foo' in root)
-        get_transaction().commit()
+        transaction.commit()
         
         response = self.publish('/@@contents.html',
                                 basic='mgr:mgrpw',
@@ -154,7 +154,7 @@ class Test(BrowserTestCase):
     def test_inplace_change_title(self):
         root = self.getRootFolder()
         root['foo'] = File()
-        get_transaction().commit()
+        transaction.commit()
         self.assert_('foo' in root)
         dc = IZopeDublinCore(root['foo'])
         self.assert_(dc.title == '')
@@ -191,7 +191,7 @@ class Test(BrowserTestCase):
         root['foo'] = File()    # item to be copied/deleted
         root['bar'] = File()    # ensures that there's always an item in
                                 # the collection view
-        get_transaction().commit()
+        transaction.commit()
 
         # confirm foo in contents, Copy button visible, Paste not visible
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
@@ -217,7 +217,7 @@ class Test(BrowserTestCase):
 
         # delete foo -> nothing valid to paste -> Paste should not be visible
         del root['foo']
-        get_transaction().commit()
+        transaction.commit()
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.getStatus(), 200)
         self.assert_(response.getBody().find(
@@ -230,7 +230,7 @@ class Test(BrowserTestCase):
         root = self.getRootFolder()
         root['foo'] = File()
         root['bar'] = File()
-        get_transaction().commit()
+        transaction.commit()
 
         # confirm foo/bar in contents, Copy button visible, Paste not visible
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
@@ -258,7 +258,7 @@ class Test(BrowserTestCase):
 
         # delete only foo -> bar still available -> Paste should be visible
         del root['foo']
-        get_transaction().commit()
+        transaction.commit()
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.getStatus(), 200)
         self.assert_(response.getBody().find(
@@ -278,7 +278,7 @@ class Test(BrowserTestCase):
     def test_readonly_display(self):
         root = self.getRootFolder()
         root['foo'] = ReadOnlyContainer()
-        get_transaction().commit()
+        transaction.commit()
         response = self.publish('/foo/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.getStatus(), 200)
 
