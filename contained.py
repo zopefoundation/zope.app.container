@@ -13,9 +13,8 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.4 2004/02/09 09:07:43 dunny Exp $
+$Id: contained.py,v 1.5 2004/02/15 03:07:17 srichter Exp $
 """
-
 from zope.app import zapi
 from zope.app.event.objectevent import ObjectEvent, modified
 from zope.app.event import publish
