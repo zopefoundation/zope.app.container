@@ -33,8 +33,9 @@
    ...         "Add an item"
    ...     __setitem__.precondition = preNoZ
 
+   >>> from zope.app.interfaces.container import IContainer
    >>> class C1:
-   ...     zope.interface.implements(I1)
+   ...     zope.interface.implements(I1, IContainer)
    ...     def __repr__(self):
    ...         return 'C1'
 
@@ -119,7 +120,7 @@
    >>> del c1.x
    >>> checkFactory(c1, "bob", factory)
    False
-   
+
    Unlike checkObject, checkFactory:
 
    - Returns a boolean value
@@ -128,7 +129,7 @@
 
    The container constraint we defined for C1 isn't actually used to
    check the factory:
-       
+
    >>> c1.x = 1
    >>> checkFactory(c1, "Zbob", factory)
    True
@@ -142,21 +143,23 @@
 
    We can do this (silly thing) because preNoZ doesn't use the object
    argument.
-   
+
    >>> checkFactory(c1, "Zbob", factory)
    False
 
-   $Id: constraints.py,v 1.3 2003/12/04 13:48:01 jim Exp $
+   $Id: constraints.py,v 1.4 2003/12/10 13:04:53 jace Exp $
    """
 
 import zope.interface
 from zope.app.interfaces.container import InvalidItemType, InvalidContainerType
+from zope.app.i18n import ZopeMessageIDFactory as _
+from zope.app.interfaces.container import IContainer
 
 def checkObject(container, name, object):
     """Check containement constraints for an object and container
     """
 
-    
+
     # check __setitem__ precondition
     for iface in zope.interface.providedBy(container):
         __setitem__ = iface.get('__setitem__')
@@ -177,6 +180,12 @@ def checkObject(container, name, object):
             else:
                 validate(container)
             break
+
+    if not IContainer.isImplementedBy(container):
+        # If it doesn't implement IContainer, it can't contain stuff.
+        raise TypeError(
+            _('Container is not a valid Zope container.')
+            )
 
 def checkFactory(container, name, factory):
     for iface in zope.interface.providedBy(container):
@@ -212,7 +221,7 @@ def checkFactory(container, name, factory):
 
     return True
 
-    
+
 class IItemTypePrecondition(zope.interface.Interface):
 
     def __call__(container, name, object):
@@ -251,7 +260,7 @@ class ItemTypePrecondition:
     ...         return zope.interface.implementedBy(Ob)
 
     >>> factory = Factory()
-    
+
     >>> try:
     ...     precondition(None, 'foo', ob)
     ... except InvalidItemType, v:
@@ -259,7 +268,7 @@ class ItemTypePrecondition:
     ... else:
     ...     print 'Should have failed'
     None True True
-    
+
     >>> try:
     ...     precondition.factory(None, 'foo', factory)
     ... except InvalidItemType, v:
@@ -272,7 +281,7 @@ class ItemTypePrecondition:
     >>> precondition(None, 'foo', ob)
     >>> precondition.factory(None, 'foo', factory)
 
-    """ 
+    """
 
     zope.interface.implements(IItemTypePrecondition)
 
@@ -287,12 +296,12 @@ class ItemTypePrecondition:
 
     def factory(self, container, name, factory):
         implemented = factory.getInterfaces()
-        
+
         for iface in self.types:
             if implemented.isOrExtends(iface):
                return
         raise InvalidItemType(container, factory, self.types)
-        
+
 
 class ContainerTypesConstraint:
     """Constrain a container to be one of a number of types
@@ -316,7 +325,7 @@ class ContainerTypesConstraint:
     >>> zope.interface.classImplements(Ob, I2)
     >>> constraint(Ob())
     True
-       
+
     """ 
 
     def __init__(self, *types):
