@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.21 2004/03/15 20:41:58 jim Exp $
+$Id: contained.py,v 1.22 2004/03/23 16:18:01 maru Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -29,8 +29,6 @@ from zope.app import zapi
 from zope.app.event.objectevent import ObjectEvent, modified
 from zope.app.event import publish
 from zope.app.i18n import ZopeMessageIDFactory as _
-from zope.app.container.interfaces import IAddNotifiable, IMoveNotifiable
-from zope.app.container.interfaces import IRemoveNotifiable
 from zope.app.container.interfaces import IContained
 from zope.app.container.interfaces import INameChooser
 from zope.app.container.interfaces import IObjectAddedEvent
@@ -447,13 +445,6 @@ def setitem(container, setitemf, name, object):
     object, event = containedEvent(object, container, name)
     setitemf(name, object)
     if event:
-        if event.__class__ is ObjectAddedEvent:
-            a = IAddNotifiable(object, None)
-            if a is not None:
-                a.addNotify(event)
-        a = IMoveNotifiable(object, None)
-        if a is not None:
-            a.moveNotify(event)
         publish(container, event)
         modified(container)
 
@@ -471,9 +462,7 @@ def uncontained(object, container, name=None):
     We'll start by creating a container with an item:
 
     >>> class Item(Contained):
-    ...     zope.interface.implements(IRemoveNotifiable)
-    ...     def removeNotify(self, event):
-    ...         self.removed = event
+    ...     pass
 
     >>> item = Item()
     >>> container = {u'foo': item}
@@ -508,11 +497,6 @@ def uncontained(object, container, name=None):
     >>> len(getEvents(IObjectModifiedEvent))
     1
     >>> getEvents(IObjectModifiedEvent)[-1].object is container
-    1
-
-    The reoved hook was also called:
-
-    >>> item.removed is event
     1
 
     Now if we call uncontained again:
@@ -562,12 +546,6 @@ def uncontained(object, container, name=None):
         return
 
     event = ObjectRemovedEvent(object, oldparent, oldname)
-    a = IRemoveNotifiable(object, None)
-    if a is not None:
-        a.removeNotify(event)
-    a = IMoveNotifiable(object, None)
-    if a is not None:
-        a.moveNotify(event)
     publish(container, event)
 
     object.__parent__ = None
