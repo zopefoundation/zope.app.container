@@ -38,6 +38,7 @@ from zope.app.container.interfaces import IObjectRemovedEvent
 from zope.app.location.interfaces import ILocation, ISublocations
 from zope.app.container._zope_app_container_contained import ContainedProxyBase
 from zope.app.container._zope_app_container_contained import getProxiedObject
+from zope.app.broken.broken import IBroken
 
 class Contained(object):
     """Stupid mix-in that defines `__parent__` and `__name__` attributes
@@ -669,8 +670,9 @@ def uncontained(object, container, name=None):
     event = ObjectRemovedEvent(object, oldparent, oldname)
     notify(event)
 
-    object.__parent__ = None
-    object.__name__ = None
+    if not IBroken.providedBy(object):
+        object.__parent__ = None
+        object.__name__ = None
     modified(container)
 
 class NameChooser(object):
