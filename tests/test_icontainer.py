@@ -11,10 +11,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Test the IContainer interface.
 
-Revision information:
-$Id: test_icontainer.py,v 1.4 2002/12/27 18:36:28 rdmurray Exp $
+$Id: test_icontainer.py,v 1.5 2003/07/28 11:45:24 srichter Exp $
 """
 
 from unittest import TestCase, main, makeSuite
@@ -65,13 +64,15 @@ class BaseTestIContainer:
     def test_get(self):
         # See interface IReadContainer
         default = object()
+        data = self.makeTestData()
         container = self.makeTestObject()
-        self.assertRaises(KeyError, container.__getitem__, '1')
-        self.assertEqual(container.get('1', default), default)
+        self.assertRaises(KeyError, container.__getitem__, data[0][0])
+        self.assertEqual(container.get(data[0][0], default), default)
 
         container, data = self.__setUp()
-        self.assertRaises(KeyError, container.__getitem__, 'NoSuchKey')
-        self.assertEqual(container.get('NoSuchKey', default), default)
+        self.assertRaises(KeyError, container.__getitem__,
+                          self.getUnknownKey())
+        self.assertEqual(container.get(self.getUnknownKey(), default), default)
         for i in (1, 8, 7, 3, 4):
             self.assertEqual(container.get(data[i][0], default), data[i][1])
             self.assertEqual(container.get(data[i][0]), data[i][1])
@@ -115,21 +116,24 @@ class BaseTestIContainer:
     def test___contains__(self):
         # See interface IReadContainer
         container = self.makeTestObject()
-        self.assertEqual(not not ('1' in container), 0)
+        data = self.makeTestData()
+        self.assertEqual(not not (data[6][0] in container), False)
 
         container, data = self.__setUp()
-        self.assertEqual(not not ('NoSuchKey' in container), 0)
+        self.assertEqual(not not (data[6][0] in container), True)
         for i in (1, 8, 7, 3, 4):
             self.assertEqual(not not (data[i][0] in container), 1)
 
     def test_delObject(self):
         # See interface IWriteContainer
         default = object()
+        data = self.makeTestData()
         container = self.makeTestObject()
-        self.assertRaises(KeyError, container.__delitem__, '1')
+        self.assertRaises(KeyError, container.__delitem__, data[0][0])
 
         container, data = self.__setUp()
-        self.assertRaises(KeyError, container.__delitem__, 'NoSuchKey')
+        self.assertRaises(KeyError, container.__delitem__,
+                          self.getUnknownKey())
         for i in (1, 8, 7, 3, 4):
             del container[data[i][0]]
         for i in (1, 8, 7, 3, 4):
@@ -143,86 +147,88 @@ class BaseTestIContainer:
 
     def testEmpty(self):
         folder = self.makeTestObject()
+        data = self.makeTestData()
         self.failIf(folder.keys())
         self.failIf(folder.values())
         self.failIf(folder.items())
         self.failIf(len(folder))
-        self.failIf('foo' in folder)
+        self.failIf(data[6][0] in folder)
 
-        self.assertEquals(folder.get('foo', None), None)
-        self.assertRaises(KeyError, folder.__getitem__, 'foo')
+        self.assertEquals(folder.get(data[6][0], None), None)
+        self.assertRaises(KeyError, folder.__getitem__, data[6][0])
 
-        self.assertRaises(KeyError, folder.__delitem__, 'foo')
+        self.assertRaises(KeyError, folder.__delitem__, data[6][0])
 
     def testBadKeyTypes(self):
         folder = self.makeTestObject()
-        value = []
-        self.assertRaises(TypeError, folder.setObject, None, value)
-        self.assertRaises(TypeError, folder.setObject, ['foo'], value)
-        self.assertRaises(TypeError, folder.setObject, 1, value)
-        self.assertRaises(TypeError, folder.setObject, '\xf3abc', value)
+        data = self.makeTestData()
+        value = data[1][1]
+        for name in self.getBadKeyTypes():
+            self.assertRaises(TypeError, folder.setObject, name, value)
 
     def testOneItem(self):
         folder = self.makeTestObject()
         data = self.makeTestData()
 
         foo = data[0][1]
-        folder.setObject('foo', foo)
+        name = folder.setObject('foo', foo)
 
         self.assertEquals(len(folder.keys()), 1)
-        self.assertEquals(folder.keys()[0], 'foo')
+        self.assertEquals(folder.keys()[0], name)
         self.assertEquals(len(folder.values()), 1)
         self.assertEquals(folder.values()[0], foo)
         self.assertEquals(len(folder.items()), 1)
-        self.assertEquals(folder.items()[0], ('foo', foo))
+        self.assertEquals(folder.items()[0], (name, foo))
         self.assertEquals(len(folder), 1)
 
-        self.failUnless('foo' in folder)
-        self.failIf('bar' in folder)
+        self.failUnless(name in folder)
+        # Use an arbitrary id frpm the data set; don;t just use any id, since
+        # there might be restrictions on their form
+        self.failIf(data[6][0] in folder)
 
-        self.assertEquals(folder.get('foo', None), foo)
-        self.assertEquals(folder['foo'], foo)
+        self.assertEquals(folder.get(name, None), foo)
+        self.assertEquals(folder[name], foo)
 
-        self.assertRaises(KeyError, folder.__getitem__, 'qux')
+        self.assertRaises(KeyError, folder.__getitem__, data[6][0])
 
         foo2 = data[1][1]
-        folder.setObject('foo2', foo2)
+        name2 = folder.setObject('foo2', foo2)
 
         self.assertEquals(len(folder.keys()), 2)
-        self.assertEquals(not not 'foo2' in folder.keys(), True)
+        self.assertEquals(not not name2 in folder.keys(), True)
         self.assertEquals(len(folder.values()), 2)
         self.assertEquals(not not foo2 in folder.values(), True)
         self.assertEquals(len(folder.items()), 2)
-        self.assertEquals(not not ('foo2', foo2) in folder.items(), True)
+        self.assertEquals(not not (name2, foo2) in folder.items(), True)
         self.assertEquals(len(folder), 2)
 
-        del folder['foo']
-        del folder['foo2']
+        del folder[name]
+        del folder[name2]
 
         self.failIf(folder.keys())
         self.failIf(folder.values())
         self.failIf(folder.items())
         self.failIf(len(folder))
-        self.failIf('foo' in folder)
+        self.failIf(name in folder)
 
-        self.assertRaises(KeyError, folder.__getitem__, 'foo')
-        self.assertEquals(folder.get('foo', None), None)
-        self.assertRaises(KeyError, folder.__delitem__, 'foo')
+        self.assertRaises(KeyError, folder.__getitem__, name)
+        self.assertEquals(folder.get(name, None), None)
+        self.assertRaises(KeyError, folder.__delitem__, name)
 
     def testManyItems(self):
         folder = self.makeTestObject()
         data = self.makeTestData()
         objects = [ data[i][1] for i in range(4) ]
-        folder.setObject('foo', objects[0])
-        folder.setObject('bar', objects[1])
-        folder.setObject('baz', objects[2])
-        folder.setObject('bam', objects[3])
+        name0 = folder.setObject('foo', objects[0])
+        name1 = folder.setObject('bar', objects[1])
+        name2 = folder.setObject('baz', objects[2])
+        name3 = folder.setObject('bam', objects[3])
 
         self.assertEquals(len(folder.keys()), len(objects))
-        self.failUnless('foo' in folder.keys())
-        self.failUnless('bar' in folder.keys())
-        self.failUnless('baz' in folder.keys())
-        self.failUnless('bam' in folder.keys())
+        self.failUnless(name0 in folder.keys())
+        self.failUnless(name1 in folder.keys())
+        self.failUnless(name2 in folder.keys())
+        self.failUnless(name3 in folder.keys())
 
         self.assertEquals(len(folder.values()), len(objects))
         self.failUnless(objects[0] in folder.values())
@@ -231,56 +237,56 @@ class BaseTestIContainer:
         self.failUnless(objects[3] in folder.values())
 
         self.assertEquals(len(folder.items()), len(objects))
-        self.failUnless(('foo', objects[0]) in folder.items())
-        self.failUnless(('bar', objects[1]) in folder.items())
-        self.failUnless(('baz', objects[2]) in folder.items())
-        self.failUnless(('bam', objects[3]) in folder.items())
+        self.failUnless((name0, objects[0]) in folder.items())
+        self.failUnless((name1, objects[1]) in folder.items())
+        self.failUnless((name2, objects[2]) in folder.items())
+        self.failUnless((name3, objects[3]) in folder.items())
 
         self.assertEquals(len(folder), len(objects))
 
-        self.failUnless('foo' in folder)
-        self.failUnless('bar' in folder)
-        self.failUnless('baz' in folder)
-        self.failUnless('bam' in folder)
-        self.failIf('qux' in folder)
+        self.failUnless(name0 in folder)
+        self.failUnless(name1 in folder)
+        self.failUnless(name2 in folder)
+        self.failUnless(name3 in folder)
+        self.failIf(data[5][0] in folder)
 
-        self.assertEquals(folder.get('foo', None), objects[0])
-        self.assertEquals(folder['foo'], objects[0])
-        self.assertEquals(folder.get('bar', None), objects[1])
-        self.assertEquals(folder['bar'], objects[1])
-        self.assertEquals(folder.get('baz', None), objects[2])
-        self.assertEquals(folder['baz'], objects[2])
-        self.assertEquals(folder.get('bam', None), objects[3])
-        self.assertEquals(folder['bam'], objects[3])
+        self.assertEquals(folder.get(name0, None), objects[0])
+        self.assertEquals(folder[name0], objects[0])
+        self.assertEquals(folder.get(name1, None), objects[1])
+        self.assertEquals(folder[name1], objects[1])
+        self.assertEquals(folder.get(name2, None), objects[2])
+        self.assertEquals(folder[name2], objects[2])
+        self.assertEquals(folder.get(name3, None), objects[3])
+        self.assertEquals(folder[name3], objects[3])
 
-        self.assertEquals(folder.get('qux', None), None)
-        self.assertRaises(KeyError, folder.__getitem__, 'qux')
+        self.assertEquals(folder.get(data[5][0], None), None)
+        self.assertRaises(KeyError, folder.__getitem__, data[5][0])
 
-        del folder['foo']
+        del folder[name0]
         self.assertEquals(len(folder), len(objects) - 1)
-        self.failIf('foo' in folder)
-        self.failIf('foo' in folder.keys())
+        self.failIf(name0 in folder)
+        self.failIf(name0 in folder.keys())
 
         self.failIf(objects[0] in folder.values())
-        self.failIf(('foo', objects[0]) in folder.items())
+        self.failIf((name0, objects[0]) in folder.items())
 
-        self.assertEquals(folder.get('foo', None), None)
-        self.assertRaises(KeyError, folder.__getitem__, 'foo')
+        self.assertEquals(folder.get(name0, None), None)
+        self.assertRaises(KeyError, folder.__getitem__, name0)
 
-        self.assertRaises(KeyError, folder.__delitem__, 'foo')
+        self.assertRaises(KeyError, folder.__delitem__, name0)
 
-        del folder['bar']
-        del folder['baz']
-        del folder['bam']
+        del folder[name1]
+        del folder[name2]
+        del folder[name3]
 
         self.failIf(folder.keys())
         self.failIf(folder.values())
         self.failIf(folder.items())
         self.failIf(len(folder))
-        self.failIf('foo' in folder)
-        self.failIf('bar' in folder)
-        self.failIf('baz' in folder)
-        self.failIf('bam' in folder)
+        self.failIf(name0 in folder)
+        self.failIf(name1 in folder)
+        self.failIf(name2 in folder)
+        self.failIf(name3 in folder)
 
 
 class Test(BaseTestIContainer, TestCase):
@@ -292,6 +298,11 @@ class Test(BaseTestIContainer, TestCase):
     def makeTestData(self):
         return DefaultTestData()
 
+    def getUnknownKey(self):
+        return '10'
+
+    def getBadKeyTypes(self):
+        return [None, ['foo'], 1, '\xf3abc']
 
 def test_suite():
     return makeSuite(Test)
