@@ -13,7 +13,7 @@
 ##############################################################################
 """Objects that take care of annotating dublin core meta data times
 
-$Id: dependency.py,v 1.7 2003/06/07 06:37:22 stevea Exp $
+$Id: dependency.py,v 1.8 2003/07/01 22:18:05 fdrake Exp $
 """
 from zope.component import queryAdapter
 from zope.app.interfaces.dependable import IDependable
@@ -38,7 +38,6 @@ class DependencyChecker:
             dependents = dependency.dependents()
             if dependents:
                 objectpath = getPath(event.object)
-                dependents = map(canonicalPath, dependents)
                 raise DependencyError("Removal of object (%s)"
                                       " which has dependents (%s)"
                                       % (objectpath,
