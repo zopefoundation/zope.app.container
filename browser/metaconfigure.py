@@ -15,6 +15,7 @@
 
 $Id$
 """
+
 __docformat__ = 'restructuredtext'
 
 from zope.interface import Interface
@@ -26,35 +27,33 @@ from zope.app.container.browser.adding import Adding
 from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.app.security.fields import Permission
 
+
 class IContainerViews(Interface):
     """Define several container views for an `IContainer` implementation."""
 
     for_ = GlobalInterface(
         title=u"The interface this containerViews are for.",
         description=u"""
-        The containerViews will be for all objects that implement this
-        interface.""",
-        required=True
-        )
-     
+        The containerViews will be available for all objects that
+        implement this interface.
+        """,
+        required=True)
+
     contents = Permission(
         title=u"The permission needed for content page.",
-        required=False,
-        )
+        required=False)
 
     index = Permission(
         title=u"The permission needed for index page.",
-        required=False,
-        )
+        required=False)
 
     add = Permission(
         title=u"The permission needed for add page.",
-        required=False,
-        )
+        required=False)
 
 
 def containerViews(_context, for_, contents=None, add=None, index=None):
-    """Create an container view for a given content type"""
+    """Set up container views for a given content type."""
 
     if for_ is None:
             raise ValueError("A for interface must be specified.")
@@ -64,9 +63,9 @@ def containerViews(_context, for_, contents=None, add=None, index=None):
         page(_context, name='contents.html', permission=contents,
              for_=for_, class_=Contents, attribute='contents',
              menu=zmi_views, title=_('Contents'))
-            
+
     if index is not None:
-        page(_context, name='index.html', permission=index, for_=for_, 
+        page(_context, name='index.html', permission=index, for_=for_,
              class_=Contents, attribute='index')
 
     if add is not None:
