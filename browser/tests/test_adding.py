@@ -13,13 +13,13 @@
 ##############################################################################
 """Adding implementation tests
 
-$Id: test_adding.py,v 1.1 2004/03/14 02:17:03 srichter Exp $
+$Id: test_adding.py,v 1.2 2004/03/14 03:44:06 srichter Exp $
 """
 import unittest
 from zope.testing.doctestunit import DocTestSuite
 from zope.app import zapi
 from zope.app.tests import ztapi
-from zope.app.browser.absoluteurl import AbsoluteURL
+from zope.app.traversing.browser import AbsoluteURL
 from zope.app.container.browser.adding import Adding
 from zope.app.container.interfaces import IAdding
 from zope.app.container.interfaces import IObjectAddedEvent
