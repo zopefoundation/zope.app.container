@@ -132,7 +132,7 @@ def test_containerViews():
       <function provideInterface>,
       ('', <InterfaceClass zope.interface.Interface>)),
      (('view',
-       (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,),
+       <InterfaceClass zope.app.container.browser.tests.test_directive.I>,
        '+',
        <InterfaceClass zope.publisher.interfaces.browser.IBrowserRequest>,
        'default',

@@ -64,7 +64,7 @@ def containerViews(_context, for_, contents=None, add=None, index=None):
 
     if add is not None:
         viewObj = view(_context, name='+', menu='zmi_actions',
-                       title=_('Add'), for_=[for_], permission=add,
+                       title=_('Add'), for_=for_, permission=add,
                        class_=Adding)
         viewObj.page(_context, name='index.html', attribute='index')
         viewObj.page(_context, name='action.html', attribute='action')
