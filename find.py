@@ -13,14 +13,14 @@
 ##############################################################################
 """
 
-$Id: find.py,v 1.3 2003/05/27 14:18:13 jim Exp $
+$Id: find.py,v 1.4 2003/06/01 15:59:29 jim Exp $
 
 """
 
 from zope.app.interfaces.container.find import IFind, IIdFindFilter
 from zope.app.interfaces.container import IReadContainer
 # XXX need to do this manually to wrap objects
-from zope.context import ContextWrapper
+from zope.app.context import ContextWrapper
 
 class FindAdapter(object):
 
