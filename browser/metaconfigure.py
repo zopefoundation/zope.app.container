@@ -15,7 +15,6 @@
 
 $Id$
 """
-
 __docformat__ = 'restructuredtext'
 
 from zope.app.component.fields import LayerField
@@ -60,7 +59,6 @@ class IContainerViews(Interface):
         attribute is not supplied, it defaults to 'default'."""),
         required=False
         )
-
 
 def containerViews(_context, for_, contents=None, add=None, index=None,
                    layer=IDefaultBrowserLayer):
