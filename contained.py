@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.11 2004/03/05 22:08:59 jim Exp $
+$Id: contained.py,v 1.12 2004/03/06 02:36:53 garrett Exp $
 """
 from zope.proxy import getProxiedObject
 from zope.exceptions import DuplicationError
@@ -95,90 +95,90 @@ def containedEvent(object, container, name=None):
     If the object implements IContained, simply set its __parent__
     and __name__ attributes:
 
-    >>> container = {}
-    >>> item = Contained()
-    >>> x, event = containedEvent(item, container, u'foo')
-    >>> x is item
-    1
-    >>> item.__parent__ is container
-    1
-    >>> item.__name__
-    u'foo'
+        >>> container = {}
+        >>> item = Contained()
+        >>> x, event = containedEvent(item, container, u'foo')
+        >>> x is item
+        True
+        >>> item.__parent__ is container
+        True
+        >>> item.__name__
+        u'foo'
 
     We have an added event:
 
-    >>> event.__class__.__name__
-    'ObjectAddedEvent'
-    >>> event.object is item
-    1
-    >>> event.newParent is container
-    1
-    >>> event.newName
-    u'foo'
-    >>> event.oldParent
-    >>> event.oldName
+        >>> event.__class__.__name__
+        'ObjectAddedEvent'
+        >>> event.object is item
+        True
+        >>> event.newParent is container
+        True
+        >>> event.newName
+        u'foo'
+        >>> event.oldParent
+        >>> event.oldName
 
     Now if we call contained again:
 
-    >>> x2, event = containedEvent(item, container, u'foo')
-    >>> x2 is item
-    1
-    >>> item.__parent__ is container
-    1
-    >>> item.__name__
-    u'foo'
-
+        >>> x2, event = containedEvent(item, container, u'foo')
+        >>> x2 is item
+        True
+        >>> item.__parent__ is container
+        True
+        >>> item.__name__
+        u'foo'
+    
     We don't get a new added event:
 
-    >>> event
+        >>> event
 
     If the object already had a parent but the parent or name was
     different, we get a moved event:
 
-    >>> x, event = containedEvent(item, container, u'foo2')
-    >>> event.__class__.__name__
-    'ObjectMovedEvent'
-    >>> event.object is item
-    1
-    >>> event.newParent is container
-    1
-    >>> event.newName
-    u'foo2'
-    >>> event.oldParent is container
-    1
-    >>> event.oldName
-    u'foo'
+        >>> x, event = containedEvent(item, container, u'foo2')
+        >>> event.__class__.__name__
+        'ObjectMovedEvent'
+        >>> event.object is item
+        True
+        >>> event.newParent is container
+        True
+        >>> event.newName
+        u'foo2'
+        >>> event.oldParent is container
+        True
+        >>> event.oldName
+        u'foo'
 
     If the object implements ILocation, but not IContained, set it's
     __parent__ and __name__ attributes *and* declare that it
     implements IContained:
 
-    >>> from zope.app.location import Location
-    >>> item = Location()
-    >>> IContained.providedBy(item)
-    0
-    >>> x, event = containedEvent(item, container, 'foo')
-    >>> x is item
-    1
-    >>> item.__parent__ is container
-    1
-    >>> item.__name__
-    'foo'
-    >>> IContained.providedBy(item)
-    1
+        >>> from zope.app.location import Location
+        >>> item = Location()
+        >>> IContained.isImplementedBy(item)
+        False
+        >>> x, event = containedEvent(item, container, 'foo')
+        >>> x is item
+        True
+        >>> item.__parent__ is container
+        True
+        >>> item.__name__
+        'foo'
+        >>> IContained.isImplementedBy(item)
+        True
+
 
     If the object doesn't even implement ILocation, put a
     ContainedProxy around it:
 
-    >>> item = []
-    >>> x, event = containedEvent(item, container, 'foo')
-    >>> x is item
-    0
-    >>> x.__parent__ is container
-    1
-    >>> x.__name__
-    'foo'
-
+        >>> item = []
+        >>> x, event = containedEvent(item, container, 'foo')
+        >>> x is item
+        False
+        >>> x.__parent__ is container
+        True
+        >>> x.__name__
+        'foo'
     """
 
     if not IContained.providedBy(object):
