@@ -13,9 +13,8 @@
 ##############################################################################
 """Test the IContainer interface.
 
-$Id: test_icontainer.py,v 1.7 2004/03/03 10:38:39 philikon Exp $
+$Id: test_icontainer.py,v 1.8 2004/03/08 23:35:04 srichter Exp $
 """
-
 from unittest import TestCase, main, makeSuite
 from zope.app.container.interfaces import IContainer
 from zope.interface.verify import verifyObject
