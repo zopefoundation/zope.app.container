@@ -13,13 +13,13 @@
 ##############################################################################
 """Objects that take care of annotating dublin core meta data times
 
-$Id: dependency.py,v 1.5 2003/03/21 15:29:07 alga Exp $
+$Id: dependency.py,v 1.6 2003/05/28 15:46:06 jim Exp $
 """
 from zope.component import queryAdapter
 from zope.app.interfaces.dependable import IDependable
 from zope.app.interfaces.dependable import DependencyError
 from zope.app.interfaces.event import ISubscriber
-from zope.proxy.introspection import removeAllProxies
+from zope.proxy import removeAllProxies
 from zope.app.traversing import getPath, canonicalPath
 
 class DependencyChecker:

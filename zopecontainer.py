@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.16 2003/05/27 14:18:13 jim Exp $
+$Id: zopecontainer.py,v 1.17 2003/05/28 15:46:06 jim Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -27,7 +27,7 @@ from zope.app.interfaces.container import IAddNotifiable
 from zope.app.interfaces.container import IDeleteNotifiable
 from zope.app.interfaces.copypastemove import IObjectMover
 from types import StringTypes
-from zope.proxy.introspection import removeAllProxies
+from zope.proxy import removeAllProxies
 from zope.exceptions import NotFoundError, DuplicationError
 from zope.app.event.objectevent \
      import ObjectRemovedEvent, ObjectModifiedEvent, ObjectAddedEvent

@@ -14,23 +14,22 @@
 """
 
 Revision information:
-$Id: copypastemove.py,v 1.6 2003/05/27 14:18:13 jim Exp $
+$Id: copypastemove.py,v 1.7 2003/05/28 15:46:06 jim Exp $
 """
 
-from zope.app.interfaces.container import IOptionalNamesContainer
+from types import StringTypes
+from zope.app.event import publish
+from zope.app.event.objectevent import ObjectModifiedEvent
 from zope.app.interfaces.container import IContainerNamesContainer
-from zope.app.interfaces.container import IMoveSource
 from zope.app.interfaces.container import ICopySource, INoChildrenCopySource
-from zope.app.interfaces.container import IPasteTarget
+from zope.app.interfaces.container import IMoveSource
+from zope.app.interfaces.container import IOptionalNamesContainer
 from zope.app.interfaces.container import IPasteNamesChooser
+from zope.app.interfaces.container import IPasteTarget
 from zope.app.interfaces.content.folder import ICloneWithoutChildren
 from zope.component import getAdapter
-from zope.proxy.introspection import removeAllProxies
-from zope.app.event.objectevent import ObjectModifiedEvent
 from zope.context import ContextWrapper
-from zope.app.event import publish
-from zope.proxy.introspection import removeAllProxies
-from types import StringTypes
+from zope.proxy import removeAllProxies
 import copy
 
 class PasteTarget:

@@ -21,12 +21,12 @@ noop
 Cloner
   An IDirectoryFactory adapter that just clones the original object.
 
-$Id: directory.py,v 1.3 2003/03/31 17:13:07 rdmurray Exp $
+$Id: directory.py,v 1.4 2003/05/28 15:46:06 jim Exp $
 """
 __metaclass__ = type
 
 import zope.app.interfaces.file
-from zope.proxy.introspection import removeAllProxies
+from zope.proxy import removeAllProxies
 
 def noop(container):
     """XXX adapt an IContainer to an IWriteDirectory by just returning it
