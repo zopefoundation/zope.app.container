@@ -46,6 +46,7 @@
   <subscriber
       factory=".dependency.CheckDependency"
       for="zope.app.container.interfaces.IObjectRemovedEvent"
+      trusted="y"
       />
 
   <subscriber
