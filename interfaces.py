@@ -13,7 +13,7 @@
 ##############################################################################
 """Container-related interfaces
 
-$Id: interfaces.py,v 1.2 2004/03/13 22:02:15 srichter Exp $
+$Id: interfaces.py,v 1.3 2004/03/23 16:37:15 nathan Exp $
 """
 from zope.interface import Interface, Attribute, implements, Invalid
 from zope.component.interfaces import IView
@@ -84,9 +84,9 @@ class IWriteContainer(Interface):
         generated, otherwise, and IObjectMovedEvent is generated.  An
         IObjectModifiedEvent is generated for the container.  If an
         add event is generated and the object can be adapted to
-        IAddNotifiable, then the adapter's addNotify method is called
+        IObjectAddedEvent, then the adapter's addNotify method is called
         with the event.  If the object can be adapted to
-        IMoveNotifiable, then the adapter's moveNotify method is
+        IObjectMovedEvent, then the adapter's moveNotify method is
         called with the event.
 
         If the object replaces another object, then the old object is
@@ -108,7 +108,7 @@ class IWriteContainer(Interface):
         If the deleted object's __parent__ and __name__ match the
         container and given name, then an IObjectRemovedEvent is
         generated and the attributes are set to None. If the object
-        can be adapted to IMoveNotifiable, then the adapter's
+        can be adapted to IObjectMovedEvent, then the adapter's
         moveNotify method is called with the event.
 
         Unless the object's __parent__ and __name__ attributes were
@@ -162,18 +162,6 @@ class IObjectMovedEvent(IObjectEvent):
     newParent = Attribute("The new location parent for the object.")
     newName = Attribute("The new location name for the object.")
 
-class IMoveNotifiable(Interface):
-    """Interface for notification of being deleted, added, or moved."""
-
-    def moveNotify(event):
-        """Notify of a move event
-
-        This is called after the object has been added to the new
-        location and before it has been deleted from the old.
-
-        """
-
-
 ##############################################################################
 # Adding objects
 
@@ -191,13 +179,6 @@ class UnaddableError(ContainerError):
 
 class IObjectAddedEvent(IObjectMovedEvent):
     """An object has been added to a container."""
-
-class IAddNotifiable(Interface):
-    """Interface for notification of being added."""
-
-    def addNotify(event):
-        """Hook method will call after an object is added to container.
-        """
 
 class IAdding(IView):
 
@@ -256,13 +237,6 @@ class INameChooser(Interface):
 
 class IObjectRemovedEvent(IObjectMovedEvent):
     """An object has been removed from a container"""
-
-class IRemoveNotifiable(Interface):
-    """Interface for notification of being deleted."""
-
-    def removeNotify(object, container):
-        """Hook method will call before object is removed from container."""
-
 
 ##############################################################################
 # Finding objects
