@@ -13,13 +13,13 @@
 ##############################################################################
 """
 
-$Id: test_containertraverser.py,v 1.8 2003/06/07 06:37:22 stevea Exp $
+$Id: test_containertraverser.py,v 1.9 2003/11/21 17:11:31 jim Exp $
 """
 
 import unittest
 from zope.component.tests.request import Request
 from zope.component import getService
-from zope.app.services.servicenames import Views
+from zope.app.services.servicenames import Presentation
 from zope.app.container.traversal import ContainerTraverser
 from zope.interface import Interface, implements
 from zope.exceptions import NotFoundError
@@ -72,7 +72,8 @@ class Test(PlacelessSetup, unittest.TestCase):
         req = Request(I, '')
 
         T = ContainerTraverser(c, req)
-        getService(None,Views).provideView(IContainer, 'viewfoo', I, [View])
+        getService(None, Presentation).provideView(
+            IContainer, 'viewfoo', I, [View])
 
         self.failUnless(T.publishTraverse(req,'viewfoo').__class__ is View )
         self.failUnless(T.publishTraverse(req,'foo') is foo)
