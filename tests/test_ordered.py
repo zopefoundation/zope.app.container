@@ -14,17 +14,19 @@
 """Test the OrderedContainer.
 
 
-$Id: test_ordered.py,v 1.2 2003/06/23 22:46:15 chrism Exp $
+$Id: test_ordered.py,v 1.3 2003/09/21 17:31:44 jim Exp $
 """
 
 import unittest
 from zope.interface import *
 from zope.testing.doctestunit import DocTestSuite
 from zope.interface import Interface
+from zope.app.tests.placelesssetup import setUp, tearDown
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(DocTestSuite("zope.app.container.ordered"))
+    suite.addTest(DocTestSuite("zope.app.container.ordered",
+                               setUp=setUp, tearDown=tearDown))
 
     return suite
 
