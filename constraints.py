@@ -151,7 +151,11 @@
    """
 __docformat__ = 'restructuredtext'
 
-import zope.interface
+import sys
+
+import zope.interface.advice
+import zope.schema
+
 from zope.interface import providedBy
 from zope.app.container.interfaces import InvalidItemType, InvalidContainerType
 from zope.app.i18n import ZopeMessageIDFactory as _
@@ -298,6 +302,49 @@ class ItemTypePrecondition(object):
         raise InvalidItemType(container, factory, self.types)
 
 
+def contains(*types):
+    """Declare that a container type contains only the given types
+
+    This is used within a class suite defining an interface to create
+    a __setitem__ specification with a precondition allowing only the
+    given types:
+
+      >>> class IFoo(zope.interface.Interface):
+      ...     pass
+      >>> class IBar(zope.interface.Interface):
+      ...     pass
+      >>> class IFooBarContainer(IContainer):
+      ...     contains(IFoo, IBar)
+
+      >>> __setitem__ = IFooBarContainer['__setitem__']
+      >>> __setitem__.getTaggedValue('precondition').types == (IFoo, IBar)
+      True
+
+    It is invalid to call contains outside a class suite:
+
+      >>> contains(IFoo, IBar)
+      Traceback (most recent call last):
+      ...
+      TypeError: contains not called from suite
+    """
+
+    frame = sys._getframe(1)
+    f_locals = frame.f_locals
+    f_globals = frame.f_globals
+    
+    if not (f_locals is not f_globals
+            and f_locals.get('__module__')
+            and f_locals.get('__module__') == f_globals.get('__name__')
+            ):
+        raise TypeError("contains not called from suite")
+
+    def __setitem__(key, value):
+        pass
+    __setitem__.__doc__ = IContainer['__setitem__'].__doc__
+    __setitem__.precondition = ItemTypePrecondition(*types)
+    f_locals['__setitem__'] = __setitem__
+
+
 class ContainerTypesConstraint(object):
     """Constrain a container to be one of a number of types
 
@@ -332,3 +379,48 @@ class ContainerTypesConstraint(object):
                return True
        else:
            raise InvalidContainerType(object, self.types)
+
+
+def containers(*types):
+    """Declare the container types a type can be contained in
+
+    This is used within a class suite defining an interface to create
+    a __parent__ specification with a constraint allowing only the
+    given types:
+
+      >>> class IFoo(IContainer):
+      ...     pass
+      >>> class IBar(IContainer):
+      ...     pass
+      
+      >>> from zope.app.container.interfaces import IContained
+      >>> class IFooBarContained(IContained):
+      ...     containers(IFoo, IBar)
+
+      >>> __parent__ = IFooBarContained['__parent__']
+      >>> __parent__.constraint.types == (IFoo, IBar)
+      True
+
+    It is invalid to call containers outside a class suite:
+
+      >>> containers(IFoo, IBar)
+      Traceback (most recent call last):
+      ...
+      TypeError: containers not called from suite
+    """
+
+    frame = sys._getframe(1)
+    f_locals = frame.f_locals
+    f_globals = frame.f_globals
+    
+    if not (f_locals is not f_globals
+            and f_locals.get('__module__')
+            and f_locals.get('__module__') == f_globals.get('__name__')
+            ):
+        raise TypeError("containers not called from suite")
+
+    __parent__ = zope.schema.Field(
+        constraint = ContainerTypesConstraint(*types)
+        )
+    f_locals['__parent__'] = __parent__
+
