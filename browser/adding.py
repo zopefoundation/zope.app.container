@@ -16,7 +16,7 @@
 The Adding View is used to add new objects to a container. It is sort of a
 factory screen.
 
-$Id: adding.py,v 1.1 2004/03/14 02:17:02 srichter Exp $
+$Id: adding.py,v 1.2 2004/03/14 04:44:50 srichter Exp $
 """
 __metaclass__ = type
 
@@ -26,7 +26,7 @@ from zope.publisher.interfaces import IPublishTraverse
 from zope.proxy import removeAllProxies
 from zope.component.interfaces import IFactory
 
-from zope.app.interfaces.exceptions import UserError
+from zope.app.exception.interfaces import UserError
 from zope.app.container.interfaces import IAdding
 from zope.app.container.interfaces import IContainerNamesContainer
 from zope.app.container.interfaces import INameChooser
