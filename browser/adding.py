@@ -16,7 +16,7 @@
 The Adding View is used to add new objects to a container. It is sort of a
 factory screen.
 
-$Id: adding.py,v 1.2 2004/03/14 04:44:50 srichter Exp $
+$Id: adding.py,v 1.3 2004/04/27 15:45:10 eckart Exp $
 """
 __metaclass__ = type
 
@@ -30,6 +30,8 @@ from zope.app.exception.interfaces import UserError
 from zope.app.container.interfaces import IAdding
 from zope.app.container.interfaces import IContainerNamesContainer
 from zope.app.container.interfaces import INameChooser
+from zope.app.container.constraints import checkFactory
+from zope.app.container.constraints import checkObject
 
 from zope.app import zapi
 from zope.app.event.objectevent import ObjectCreatedEvent
@@ -40,7 +42,6 @@ from zope.app.publisher.browser import BrowserView
 from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.i18n import translate
 from zope.app.location import LocationProxy
-from zope.app.container.constraints import checkFactory
 
 
 class BasicAdding(BrowserView):
@@ -52,6 +53,9 @@ class BasicAdding(BrowserView):
         container = self.context
         name = self.contentName
         chooser = INameChooser(container)
+
+        # check precondition
+        checkObject(container, name, content)
 
         if IContainerNamesContainer.providedBy(container):
             # The container pick's it's own names.
