@@ -14,7 +14,7 @@
 """
 
 Revision information:
-$Id: zopecontainer.py,v 1.10 2003/02/11 18:04:16 sidnei Exp $
+$Id: zopecontainer.py,v 1.11 2003/02/11 19:53:36 sidnei Exp $
 """
 
 from zope.app.interfaces.container import IZopeContainer
@@ -28,6 +28,7 @@ from zope.app.interfaces.container import IDeleteNotifiable
 from zope.app.interfaces.copy import IObjectMover
 from types import StringTypes
 from zope.proxy.introspection import removeAllProxies
+from zope.exceptions import NotFoundError, DuplicationError
 from zope.app.event.objectevent \
      import ObjectRemovedEvent, ObjectModifiedEvent, ObjectAddedEvent, \
             ObjectMovedEvent
@@ -172,10 +173,15 @@ class ZopeContainerAdapter:
         """
 
         object = self.get(currentKey)
+        if object is None:
+            raise NotFoundError(self.context, currentKey)
         mover = getAdapter(object, IObjectMover)
         container = self.context
         target = container
         
+        if target.__contains__(newKey):
+            raise DuplicationError("name, %s, is already in use" % newKey)
+
         if mover.moveable() and mover.moveableTo(target, newKey):
 
             # the mover will call manage_beforeDelete hook for us
