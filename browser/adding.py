@@ -134,10 +134,11 @@ class BasicAdding(BrowserView):
         if not self.contentName:
             self.contentName = id
 
-        # XXX: If the factory wrapped by LocationProxy is already a Proxy,
-        #      then ProxyFactory does not the right thing and the original's
-        #      checker info gets lost. No factory that was registered via ZCML
-        #      and was used via addMenuItem worked here. (SR)
+        # TODO: If the factory wrapped by LocationProxy is already a Proxy,
+        #       then ProxyFactory does not do the right thing and the
+        #       original's checker info gets lost. No factory that was
+        #       registered via ZCML and was used via addMenuItem worked
+        #       here. (SR)
         factory = zapi.getUtility(IFactory, type_name)
         if not type(factory) is zope.security.checker.Proxy:
             factory = LocationProxy(factory, self, type_name)
