@@ -13,7 +13,7 @@
 ##############################################################################
 """Classes to support implenting IContained
 
-$Id: contained.py,v 1.2 2003/09/21 17:31:31 jim Exp $
+$Id: contained.py,v 1.3 2003/09/22 21:05:12 sidnei Exp $
 """
 
 from zope.app import zapi
@@ -68,7 +68,7 @@ class ObjectAddedEvent(ObjectMovedEvent):
         if newParent is None:
             newParent = object.__parent__
         if newName is None:
-            newName = object.__name__        
+            newName = object.__name__
         ObjectMovedEvent.__init__(self, object, None, None, newParent, newName)
 
 class ObjectRemovedEvent(ObjectMovedEvent):
@@ -80,7 +80,7 @@ class ObjectRemovedEvent(ObjectMovedEvent):
         if oldParent is None:
             oldParent = object.__parent__
         if oldName is None:
-            oldName = object.__name__        
+            oldName = object.__name__
         ObjectMovedEvent.__init__(self, object, oldParent, oldName, None, None)
 
 
@@ -133,7 +133,7 @@ def containedEvent(object, container, name=None):
 
     If the object already had a parent but the parent or name was
     different, we get a moved event:
-    
+
     >>> x, event = containedEvent(item, container, u'foo2')
     >>> event.__class__.__name__
     'ObjectMovedEvent'
@@ -147,7 +147,7 @@ def containedEvent(object, container, name=None):
     1
     >>> event.oldName
     u'foo'
-    
+
     If the object implements ILocation, but not IContained, set it's
     __parent__ and __name__ attributes *and* declare that it
     implements IContained:
@@ -192,7 +192,7 @@ def containedEvent(object, container, name=None):
     if oldparent is container and oldname == name:
         # No events
         return object, None
-    
+
     object.__parent__ = container
     object.__name__ = name
 
@@ -250,7 +250,7 @@ def setitem(container, setitemf, name, object):
     >>> from zope.app.interfaces.event import IObjectModifiedEvent
 
     We have an added event:
-    
+
     >>> len(getEvents(IObjectAddedEvent))
     1
     >>> event = getEvents(IObjectAddedEvent)[-1]
@@ -264,7 +264,7 @@ def setitem(container, setitemf, name, object):
     >>> event.oldName
 
     As well as a modification event for the container:
-    
+
     >>> len(getEvents(IObjectModifiedEvent))
     1
     >>> getEvents(IObjectModifiedEvent)[-1].object is container
@@ -310,7 +310,7 @@ def setitem(container, setitemf, name, object):
     (Note that we have 2 move events because add are move events.)
 
     We also get the move hook called, but not the add hook:
-    
+
     >>> event = getEvents(IObjectMovedEvent)[-1]
     >>> getattr(item, 'added', None)
     >>> item.moved is event
@@ -331,8 +331,8 @@ def setitem(container, setitemf, name, object):
     2
     >>> len(getEvents(IObjectModifiedEvent))
     3
-    
-        
+
+
     If the object implements ILocation, but not IContained, set it's
     __parent__ and __name__ attributes *and* declare that it
     implements IContained:
@@ -381,7 +381,7 @@ def setitem(container, setitemf, name, object):
     5
 
     We'll get type errors if we give keys that aren't unicode or ascii keys:
-    
+
     >>> setitem(container, container.__setitem__, 42, item)
     Traceback (most recent call last):
     ...
@@ -408,7 +408,7 @@ def setitem(container, setitemf, name, object):
     Traceback (most recent call last):
     ...
     ValueError: empty names are not allowed
-    
+
     """
 
     # Do basic name check:
@@ -440,7 +440,7 @@ def setitem(container, setitemf, name, object):
         if a is not None:
             a.moveNotify(event)
         publish(container, event)
-        modified(container)    
+        modified(container)
 
 fixing_up = False
 def uncontained(object, container, name=None):
@@ -472,10 +472,10 @@ def uncontained(object, container, name=None):
 
     >>> uncontained(item, container, u'foo')
     >>> item.__parent__
-    >>> item.__name__    
+    >>> item.__name__
 
     We now have a new removed event:
-    
+
     >>> len(getEvents(IObjectRemovedEvent))
     1
     >>> event = getEvents(IObjectRemovedEvent)[-1]
@@ -489,7 +489,7 @@ def uncontained(object, container, name=None):
     >>> event.newName
 
     As well as a modification event for the container:
-    
+
     >>> len(getEvents(IObjectModifiedEvent))
     1
     >>> getEvents(IObjectModifiedEvent)[-1].object is container
@@ -545,7 +545,7 @@ def uncontained(object, container, name=None):
         if oldparent is not None or oldname is not None:
             modified(container)
         return
-    
+
     event = ObjectRemovedEvent(object, oldparent, oldname)
     a = zapi.queryAdapter(object, IRemoveNotifiable)
     if a is not None:
@@ -578,7 +578,7 @@ class NameChooser:
             name = unicode(name)
         elif not isinstance(name, unicode):
             raise TypeError("Invalid name type", type(name))
-        
+
         if name[:1] in '+@' or '/' in name:
             raise zapi.UserError(
                 _("Names cannot begin with '+' or '@' or contain '/'")
@@ -588,7 +588,7 @@ class NameChooser:
             raise zapi.UserError(
                 _("The given name is already being used")
                 )
-            
+
         return True
 
 
@@ -596,7 +596,7 @@ class NameChooser:
         "See zope.app.interfaces.container.INameChooser"
 
         container = self.context
-        
+
         if not name:
             name = object.__class__.__name__
 
@@ -606,8 +606,8 @@ class NameChooser:
             name = name[:dot]
         else:
             suffix = ''
-            
-            
+
+
         n = name + suffix
         i = 1
         while n in container:
@@ -616,7 +616,7 @@ class NameChooser:
 
         # Make sure tha name is valid.  We may have started with something bad.
         self.checkName(n, object)
-                
+
         return n
 
 
@@ -669,7 +669,7 @@ class DecoratorSpecificationDescriptor(ObjectSpecificationDescriptor):
 
             # Use type rather than __class__ because inst is a proxy and
             # will return the proxied object's class.
-            cls = type(inst) 
+            cls = type(inst)
             return ObjectSpecification(provided, cls)
 
 
@@ -720,7 +720,7 @@ from zope.app.services.registration import RegistrationStack
 def parentgeddonFixup(event):
     """Fixup databases to work with the result of parentgeddon.
     """
-    
+
     database = event.database
     connection = database.open()
     app = connection.root().get('Application')
@@ -756,7 +756,7 @@ def fixcontainer(container):
     # Step 1: fix items:
     for name in container:
         ob = container[name]
-        
+
         if not IContained.isImplementedBy(ob):
             # remove the old item and reassign it
             del container[name]
@@ -771,7 +771,7 @@ def fixcontainer(container):
 
         if IRegistry.isImplementedBy(ob):
             fixregistry(ob)
-    
+
     if IPossibleSite.isImplementedBy(container):
         try:
             sm = container.getSiteManager()
@@ -798,4 +798,4 @@ def fixregistry(registry):
         for ob in data:
             if isinstance(ob, RegistrationStack):
                 ob.__parent__ = registry
-    
+
