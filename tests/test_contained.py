@@ -51,7 +51,7 @@ def test_basic_proxy_attribute_management_and_picklability():
     'p'
     """
     
-def test_basic_persistent_w_non_persitent_proxied():
+def test_basic_persistent_w_non_persistent_proxied():
     """
     >>> p = ContainedProxy([1])
     >>> p.__parent__ = 2;
@@ -80,7 +80,7 @@ def test_basic_persistent_w_non_persitent_proxied():
     >>> db.close()
     """
     
-def test_basic_persistent_w_persitent_proxied():
+def test_basic_persistent_w_persistent_proxied():
     """
 
     Here, we'll verify that shared references work and
