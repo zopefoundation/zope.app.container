@@ -136,8 +136,8 @@
 
    To work with `checkFactory`, a container precondition has to
    implement a factory method.  This is because a factory, rather than
-   an object is passed.  To illustrate this, we'll make preNoZ it's
-   own factory method:
+   an object is passed.  To illustrate this, we'll make preNoZ its own
+   factory method:
 
    >>> preNoZ.factory = preNoZ
 
