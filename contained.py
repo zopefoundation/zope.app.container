@@ -25,7 +25,7 @@ from zope.interface.declarations import getObjectSpecification
 from zope.interface.declarations import ObjectSpecification
 from zope.interface import providedBy
 
-from zope.app import zapi
+from zope.app.exception.interfaces import UserError
 from zope.app.event.objectevent import ObjectEvent, modified
 from zope.app.event import publish
 from zope.app.i18n import ZopeMessageIDFactory as _
@@ -563,7 +563,7 @@ class NameChooser:
         "See zope.app.container.interfaces.INameChooser"
 
         if not name:
-            raise zapi.UserError(
+            raise UserError(
                 _("An empty name was provided. Names cannot be empty.")
                 )
 
@@ -573,12 +573,12 @@ class NameChooser:
             raise TypeError("Invalid name type", type(name))
 
         if name[:1] in '+@' or '/' in name:
-            raise zapi.UserError(
+            raise UserError(
                 _("Names cannot begin with '+' or '@' or contain '/'")
                 )
 
         if name in self.context:
-            raise zapi.UserError(
+            raise UserError(
                 _("The given name is already being used")
                 )
 
