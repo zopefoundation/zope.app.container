@@ -12,7 +12,7 @@
 #
 ##############################################################################
 """
-$Id: test_contents.py,v 1.1 2004/03/14 02:17:02 srichter Exp $
+$Id: test_contents.py,v 1.2 2004/03/19 03:17:14 srichter Exp $
 """
 
 import unittest
@@ -36,7 +36,7 @@ class Test(BrowserTestCase):
         self.assert_('foo' not in root)
         response = self.publish('/@@contents.html',
                                 basic='mgr:mgrpw',
-                                form={'type_name': u'File'})
+                                form={'type_name': u'zope.app.content.File'})
         body = ' '.join(response.getBody().split())
         self.assert_(body.find('type="hidden" name="type_name"') >= 0)
         self.assert_(body.find('input name="new_value"') >= 0)
@@ -47,7 +47,7 @@ class Test(BrowserTestCase):
 
         response = self.publish('/@@contents.html',
                                 basic='mgr:mgrpw',
-                                form={'type_name': u'File',
+                                form={'type_name': u'zope.app.content.File',
                                       'new_value': 'foo'})
         self.assertEqual(response.getStatus(), 302)
         self.assertEqual(response.getHeader('Location'),
