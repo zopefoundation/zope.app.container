@@ -9,39 +9,49 @@
      provides="zope.app.interfaces.container.find.IFind"
      for="zope.app.interfaces.container.IReadContainer"
      permission="zope.ManageContent" 
-     factory="zope.app.container.find.FindAdapter" />
+     factory="zope.app.container.find.FindAdapter" 
+     />
 
-  <browser:view
+  <browser:page
       name="_traverse" 
       for="zope.app.interfaces.container.IItemContainer"
-      factory="zope.app.container.traversal.ItemTraverser" />
+      class="zope.app.container.traversal.ItemTraverser" 
+      permission="zope.Public"
+      />
 
-  <browser:view
+  <browser:page
       name="_traverse" 
       for="zope.app.interfaces.container.ISimpleReadContainer"
-      factory="zope.app.container.traversal.ContainerTraverser" />
+      class="zope.app.container.traversal.ContainerTraverser" 
+      permission="zope.Public"
+      />
 
   <xmlrpc:view
       name="_traverse" 
       for="zope.app.interfaces.container.IItemContainer"
-      factory="zope.app.container.traversal.ItemTraverser" />
+      factory="zope.app.container.traversal.ItemTraverser" 
+      />
 
   <xmlrpc:view
       name="_traverse" 
       for="zope.app.interfaces.container.IReadContainer"
-      factory="zope.app.container.traversal.ContainerTraverser" />
+      factory="zope.app.container.traversal.ContainerTraverser" 
+      />
 
   <adapter factory="zope.app.container.traversal.ContainerTraversable"
            provides="zope.app.interfaces.traversing.ITraversable"
-           for="zope.app.interfaces.container.IReadContainer" />
+           for="zope.app.interfaces.container.IReadContainer" 
+           />
 
   <adapter factory="zope.app.container.zopecontainer.ZopeContainerAdapter"
            provides="zope.app.interfaces.container.IZopeContainer"
-           for="zope.app.interfaces.container.IContainer" />
+           for="zope.app.interfaces.container.IContainer" 
+           />
 
   <adapter factory="zope.app.container.size.ContainerSized"
            provides="zope.app.interfaces.size.ISized"
-           for="zope.app.interfaces.container.IContainer" />
+           for="zope.app.interfaces.container.IContainer" 
+           />
            
   <event:subscribe 
       subscriber = ".dependency.CheckDependency"
