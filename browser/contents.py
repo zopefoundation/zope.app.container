@@ -166,7 +166,7 @@ class Contents(BrowserView):
         if dc is not None:
             info['retitleable'] = checkPermission(
                 'zope.app.dublincore.change', dc) and id != retitle_id
-            info['plaintitle'] = 0
+            info['plaintitle'] = not info['retitleable']
 
             title = self.safe_getattr(dc, 'title', None)
             if title:
