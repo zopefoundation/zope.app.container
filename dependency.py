@@ -11,7 +11,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Objects that take care of annotating dublin core meta data times
+
+"""Subscriber function checking dependencies if a removal is performed
+on an object having dependencies. It raises an exception if it's the
+case.
 
 $Id$
 """
@@ -20,14 +23,19 @@ __docformat__ = 'restructuredtext'
 from zope.app import zapi
 from zope.app.dependable.interfaces import IDependable, DependencyError
 
+exception_msg = """
+Removal of object (%s) which has dependents (%s) is not possible !
+
+You must desactivate this object before trying to remove it.
+"""
+
 def CheckDependency(event):
     object = event.object
     dependency = IDependable(object, None)
     if dependency is not None:
         dependents = dependency.dependents()
         if dependents:
-            objectpath = zapi.getPath(event.object)
-            raise DependencyError("Removal of object (%s)"
-                                  " which has dependents (%s)"
+            objectpath = zapi.getPath(object)
+            raise DependencyError(exception_msg
                                   % (objectpath,
                                      ", ".join(dependents)))
