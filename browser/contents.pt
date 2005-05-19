@@ -19,7 +19,8 @@
 
       <div class="page_error"
            tal:condition="view/error"
-           tal:content="view/error">
+           tal:content="view/error"
+           i18n:translate="">
         Error message
       </div>
 
@@ -41,7 +42,7 @@
 
         <metal:block tal:condition="view/hasAdding">
         <tr tal:define="names_required context/@@+/nameAllowed"
-	    tal:condition="python:names_required and request.has_key('type_name')">
+            tal:condition="python:names_required and request.has_key('type_name')">
           <td></td>
           <td><input name="new_value" id="focusid" value="" /></td>
           <td></td>
@@ -78,6 +79,7 @@
                      tal:attributes="href
                                  string:${url}/@@SelectedManagementView.html"
                      tal:content="item/id"
+                     i18n:translate=""
                      >foo</a
                   ><a href="#"
                      tal:attributes="href
@@ -96,19 +98,24 @@
                                  string:${request/URL}?retitle_id=${id_quoted}"
                  tal:condition="item/retitleable"
                  tal:content="item/title|default"
+                 i18n:translate=""
                  >&nbsp;&nbsp;&nbsp;&nbsp;</a>
               <span
                  tal:condition="item/plaintitle"
                  tal:content="item/title|default"
+                 i18n:translate=""
                  >&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </td>
 
-            <td><span tal:content="item/size/sizeForDisplay|nothing">
+            <td><span tal:content="item/size/sizeForDisplay|nothing"
+                    i18n:translate="">
                       &nbsp;</span></td>
             <td><span tal:define="created item/created|default"
-                      tal:content="created">&nbsp;</span></td>
+                      tal:content="created"
+                      i18n:translate="">&nbsp;</span></td>
             <td><span tal:define="modified item/modified|default"
-                      tal:content="modified">&nbsp;</span></td>
+                      tal:content="modified"
+                      i18n:translate="">&nbsp;</span></td>
           </tr>
         </metal:block>
 
@@ -147,11 +154,11 @@
                          names_required adding/nameAllowed"
              tal:condition="adding/isSingleMenuItem">
           <input type="submit" name="container_add_button" value="Add"
-	         i18n:attributes="value add-button"
+                 i18n:attributes="value add-button"
                  i18n:domain="zope"
                />
           <input type="text" name="single_new_value" id="focusid"
-		 tal:condition="python:names_required and not has_custom_add_view"
+                 tal:condition="python:names_required and not has_custom_add_view"
                  i18n:domain="zope"
                />
           <input type="hidden" name="single_type_name"
@@ -176,7 +183,7 @@
 
     <script type="text/javascript"><!--
         if (document.containerContentsForm.new_value)
-	        document.containerContentsForm.new_value.focus();
+            document.containerContentsForm.new_value.focus();
         //-->
     </script>
 

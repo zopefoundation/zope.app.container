@@ -16,7 +16,7 @@
 <body>
 <div metal:fill-slot="body">
 
-  <table  
+  <table
       id="sortable" class="listing" summary="Content listing"
       cellpadding="2" cellspacing="0"
       i18n:attributes="summary">
@@ -30,49 +30,37 @@
         <th i18n:translate="">Modified</th>
       </tr>
     </thead>
-  
+
     <tbody>
-  
+
       <tr tal:repeat="info view/listContentInfo">
-        <td> 
-          <a 
-              href="#" 
+        <td>
+          <a
+              href="#"
               tal:attributes="href info/url"
               tal:content="structure info/icon|default" />
         </td>
-  
+
         <td class="ContentTitle">
           <a href="subfolder_id"
              tal:attributes="href info/url"
              tal:content="info/id"
+             i18n:translate=""
           >ID here</a>
         </td>
 
-        <td><span tal:content="info/title|default">&nbsp;</span></td>
-        <td><span tal:content="info/created|default">&nbsp;</span></td>
-        <td><span tal:content="info/modified|default">&nbsp;</span></td>
-  
-      </tr>
-  
-      <tr tal:condition="nothing">
-  
-        <td class="ContentIcon">
-          <img alt="Document" src="../../ZMI/www/document_icon.gif" />
-        </td>
-  
-        <td class="ContentTitle">
-           <a href="document_id">Document Title or ID here</a>
-        </td>
-  
+        <td><span tal:content="info/title|default"
+            i18n:translate="">&nbsp;</span></td>
+        <td><span tal:content="info/created|default"
+            i18n:translate="">&nbsp;</span></td>
+        <td><span tal:content="info/modified|default"
+            i18n:translate="">&nbsp;</span></td>
+
       </tr>
     </tbody>
-  
+
   </table>
 
 </div>
 </body>
 </html>
-
-
-
-
