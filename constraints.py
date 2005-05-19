@@ -69,7 +69,7 @@
    >>> class O(object):
    ...     zope.interface.implements(I2)
 
-   if the constraint isn't satisfied, we'll get a validation error when we
+   If the constraint isn't satisfied, we'll get a validation error when we
    check whether the object can be added:
 
    >>> checkObject(c1, "bob", O())
