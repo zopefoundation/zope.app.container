@@ -11,7 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Classes to support implenting `IContained`
+"""Classes to support implementing `IContained`
 
 $Id$
 """
