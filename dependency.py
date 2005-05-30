@@ -21,13 +21,15 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.app import zapi
+from zope.app.i18n import ZopeMessageIDFactory as _
 from zope.app.dependable.interfaces import IDependable, DependencyError
 
-exception_msg = """
-Removal of object (%s) which has dependents (%s) is not possible !
+exception_msg = _("""
+Removal of object (${object}) which has dependents (${dependents})
+is not possible !
 
-You must desactivate this object before trying to remove it.
-"""
+You must deactivate this object before trying to remove it.
+""")
 
 def CheckDependency(event):
     object = event.object
@@ -35,7 +37,9 @@ def CheckDependency(event):
     if dependency is not None:
         dependents = dependency.dependents()
         if dependents:
-            objectpath = zapi.getPath(object)
-            raise DependencyError(exception_msg
-                                  % (objectpath,
-                                     ", ".join(dependents)))
+            mapping = {
+                "object": zapi.getPath(object),
+                "dependents": ", ".join(dependents)
+                }
+            exception_msg.mapping = mapping
+            raise DependencyError(exception_msg)
