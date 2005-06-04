@@ -267,14 +267,36 @@ class Contents(BrowserView):
 
         container_path = zapi.getPath(self.context)
 
+        # For each item, check that it can be copied; if so, save the
+        # path of the object for later copying when a destination has
+        # been selected; if not copyable, provide an error message
+        # explaining that the object can't be copied.
+        items = []
+        for id in ids:
+            ob = self.context[id]
+            copier = IObjectCopier(ob)
+            if not copier.copyable():
+                m = {"name": id}
+                title = getDCTitle(ob)
+                if title:
+                    self.error = _(
+                        "titled-object-cannot-be-copied",
+                        "Object '${name}' (${title}) cannot be copied")
+                    m["title"] = title
+                else:
+                    self.error = _(
+                        "untitled-object-cannot-be-copied",
+                        "Object '${name}' cannot be copied")
+                self.error.mapping.update(m)
+                return
+            items.append(zapi.joinPath(container_path, id))
+
+        # store the requested operation in the principal annotations:
         user = self.request.principal
         annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
         annotations = annotationutil.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         clipboard.clearContents()
-        items = []
-        for id in ids:
-            items.append(zapi.joinPath(container_path, id))
         clipboard.addItems('copy', items)
 
     def cutObjects(self):
@@ -287,14 +309,36 @@ class Contents(BrowserView):
 
         container_path = zapi.getPath(self.context)
 
+        # For each item, check that it can be moved; if so, save the
+        # path of the object for later moving when a destination has
+        # been selected; if not movable, provide an error message
+        # explaining that the object can't be moved.
+        items = []
+        for id in ids:
+            ob = self.context[id]
+            mover = IObjectMover(ob)
+            if not mover.moveable():
+                m = {"name": id}
+                title = getDCTitle(ob)
+                if title:
+                    self.error = _(
+                        "titled-object-cannot-be-moved",
+                        "Object '${name}' (${title}) cannot be moved")
+                    m["title"] = title
+                else:
+                    self.error = _(
+                        "untitled-object-cannot-be-moved",
+                        "Object '${name}' cannot be moved")
+                self.error.mapping.update(m)
+                return
+            items.append(zapi.joinPath(container_path, id))
+
+        # store the requested operation in the principal annotations:
         user = self.request.principal
         annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
         annotations = annotationutil.getAnnotations(user)
         clipboard = IPrincipalClipboard(annotations)
         clipboard.clearContents()
-        items = []
-        for id in ids:
-            items.append(zapi.joinPath(container_path, id))
         clipboard.addItems('cut', items)
 
 
@@ -402,3 +446,11 @@ class JustContents(Contents):
 
     def index(self):
         return self._index()
+
+
+def getDCTitle(ob):
+    dc = IDCDescriptiveProperties(ob, None)
+    if dc is None:
+        return None
+    else:
+        return dc.title

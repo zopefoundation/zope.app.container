@@ -20,17 +20,41 @@ import unittest
 
 from persistent import Persistent
 import transaction
-from zope.interface import implements
+from zope.interface import implements, Interface
 
+from zope.app import copypastemove
 from zope.app.annotation.interfaces import IAttributeAnnotatable
 from zope.app.container.interfaces import IReadContainer, IContained
 from zope.app.dublincore.interfaces import IZopeDublinCore
+from zope.app.testing import ztapi
 from zope.app.testing.functional import BrowserTestCase
 from zope.app.testing.functional import FunctionalDocFileSuite
 
 
+class IImmovable(Interface):
+    """Marker interface for immovable objects."""
+
+class IUncopyable(Interface):
+    """Marker interface for uncopyable objects."""
+
 class File(Persistent):
     implements(IAttributeAnnotatable)
+
+class ImmovableFile(File):
+    implements(IImmovable)
+
+class UncopyableFile(File):
+    implements(IUncopyable)
+
+class ObjectNonCopier(copypastemove.ObjectCopier):
+
+    def copyable(self):
+        return False
+
+class ObjectNonMover(copypastemove.ObjectMover):
+
+    def moveable(self):
+        return False
 
 class ReadOnlyContainer(Persistent):
     implements(IReadContainer, IContained)
@@ -281,6 +305,36 @@ class Test(BrowserTestCase):
         transaction.commit()
         response = self.publish('/foo/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.getStatus(), 200)
+
+    def test_uncopyable_object(self):
+        ztapi.provideAdapter(IUncopyable,
+                             copypastemove.interfaces.IObjectCopier,
+                             ObjectNonCopier)
+        root = self.getRootFolder()
+        root['uncopyable'] = UncopyableFile()
+        transaction.commit()
+        response = self.publish('/@@contents.html',
+                                basic='mgr:mgrpw',
+                                form={'ids': [u'uncopyable'],
+                                      'container_copy_button': u'Copy'})
+        self.assertEqual(response.getStatus(), 200)
+        body = response.getBody()
+        self.assert_("cannot be copied" in body)
+
+    def test_unmoveable_object(self):
+        ztapi.provideAdapter(IImmovable,
+                             copypastemove.interfaces.IObjectMover,
+                             ObjectNonMover)
+        root = self.getRootFolder()
+        root['immovable'] = ImmovableFile()
+        transaction.commit()
+        response = self.publish('/@@contents.html',
+                                basic='mgr:mgrpw',
+                                form={'ids': [u'immovable'],
+                                      'container_cut_button': u'Cut'})
+        self.assertEqual(response.getStatus(), 200)
+        body = response.getBody()
+        self.assert_("cannot be moved" in body)
 
 
 def test_suite():
