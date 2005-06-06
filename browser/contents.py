@@ -292,10 +292,7 @@ class Contents(BrowserView):
             items.append(zapi.joinPath(container_path, id))
 
         # store the requested operation in the principal annotations:
-        user = self.request.principal
-        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
-        annotations = annotationutil.getAnnotations(user)
-        clipboard = IPrincipalClipboard(annotations)
+        clipboard = getPrincipalClipboard(self.request)
         clipboard.clearContents()
         clipboard.addItems('copy', items)
 
@@ -334,10 +331,7 @@ class Contents(BrowserView):
             items.append(zapi.joinPath(container_path, id))
 
         # store the requested operation in the principal annotations:
-        user = self.request.principal
-        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
-        annotations = annotationutil.getAnnotations(user)
-        clipboard = IPrincipalClipboard(annotations)
+        clipboard = getPrincipalClipboard(self.request)
         clipboard.clearContents()
         clipboard.addItems('cut', items)
 
@@ -346,10 +340,7 @@ class Contents(BrowserView):
         """Decide if there is anything to paste
         """
         target = self.context
-        user = self.request.principal
-        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
-        annotations = annotationutil.getAnnotations(user)
-        clipboard = IPrincipalClipboard(annotations)
+        clipboard = getPrincipalClipboard(self.request)
         items = clipboard.getContents()
         for item in items:
             try:
@@ -377,10 +368,7 @@ class Contents(BrowserView):
         """Paste ojects in the user clipboard to the container
         """
         target = self.context
-        user = self.request.principal
-        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
-        annotations = annotationutil.getAnnotations(user)
-        clipboard = IPrincipalClipboard(annotations)
+        clipboard = getPrincipalClipboard(self.request)
         items = clipboard.getContents()
         moved = False
         for item in items:
@@ -411,13 +399,8 @@ class Contents(BrowserView):
         if not self.supportsPaste:
             return False
 
-        user = self.request.principal
-
-        annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
-        annotations = annotationutil.getAnnotations(user)
-
         # touch at least one item to in clipboard confirm contents
-        clipboard = IPrincipalClipboard(annotations)
+        clipboard = getPrincipalClipboard(self.request)
         items = clipboard.getContents()
         for item in items:
             try:
@@ -454,3 +437,11 @@ def getDCTitle(ob):
         return None
     else:
         return dc.title
+
+
+def getPrincipalClipboard(request):
+    """Return the clipboard based on the request."""
+    user = request.principal
+    annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
+    annotations = annotationutil.getAnnotations(user)
+    return IPrincipalClipboard(annotations)
