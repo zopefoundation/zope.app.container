@@ -280,13 +280,10 @@ class Contents(BrowserView):
                 title = getDCTitle(ob)
                 if title:
                     self.error = _(
-                        "titled-object-cannot-be-copied",
                         "Object '${name}' (${title}) cannot be copied")
                     m["title"] = title
                 else:
-                    self.error = _(
-                        "untitled-object-cannot-be-copied",
-                        "Object '${name}' cannot be copied")
+                    self.error = _("Object '${name}' cannot be copied")
                 self.error.mapping.update(m)
                 return
             items.append(zapi.joinPath(container_path, id))
@@ -319,13 +316,10 @@ class Contents(BrowserView):
                 title = getDCTitle(ob)
                 if title:
                     self.error = _(
-                        "titled-object-cannot-be-moved",
                         "Object '${name}' (${title}) cannot be moved")
                     m["title"] = title
                 else:
-                    self.error = _(
-                        "untitled-object-cannot-be-moved",
-                        "Object '${name}' cannot be moved")
+                    self.error = _("Object '${name}' cannot be moved")
                 self.error.mapping.update(m)
                 return
             items.append(zapi.joinPath(container_path, id))
