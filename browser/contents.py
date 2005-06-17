@@ -19,6 +19,7 @@ __docformat__ = 'restructuredtext'
 
 import urllib
 
+from zope.app.exception.interfaces import UserError
 from zope.app.traversing.interfaces import TraversalError
 from zope.security.interfaces import Unauthorized
 from zope.security import checkPermission
@@ -39,6 +40,7 @@ from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.app.container.browser.adding import Adding
 from zope.app.container.interfaces import IContainer
 from zope.app.container.interfaces import IContainerNamesContainer
+from zope.app.container.interfaces import DuplicateIDError
 
 class Contents(BrowserView):
 
@@ -365,26 +367,45 @@ class Contents(BrowserView):
         clipboard = getPrincipalClipboard(self.request)
         items = clipboard.getContents()
         moved = False
+        not_pasteable_ids = []
         for item in items:
+            duplicated_id = False
             try:
                 obj = zapi.traverse(target, item['target'])
             except TraversalError:
                 pass
             else:
                 if item['action'] == 'cut':
-                    mover = IObjectMover(obj)
-                    mover.moveTo(target)
-                    moved = True
+                    try:
+                        mover = IObjectMover(obj)
+                        mover.moveTo(target)
+                        moved = True
+                    except DuplicateIDError:
+                        duplicated_id = True
                 elif item['action'] == 'copy':
-                    copier = IObjectCopier(obj)
-                    copier.copyTo(target)
+                    try:
+                        copier = IObjectCopier(obj)
+                        copier.copyTo(target)
+                    except DuplicateIDError:
+                        duplicated_id = True
                 else:
                     raise
+
+            if duplicated_id:
+                not_pasteable_ids.append(zapi.getName(obj))                
 
         if moved:
             # Clear the clipboard if we do a move, but not if we only do a copy
             clipboard.clearContents()
 
+        if not_pasteable_ids != []:
+            # Show the ids of objects that can't be pasted because
+            # their ids are already taken.
+            # XXX Can't we add a 'copy_of' or something as a prefix
+            # instead of raising an exception ?
+            raise UserError(
+                _("The given name(s) %s is / are already being used" %(
+                str(not_pasteable_ids))))
 
     def hasClipboardContents(self):
         """ interogates the `PrinicipalAnnotation` to see if
