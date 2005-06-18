@@ -17,6 +17,8 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
+from zope.deprecation import deprecated
+
 from zope.interface import Interface, Attribute, Invalid
 from zope.component.interfaces import IView
 from zope.interface.common.mapping import IItemMapping
@@ -24,6 +26,10 @@ from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
 from zope.app.location.interfaces import ILocation
 from zope.app.event.interfaces import IObjectEvent
 
+deprecated('IContentContainer',
+           'This interface has been deprecated. '
+           'Check the "containerViews" zcml directive. '
+           'The reference will be gone in 3.2')
 
 class DuplicateIDError(KeyError):
     pass
