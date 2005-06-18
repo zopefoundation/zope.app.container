@@ -29,7 +29,7 @@ from zope.app.event.interfaces import IObjectEvent
 deprecated('IContentContainer',
            'This interface has been deprecated. '
            'Check the "containerViews" zcml directive. '
-           'The reference will be gone in 3.2')
+           'The reference will be gone in 3.3')
 
 class DuplicateIDError(KeyError):
     pass
