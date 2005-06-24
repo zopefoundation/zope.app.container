@@ -35,7 +35,7 @@ def test_basic_proxy_attribute_management_and_picklability():
     """Contained-object proxy
 
     This is a picklable proxy that can be put around objects that
-    don't implemeny IContained.
+    don't implement IContained.
 
     >>> l = [1, 2, 3]
     >>> p = ContainedProxy(l)
@@ -57,7 +57,7 @@ def test_basic_proxy_attribute_management_and_picklability():
     >>> p2.__name__
     'p'
     """
-    
+
 def test_basic_persistent_w_non_persistent_proxied():
     """
     >>> p = ContainedProxy([1])
@@ -89,7 +89,7 @@ def test_basic_persistent_w_non_persistent_proxied():
 
 def test_declarations_on_ContainedProxy():
     r"""
-    
+
     It is possible to make declarations on ContainedProxy objects.
 
       >>> class I1(zope.interface.Interface):
@@ -101,12 +101,12 @@ def test_declarations_on_ContainedProxy():
       >>> p = ContainedProxy(c)
 
     ContainedProxy provides no interfaces on it's own:
-      
+
       >>> tuple(zope.interface.providedBy(ContainedProxy))
       ()
 
     It implements IContained and IPersistent:
-      
+
       >>> tuple(zope.interface.implementedBy(ContainedProxy))
       (<InterfaceClass zope.app.container.interfaces.IContained>,
        <InterfaceClass persistent.interfaces.IPersistent>)
@@ -140,7 +140,7 @@ def test_declarations_on_ContainedProxy():
        <InterfaceClass persistent.interfaces.IPersistent>)
 
     """
-    
+
 def test_basic_persistent_w_persistent_proxied():
     """
 
@@ -165,12 +165,12 @@ def test_basic_persistent_w_persistent_proxied():
     >>> other.ob = parent.ob
 
     We can change ob through either parent or other
-    
+
     >>> parent.ob.x = 1
     >>> other.ob.y = 2
 
     Now we'll save the data:
-    
+
     >>> db = DB(DemoStorage('test_storage'))
     >>> c1 = db.open()
     >>> c1.root()['parent'] = parent
@@ -209,7 +209,7 @@ def test_basic_persistent_w_persistent_proxied():
     1
 
     And save the changes:
-    
+
     >>> transaction.commit()
 
     Now we'll reopen the first connection and verify that we can see
@@ -224,7 +224,7 @@ def test_basic_persistent_w_persistent_proxied():
     3
     >>> p2.ob.__parent__ is c1.root()['other']
     1
-        
+
     >>> db.close()
     """
 
@@ -287,7 +287,7 @@ def test_proxy_cache_interaction():
     >>> x = gc.collect()
     >>> conn._cache.get(oid) is not None
     False
-    
+
     """
 
 
