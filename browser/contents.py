@@ -401,7 +401,7 @@ class Contents(BrowserView):
         if not_pasteable_ids != []:
             # Show the ids of objects that can't be pasted because
             # their ids are already taken.
-            # XXX Can't we add a 'copy_of' or something as a prefix
+            # TODO Can't we add a 'copy_of' or something as a prefix
             # instead of raising an exception ?
             raise UserError(
                 _("The given name(s) %s is / are already being used" %(
