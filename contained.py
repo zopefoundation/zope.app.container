@@ -143,11 +143,12 @@ def dispatchToSublocations(object, event):
        Now we'll register it:
 
          >>> from zope.app.testing import ztapi
-         >>> ztapi.handle([None, IObjectMovedEvent], handler)
+         >>> ztapi.subscribe([None, IObjectMovedEvent], None, handler)
 
        We also register our dispatcher:
 
-         >>> ztapi.handle([None, IObjectMovedEvent], dispatchToSublocations)
+         >>> ztapi.subscribe([None, IObjectMovedEvent], None,
+         ...                 dispatchToSublocations)
 
        We can then call the dispatcher for the root object:
 
@@ -377,11 +378,11 @@ def setitem(container, setitemf, name, object):
     >>> from zope.app.container.interfaces import IObjectMovedEvent
     >>> from zope.app.testing import ztapi
 
-    >>> ztapi.handle([IItem, IObjectAddedEvent],
-    ...              lambda obj, event: obj.setAdded(event))
+    >>> ztapi.subscribe([IItem, IObjectAddedEvent], None,
+    ...                 lambda obj, event: obj.setAdded(event))
 
-    >>> ztapi.handle([IItem, IObjectMovedEvent],
-    ...              lambda obj, event: obj.setMoved(event))
+    >>> ztapi.subscribe([IItem, IObjectMovedEvent], None,
+    ...                 lambda obj, event: obj.setMoved(event))
 
     >>> item = Item()
 
