@@ -22,7 +22,7 @@ import urllib
 from zope.app.exception.interfaces import UserError
 from zope.app.traversing.interfaces import TraversalError
 from zope.security.interfaces import Unauthorized
-from zope.security import checkPermission
+from zope.security import canWrite
 
 from zope.app import zapi
 from zope.app.size.interfaces import ISized
@@ -166,8 +166,7 @@ class Contents(BrowserView):
 
         dc = IZopeDublinCore(obj, None)
         if dc is not None:
-            info['retitleable'] = checkPermission(
-                'zope.app.dublincore.change', dc) and id != retitle_id
+            info['retitleable'] = canWrite(dc, 'title')
             info['plaintitle'] = not info['retitleable']
 
             title = self.safe_getattr(dc, 'title', None)

@@ -18,6 +18,7 @@ $Id$
 from unittest import TestCase, TestSuite, main, makeSuite
 
 from zope.interface import Interface, implements
+from zope.security import checker
 
 from zope.app.annotation.interfaces import IAnnotations
 from zope.app.component.testing import PlacefulSetup
@@ -104,6 +105,13 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         from zope.app.dublincore.interfaces import IZopeDublinCore
         class FauxDCAdapter(object):
             implements(IZopeDublinCore)
+
+            __Security_checker__ = checker.Checker(
+                {"created": "zope.Public",
+                 "modified": "zope.Public",
+                 "title": "zope.Public",
+                 },
+                {"title": "zope.app.dublincore.change"})
 
             def __init__(self, context):
                 pass
