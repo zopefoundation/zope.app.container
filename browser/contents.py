@@ -375,15 +375,15 @@ class Contents(BrowserView):
                 pass
             else:
                 if item['action'] == 'cut':
+                    mover = IObjectMover(obj)
                     try:
-                        mover = IObjectMover(obj)
                         mover.moveTo(target)
                         moved = True
                     except DuplicateIDError:
                         duplicated_id = True
                 elif item['action'] == 'copy':
+                    copier = IObjectCopier(obj)
                     try:
-                        copier = IObjectCopier(obj)
                         copier.copyTo(target)
                     except DuplicateIDError:
                         duplicated_id = True
