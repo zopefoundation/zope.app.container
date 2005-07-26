@@ -16,7 +16,7 @@
 $Id: $
 """
 import unittest
-from transaction import get_transaction
+import transaction
 
 from zope.security.interfaces import Unauthorized
 
@@ -39,7 +39,7 @@ class Tests(BrowserTestCase):
         file = File()
         self.getRootFolder()['file'] = file
         IZopeDublinCore(file).title = u'My File'
-        get_transaction().commit()
+        transaction.commit()
 
         response = self.publish('/')
         self.assertEquals(response.getStatus(), 200)
@@ -60,7 +60,7 @@ class Tests(BrowserTestCase):
         # deny zope.View to zope.Anonymous
         prm = IRolePermissionManager(self.getRootFolder())
         prm.denyPermissionToRole('zope.View', 'zope.Anonymous')
-        get_transaction().commit()
+        transaction.commit()
 
         # confirm Unauthorized when viewing root folder
         self.assertRaises(Unauthorized, self.publish, '/')
@@ -80,7 +80,7 @@ class Tests(BrowserTestCase):
         # deny zope.app.dublincore.view to zope.Anonymous
         prm = IRolePermissionManager(self.getRootFolder())
         prm.denyPermissionToRole('zope.app.dublincore.view', 'zope.Anonymous')
-        get_transaction().commit()
+        transaction.commit()
 
         response = self.publish('/')
         self.assertEquals(response.getStatus(), 200)

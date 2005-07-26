@@ -15,7 +15,7 @@ import unittest
 import gc
 from ZODB.DemoStorage import DemoStorage
 from ZODB.DB import DB
-from transaction import get_transaction
+import transaction
 from persistent import Persistent
 
 import zope.interface
@@ -62,7 +62,7 @@ def test_basic_persistent_w_non_persistent_proxied():
     >>> db = DB(DemoStorage('test_storage'))
     >>> c = db.open()
     >>> c.root()['p'] = p
-    >>> get_transaction().commit()
+    >>> transaction.commit()
 
     >>> c2 = db.open()
     >>> p2 = c2.root()['p']
@@ -171,7 +171,7 @@ def test_basic_persistent_w_persistent_proxied():
     >>> c1 = db.open()
     >>> c1.root()['parent'] = parent
     >>> c1.root()['other'] = other
-    >>> get_transaction().commit()
+    >>> transaction.commit()
 
     We'll open a second connection and verify that we have the data we
     expect:
@@ -206,7 +206,7 @@ def test_basic_persistent_w_persistent_proxied():
 
     And save the changes:
     
-    >>> get_transaction().commit()
+    >>> transaction.commit()
 
     Now we'll reopen the first connection and verify that we can see
     the changes:
@@ -242,7 +242,7 @@ def test_proxy_cache_interaction():
     >>> for i in range(10):
     ...     conn.root()[i] = MyOb()
 
-    >>> get_transaction().commit()
+    >>> transaction.commit()
 
     Let's get the oid of our proxy:
 
