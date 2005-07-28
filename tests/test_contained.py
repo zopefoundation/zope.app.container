@@ -290,6 +290,31 @@ def test_proxy_cache_interaction():
 
     """
 
+def test_ContainedProxy_instances_have_no_instance_dictionaries():
+    """Make sure that proxies don't introduce extra instance dictionaries
+
+    >>> from zope.app.container.contained import ContainedProxy
+    >>> class C:
+    ...     pass
+
+    >>> c = C()
+    >>> c.x = 1
+    >>> c.__dict__
+    {'x': 1}
+
+    >>> p = ContainedProxy(c)
+    >>> p.__dict__
+    {'x': 1}
+    >>> p.y = 3
+    >>> p.__dict__
+    {'y': 3, 'x': 1}
+    >>> c.__dict__
+    {'y': 3, 'x': 1}
+
+    >>> p.__dict__ is c.__dict__
+    True
+    
+    """
 
 def test_suite():
     return unittest.TestSuite((

@@ -837,6 +837,9 @@ class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
 
 class ContainedProxy(ContainedProxyBase):
 
+    # Prevent proxies from having their own instance dictionaries:
+    __slots__ = ()
+
     __safe_for_unpickling__ = True
 
     zope.interface.implements(IContained)
