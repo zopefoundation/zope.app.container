@@ -245,7 +245,7 @@ CP_traverse(ProxyObject *self, visitproc visit, void *arg)
 static int
 CP_clear(ProxyObject *self)
 {
-  /* XXXX Drop references that may have created reference
+  /* Drop references that may have created reference
      cycles. Immutable objects do not have to define this method
      since they can never directly create reference cycles. Note
      that the object must still be valid after calling this

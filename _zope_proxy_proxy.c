@@ -429,7 +429,7 @@ check1(ProxyObject *self, char *opname, function1 operation)
     result = operation(Proxy_GET_OBJECT(self));
 #if 0
     if (result != NULL)
-        /* XXX create proxy for result? */
+        /* ??? create proxy for result? */
         ;
 #endif
     return result;
@@ -456,7 +456,7 @@ check2(PyObject *self, PyObject *other,
     }
 #if 0
     if (result != NULL)
-        /* XXX create proxy for result? */
+        /* ??? create proxy for result? */
         ;
 #endif
     return result;
@@ -479,7 +479,7 @@ check2i(ProxyObject *self, PyObject *other,
         }
 #if 0
         else if (result != NULL)
-            /* XXX create proxy for result? */
+            /* ??? create proxy for result? */
             ;
 #endif
 	return result;
@@ -563,10 +563,10 @@ wrap_coerce(PyObject **p_self, PyObject **p_other)
     }
 #if 0
     else {
-        /* XXX create proxy for left? */
+        /* ??? create proxy for left? */
     }
     if (right != other) {
-        /* XXX create proxy for right? */
+        /* ??? create proxy for right? */
     }
 #endif
     *p_self = left;
