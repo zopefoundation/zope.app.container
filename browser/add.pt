@@ -6,8 +6,12 @@
   <form method="post" action="action.html">
     <table class="TypeListing" cellpadding="3">
 
-      <caption tal:content="view/title | default"
-        i18n:translate="">Add Content</caption>
+      <tal:block define="title view/title | nothing">
+         <caption tal:condition="title" tal:content="title"
+             i18n:translate="">Inserted title</caption>
+         <caption tal:condition="not:title"
+             i18n:translate="">Add Content</caption>
+      </tal:block>
 
       <tbody tal:define="infos view/addingInfo">
 
