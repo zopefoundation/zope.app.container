@@ -225,7 +225,7 @@ class IItemTypePrecondition(zope.interface.Interface):
     def __call__(container, name, object):
         """Test whether container setitem arguments are valid.
 
-        Raise zope.interface.Invalid if the objet is invalid.
+        Raise zope.interface.Invalid if the object is invalid.
         """
 
     def factory(container, name, factory):
