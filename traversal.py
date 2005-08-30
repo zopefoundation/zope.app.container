@@ -97,6 +97,6 @@ class ContainerTraversable(object):
         if v is _marker:
             v = getattr(container, name, _marker)
             if v is _marker:
-                raise TraversalError, name
+                raise TraversalError(name)
 
         return v

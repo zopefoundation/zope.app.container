@@ -41,7 +41,7 @@ class FakeContainer(object):
         for object in self._objects:
             if object._id == id:
                 return object
-        raise KeyError, "Could not find %s" % id
+        raise KeyError("Could not find %s" % id)
 
     def get(self, id, default=None):
         for object in self._objects:
