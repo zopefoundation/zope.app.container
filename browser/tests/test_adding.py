@@ -195,10 +195,10 @@ class Test(PlacelessSetup, unittest.TestCase):
         ztapi.browserView(None, '', AbsoluteURL, providing=IAbsoluteURL)
         self.assertRaises(UserError, adding.action, '', 'foo')
         adding.action('Thing', 'foo')
-        self.assertEqual(adding.request.response._headers['location'],
+        self.assertEqual(adding.request.response.getHeader('location'),
                          '/container/+/Thing=foo')
         adding.action('Thing/screen1', 'foo')
-        self.assertEqual(adding.request.response._headers['location'],
+        self.assertEqual(adding.request.response.getHeader('location'),
                          '/container/+/Thing/screen1=foo')
 
     def test_publishTraverse_factory(self):
