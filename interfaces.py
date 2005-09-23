@@ -90,12 +90,7 @@ class IWriteContainer(Interface):
 
         If the old parent was ``None``, then an `IObjectAddedEvent` is
         generated, otherwise, and `IObjectMovedEvent` is generated.  An
-        `IObjectModifiedEvent` is generated for the container.  If an
-        add event is generated and the object can be adapted to
-        `IObjectAddedEvent`, then the adapter's `addNotify` method is called
-        with the event.  If the object can be adapted to
-        `IObjectMovedEvent`, then the adapter's `moveNotify` method is
-        called with the event.
+        `IObjectModifiedEvent` is generated for the container.
 
         If the object replaces another object, then the old object is
         deleted before the new object is added, unless the container
