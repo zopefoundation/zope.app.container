@@ -89,7 +89,7 @@ class IWriteContainer(Interface):
         container and the given name.
 
         If the old parent was ``None``, then an `IObjectAddedEvent` is
-        generated, otherwise, and `IObjectMovedEvent` is generated.  An
+        generated, otherwise, an `IObjectMovedEvent` is generated.  An
         `IObjectModifiedEvent` is generated for the container.
 
         If the object replaces another object, then the old object is
