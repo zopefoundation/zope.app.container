@@ -153,6 +153,8 @@ __docformat__ = 'restructuredtext'
 
 import sys
 
+from zope.cachedescriptors.property import readproperty
+from zope.dottedname.resolve import resolve
 import zope.schema
 
 from zope.interface import providedBy
@@ -219,7 +221,6 @@ def checkFactory(container, name, factory):
 
     return True
 
-
 class IItemTypePrecondition(zope.interface.Interface):
 
     def __call__(container, name, object):
@@ -234,7 +235,29 @@ class IItemTypePrecondition(zope.interface.Interface):
         Return a boolean value.
         """
 
-class ItemTypePrecondition(object):
+class _TypesBased(object):
+
+    @readproperty
+    def types(self):
+        raw_types, module = self.raw_types
+        types = []
+        for t in raw_types:
+            if isinstance(t, str):
+                t = resolve(t, module)
+            types.append(t)
+
+        self.types = types
+        return types
+
+    def __init__(self, *types, **kw):
+        if [t for t in types if isinstance(t, str)]:
+            # have dotted names
+            module = kw.get('module', sys._getframe(1).f_globals['__name__'])
+            self.raw_types = types, module
+        else:
+            self.types = types
+
+class ItemTypePrecondition(_TypesBased):
     """Specify a `__setitem__` precondition that restricts item types
 
     Items must be one of the given types.  
@@ -282,9 +305,6 @@ class ItemTypePrecondition(object):
     """
 
     zope.interface.implements(IItemTypePrecondition)
-
-    def __init__(self, *types):
-        self.types = types
 
     def __call__(self, container, name, object):
         for iface in self.types:
@@ -340,7 +360,10 @@ def contains(*types):
     def __setitem__(key, value):
         pass
     __setitem__.__doc__ = IContainer['__setitem__'].__doc__
-    __setitem__.precondition = ItemTypePrecondition(*types)
+    __setitem__.precondition = ItemTypePrecondition(
+        *types,
+        **dict(module=f_globals['__name__'])
+        )
     f_locals['__setitem__'] = __setitem__
 
 
@@ -354,7 +377,7 @@ class IContainerTypesConstraint(zope.interface.Interface):
         """
 
 
-class ContainerTypesConstraint(object):
+class ContainerTypesConstraint(_TypesBased):
     """Constrain a container to be one of a number of types
 
     >>> class I1(zope.interface.Interface):
@@ -380,9 +403,6 @@ class ContainerTypesConstraint(object):
     """
 
     zope.interface.implements(IContainerTypesConstraint)
-
-    def __init__(self, *types):
-        self.types = types
 
     def __call__(self, object):
        for iface in self.types:
@@ -431,7 +451,10 @@ def containers(*types):
         raise TypeError("containers not called from suite")
 
     __parent__ = zope.schema.Field(
-        constraint = ContainerTypesConstraint(*types)
+        constraint = ContainerTypesConstraint(
+            *types,
+            **dict(module=f_globals['__name__'])
+            )
         )
     f_locals['__parent__'] = __parent__
 

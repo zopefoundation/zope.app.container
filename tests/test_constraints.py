@@ -16,11 +16,16 @@
 $Id$
 """
 import unittest
-from zope.testing.doctestunit import DocTestSuite
+from zope.testing import doctest, module
+
+def setUp(test):
+    module.setUp(test, 'zope.app.container.constraints_txt')
 
 def test_suite():
     return unittest.TestSuite((
-        DocTestSuite('zope.app.container.constraints'),
+        doctest.DocTestSuite('zope.app.container.constraints'),
+        doctest.DocFileSuite('../constraints.txt',
+                             setUp=setUp, tearDown=module.tearDown),
         ))
 
 if __name__ == '__main__': unittest.main()
