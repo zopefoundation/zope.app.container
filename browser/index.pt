@@ -15,7 +15,7 @@
 </head>
 <body>
 <div metal:fill-slot="body">
-ölkjölk
+
   <table
       id="sortable" class="listing" summary="Content listing"
       cellpadding="2" cellspacing="0"
