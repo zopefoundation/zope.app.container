@@ -21,7 +21,8 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.app import zapi
-from zope.app.i18n import ZopeMessageIDFactory as _
+from zope.i18nmessageid import Message
+from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.dependable.interfaces import IDependable, DependencyError
 
 exception_msg = _("""
@@ -41,5 +42,4 @@ def CheckDependency(event):
                 "object": zapi.getPath(object),
                 "dependents": ", ".join(dependents)
                 }
-            exception_msg.mapping = mapping
-            raise DependencyError(exception_msg)
+            raise DependencyError(Message(exception_msg, mapping=mapping))

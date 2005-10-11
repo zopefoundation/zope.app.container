@@ -35,7 +35,7 @@ from zope.app.container.constraints import checkFactory, checkObject
 
 from zope.app import zapi
 from zope.app.event.objectevent import ObjectCreatedEvent
-from zope.app.i18n import ZopeMessageIDFactory as _
+from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.location import LocationProxy
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser import BrowserView

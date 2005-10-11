@@ -28,7 +28,7 @@ from zope.app import zapi
 from zope.app.size.interfaces import ISized
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser import BrowserView
-from zope.app.i18n import ZopeMessageIDFactory as _
+from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.dublincore.interfaces import IZopeDublinCore
 from zope.app.dublincore.interfaces import IDCDescriptiveProperties
 from zope.app.copypastemove.interfaces import IPrincipalClipboard
@@ -280,12 +280,13 @@ class Contents(BrowserView):
                 m = {"name": id}
                 title = getDCTitle(ob)
                 if title:
-                    self.error = _(
-                        "Object '${name}' (${title}) cannot be copied")
                     m["title"] = title
+                    self.error = _(
+                        "Object '${name}' (${title}) cannot be copied",
+                        mapping=m)
                 else:
-                    self.error = _("Object '${name}' cannot be copied")
-                self.error.mapping.update(m)
+                    self.error = _("Object '${name}' cannot be copied",
+                                   mapping=m)
                 return
             items.append(zapi.joinPath(container_path, id))
 
@@ -316,12 +317,13 @@ class Contents(BrowserView):
                 m = {"name": id}
                 title = getDCTitle(ob)
                 if title:
-                    self.error = _(
-                        "Object '${name}' (${title}) cannot be moved")
                     m["title"] = title
+                    self.error = _(
+                        "Object '${name}' (${title}) cannot be moved",
+                        mapping=m)
                 else:
-                    self.error = _("Object '${name}' cannot be moved")
-                self.error.mapping.update(m)
+                    self.error = _("Object '${name}' cannot be moved",
+                                   mapping=m)
                 return
             items.append(zapi.joinPath(container_path, id))
 

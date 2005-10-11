@@ -159,7 +159,7 @@ import zope.schema
 
 from zope.interface import providedBy
 from zope.app.container.interfaces import InvalidItemType, InvalidContainerType
-from zope.app.i18n import ZopeMessageIDFactory as _
+from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.container.interfaces import IContainer
 
 def checkObject(container, name, object):

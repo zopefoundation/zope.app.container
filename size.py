@@ -18,7 +18,7 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.app.i18n import ZopeMessageIDFactory as _
+from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.size.interfaces import ISized
 from zope.interface import implements
 
@@ -38,6 +38,4 @@ class ContainerSized(object):
         num_items = len(self._container)
         if num_items == 1:
             return _('1 item')
-        size = _('${items} items')
-        size.mapping = {'items': str(num_items)}
-        return size
+        return _('${items} items', mapping={'items': str(num_items)})

@@ -26,7 +26,7 @@ from zope.schema import Id
 from zope.app.publisher.browser.viewmeta import page, view
 from zope.app.container.browser.contents import Contents
 from zope.app.container.browser.adding import Adding
-from zope.app.i18n import ZopeMessageIDFactory as _
+from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.security.fields import Permission
 
 
