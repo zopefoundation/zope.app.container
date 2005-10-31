@@ -41,8 +41,7 @@ from zope.app.container._zope_app_container_contained import getProxiedObject
 from zope.app.broken.broken import IBroken
 
 class Contained(object):
-    """Stupid mix-in that defines `__parent__` and `__name__` attributes
-    """
+    """Stupid mix-in that defines `__parent__` and `__name__` attributes"""
 
     zope.interface.implements(IContained)
 
@@ -87,13 +86,12 @@ class ObjectRemovedEvent(ObjectMovedEvent):
 def dispatchToSublocations(object, event):
     """Dispatch an event to sublocations of a given object
 
-       When a move event happens for an object, it's important to
-       notify subobjects as well.
+       When a move event happens for an object, it's important to notify
+       subobjects as well.
 
        We do this based on locations.
 
        Suppose, for example, that we define some location objects.
-
 
          >>> class L(object):
          ...     zope.interface.implements(ILocation)
@@ -588,7 +586,7 @@ def setitem(container, setitemf, name, object):
 fixing_up = False
 def uncontained(object, container, name=None):
     """Clear the containment relationship between the `object` and
-    the `container'
+    the `container`.
 
     If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
@@ -648,9 +646,9 @@ def uncontained(object, container, name=None):
     >>> len(getEvents(IObjectModifiedEvent))
     1
 
-    But, if either the name or parent are not ``None`` and they are not
-    the container and the old name, we'll get a modified event but not
-    a removed event.
+    But, if either the name or parent are not ``None`` and they are not the
+    container and the old name, we'll get a modified event but not a removed
+    event.
 
     >>> item.__parent__, item.__name__ = container, None
     >>> uncontained(item, container, u'foo')
@@ -784,9 +782,8 @@ class DecoratorSpecificationDescriptor(
     >>> [interface.getName() for interface in list(providedBy(x))]
     ['I4', 'I3']
 
-    When we decorate objects, what order should the interfaces come
-    in?  One could argue that decorators are less specific, so they
-    should come last.
+    When we decorate objects, what order should the interfaces come in? One
+    could argue that decorators are less specific, so they should come last.
 
     >>> [interface.getName() for interface in list(providedBy(D1(x)))]
     ['I4', 'I3', 'I1', 'IContained', 'IPersistent']
