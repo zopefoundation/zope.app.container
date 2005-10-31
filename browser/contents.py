@@ -393,7 +393,7 @@ class Contents(BrowserView):
                     raise
 
             if duplicated_id:
-                not_pasteable_ids.append(zapi.getName(obj))                
+                not_pasteable_ids.append(zapi.getName(obj))
 
         if moved:
             # Clear the clipboard if we do a move, but not if we only do a copy
@@ -409,8 +409,8 @@ class Contents(BrowserView):
                 str(not_pasteable_ids))))
 
     def hasClipboardContents(self):
-        """ interogates the `PrinicipalAnnotation` to see if
-           clipboard contents exist """
+        """Interogate the ``PrinicipalAnnotation`` to see if clipboard
+        contents exist."""
 
         if not self.supportsPaste:
             return False
