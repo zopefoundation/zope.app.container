@@ -26,7 +26,7 @@
    >>> def preNoZ(container, name, ob):
    ...     "Silly precondition example"
    ...     if name.startswith("Z"):
-   ...         raise zope.interface.Invalid("Names can not start with Z") 
+   ...         raise zope.interface.Invalid("Names can not start with Z")
 
    >>> class I1(zope.interface.Interface):
    ...     def __setitem__(name, on):
@@ -156,7 +156,6 @@ import sys
 from zope.cachedescriptors.property import readproperty
 from zope.dottedname.resolve import resolve
 import zope.schema
-
 from zope.interface import providedBy
 from zope.app.container.interfaces import InvalidItemType, InvalidContainerType
 from zope.app.i18n import ZopeMessageFactory as _
@@ -184,7 +183,7 @@ def checkObject(container, name, object):
         else:
             validate(container)
 
- 
+
     if not containerProvided.extends(IContainer):
         # If it doesn't implement IContainer, it can't contain stuff.
         raise TypeError(
@@ -235,6 +234,7 @@ class IItemTypePrecondition(zope.interface.Interface):
         Return a boolean value.
         """
 
+
 class _TypesBased(object):
 
     @readproperty
@@ -257,10 +257,11 @@ class _TypesBased(object):
         else:
             self.types = types
 
+
 class ItemTypePrecondition(_TypesBased):
     """Specify a `__setitem__` precondition that restricts item types
 
-    Items must be one of the given types.  
+    Items must be one of the given types.
 
     >>> class I1(zope.interface.Interface):
     ...     pass
@@ -350,7 +351,7 @@ def contains(*types):
     frame = sys._getframe(1)
     f_locals = frame.f_locals
     f_globals = frame.f_globals
-    
+
     if not (f_locals is not f_globals
             and f_locals.get('__module__')
             and f_locals.get('__module__') == f_globals.get('__name__')
@@ -423,7 +424,7 @@ def containers(*types):
       ...     pass
       >>> class IBar(IContainer):
       ...     pass
-      
+
       >>> from zope.app.container.interfaces import IContained
       >>> class IFooBarContained(IContained):
       ...     containers(IFoo, IBar)
@@ -443,7 +444,7 @@ def containers(*types):
     frame = sys._getframe(1)
     f_locals = frame.f_locals
     f_globals = frame.f_globals
-    
+
     if not (f_locals is not f_globals
             and f_locals.get('__module__')
             and f_locals.get('__module__') == f_globals.get('__name__')
