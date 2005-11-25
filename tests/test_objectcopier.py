@@ -16,15 +16,67 @@
 $Id$
 """
 from unittest import TestCase, TestSuite, main, makeSuite
+from zope.testing import doctest
 
+from zope.app.event.tests.placelesssetup import getEvents
+from zope.app.event.tests.placelesssetup import clearEvents
 from zope.app.component.testing import PlacefulSetup
 from zope.app.copypastemove import ObjectCopier
 from zope.app.copypastemove.interfaces import IObjectCopier
 from zope.app.testing import ztapi
+from zope.app.testing import setup
 from zope.app.traversing.api import traverse
+from zope.app.folder import Folder
 
 class File(object):
     pass
+
+def test_copy_events():
+    """
+    Prepare the setup::
+
+      >>> root = setup.placefulSetUp(site=True)
+      >>> ztapi.provideAdapter(None, IObjectCopier, ObjectCopier)
+
+    Prepare some objects::
+
+      >>> folder = Folder()
+      >>> root[u'foo'] = File()
+      >>> root[u'folder'] = folder
+      >>> list(folder.keys())
+      []
+      >>> foo = traverse(root, 'foo') # wrap in ContainedProxy
+
+    Now make a copy::
+
+      >>> clearEvents()
+      >>> copier = IObjectCopier(foo)
+      >>> copier.copyTo(folder, u'bar')
+      u'bar'
+
+    Check that the copy has been done::
+
+      >>> list(folder.keys())
+      [u'bar']
+
+    Check what events have been sent::
+
+      >>> events = getEvents()
+      >>> [event.__class__.__name__ for event in events]
+      ['ObjectCopiedEvent', 'ObjectAddedEvent', 'ObjectModifiedEvent']
+
+    Check that the ObjectCopiedEvent includes the correct data::
+
+      >>> events[0].object is folder[u'bar']
+      True
+      >>> events[0].original is root[u'foo']
+      True
+
+    Finally, tear down::
+
+      >>> setup.placefulTearDown()
+    """
+
 
 class ObjectCopierTest(PlacefulSetup, TestCase):
 
@@ -152,6 +204,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
 def test_suite():
     return TestSuite((
         makeSuite(ObjectCopierTest),
+        doctest.DocTestSuite(),
         ))
 
 if __name__=='__main__':
