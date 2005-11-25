@@ -27,7 +27,8 @@ from zope.interface import providedBy
 
 from zope.app import zapi
 from zope.app.exception.interfaces import UserError
-from zope.app.event.objectevent import ObjectEvent, modified
+from zope.app.event.objectevent import ObjectEvent
+from zope.app.event.objectevent import ObjectModifiedEvent
 from zope.event import notify
 from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.container.interfaces import IContained
@@ -35,6 +36,7 @@ from zope.app.container.interfaces import INameChooser
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.app.container.interfaces import IObjectMovedEvent
 from zope.app.container.interfaces import IObjectRemovedEvent
+from zope.app.container.interfaces import IContainerModifiedEvent
 from zope.app.location.interfaces import ILocation, ISublocations
 from zope.app.container._zope_app_container_contained import ContainedProxyBase
 from zope.app.container._zope_app_container_contained import getProxiedObject
@@ -82,6 +84,12 @@ class ObjectRemovedEvent(ObjectMovedEvent):
         if oldName is None:
             oldName = object.__name__
         ObjectMovedEvent.__init__(self, object, oldParent, oldName, None, None)
+
+class ContainerModifiedEvent(ObjectModifiedEvent):
+    """The container has been modified."""
+
+    zope.interface.implements(IContainerModifiedEvent)
+
 
 def dispatchToSublocations(object, event):
     """Dispatch an event to sublocations of a given object
@@ -354,6 +362,10 @@ def contained(object, container, name=None):
     """
     return containedEvent(object, container, name)[0]
 
+def notifyContainerModified(object, *descriptions):
+    """Notify that the container was modified."""
+    notify(ContainerModifiedEvent(object, *descriptions))
+
 def setitem(container, setitemf, name, object):
     """Helper function to set an item and generate needed events
 
@@ -581,7 +593,7 @@ def setitem(container, setitemf, name, object):
     setitemf(name, object)
     if event:
         notify(event)
-        modified(container)
+        notifyContainerModified(container)
 
 fixing_up = False
 def uncontained(object, container, name=None):
@@ -678,7 +690,7 @@ def uncontained(object, container, name=None):
 
     if oldparent is not container or oldname != name:
         if oldparent is not None or oldname is not None:
-            modified(container)
+            notifyContainerModified(container)
         return
 
     event = ObjectRemovedEvent(object, oldparent, oldname)
@@ -687,7 +699,7 @@ def uncontained(object, container, name=None):
     if not IBroken.providedBy(object):
         object.__parent__ = None
         object.__name__ = None
-    modified(container)
+    notifyContainerModified(container)
 
 class NameChooser(object):
 

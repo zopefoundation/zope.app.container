@@ -63,7 +63,7 @@ def test_copy_events():
 
       >>> events = getEvents()
       >>> [event.__class__.__name__ for event in events]
-      ['ObjectCopiedEvent', 'ObjectAddedEvent', 'ObjectModifiedEvent']
+      ['ObjectCopiedEvent', 'ObjectAddedEvent', 'ContainerModifiedEvent']
 
     Check that the ObjectCopiedEvent includes the correct data::
 

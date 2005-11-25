@@ -25,6 +25,7 @@ from zope.interface.common.mapping import IItemMapping
 from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
 from zope.app.location.interfaces import ILocation
 from zope.app.event.interfaces import IObjectEvent
+from zope.app.event.interfaces import IObjectModifiedEvent
 
 deprecated('IContentContainer',
            'This interface has been deprecated. '
@@ -90,7 +91,7 @@ class IWriteContainer(Interface):
 
         If the old parent was ``None``, then an `IObjectAddedEvent` is
         generated, otherwise, an `IObjectMovedEvent` is generated.  An
-        `IObjectModifiedEvent` is generated for the container.
+        `IContainerModifiedEvent` is generated for the container.
 
         If the object replaces another object, then the old object is
         deleted before the new object is added, unless the container
@@ -115,7 +116,7 @@ class IWriteContainer(Interface):
         `moveNotify` method is called with the event.
 
         Unless the object's `__parent__` and `__name__` attributes were
-        initially ``None``, generate an `IObjectModifiedEvent` for the
+        initially ``None``, generate an `IContainerModifiedEvent` for the
         container.
 
         If the object's `__parent__` and `__name__` were already set to
@@ -260,6 +261,18 @@ class INameChooser(Interface):
 
 class IObjectRemovedEvent(IObjectMovedEvent):
     """An object has been removed from a container."""
+
+
+##############################################################################
+# Modifying containers
+
+
+class IContainerModifiedEvent(IObjectModifiedEvent):
+    """The container has been modified.
+
+    This event is specific to "containerness" modifications, which means
+    addition, removal or reordering of sub-objects.
+    """
 
 
 ##############################################################################
