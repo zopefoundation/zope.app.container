@@ -16,15 +16,80 @@
 $Id$
 """
 from unittest import TestCase, TestSuite, main, makeSuite
+from zope.testing import doctest
 
+from zope.app.event.tests.placelesssetup import getEvents
+from zope.app.event.tests.placelesssetup import clearEvents
 from zope.app.component.testing import PlacefulSetup
 from zope.app.copypastemove import ObjectMover
 from zope.app.copypastemove.interfaces import IObjectMover
 from zope.app.testing import ztapi
+from zope.app.testing import setup
 from zope.app.traversing.api import traverse
+from zope.app.folder import Folder
 
 class File(object):
     pass
+
+def test_move_events():
+    """
+    Prepare the setup::
+
+      >>> root = setup.placefulSetUp(site=True)
+      >>> ztapi.provideAdapter(None, IObjectMover, ObjectMover)
+
+    Prepare some objects::
+
+      >>> folder = Folder()
+      >>> root[u'foo'] = File()
+      >>> root[u'folder'] = folder
+      >>> list(folder.keys())
+      []
+      >>> foo = traverse(root, 'foo') # wrap in ContainedProxy
+
+    Now move it::
+
+      >>> clearEvents()
+      >>> mover = IObjectMover(foo)
+      >>> mover.moveableTo(folder)
+      True
+      >>> mover.moveTo(folder, u'bar')
+      u'bar'
+
+    Check that the move has been done::
+
+      >>> list(root.keys())
+      [u'folder']
+      >>> list(folder.keys())
+      [u'bar']
+
+    Check what events have been sent::
+
+      >>> events = getEvents()
+      >>> [event.__class__.__name__ for event in events]
+      ['ObjectMovedEvent', 'ContainerModifiedEvent', 'ContainerModifiedEvent']
+
+    Verify that the ObjectMovedEvent includes the correct data::
+
+      >>> events[0].oldName, events[0].newName
+      (u'foo', u'bar')
+      >>> events[0].oldParent is root
+      True
+      >>> events[0].newParent is folder
+      True
+
+    Let's look the other events:
+
+      >>> events[1].object is folder
+      True
+      >>> events[2].object is root
+      True
+
+    Finally, tear down::
+
+      >>> setup.placefulTearDown()
+    """
+
 
 class ObjectMoverTest(PlacefulSetup, TestCase):
 
@@ -155,6 +220,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
 def test_suite():
     return TestSuite((
         makeSuite(ObjectMoverTest),
+        doctest.DocTestSuite(),
         ))
 
 if __name__=='__main__':
