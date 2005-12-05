@@ -122,7 +122,7 @@
         </tbody>
       </table>
 
-      <div tal:condition="view/normalButtons">
+      <tal:block tal:condition="view/normalButtons">
 
         <input type="submit" name="container_rename_button" value="Rename"
                i18n:attributes="value container-rename-button"
@@ -147,10 +147,10 @@
                />
 
         <div tal:condition="view/hasAdding" tal:omit-tag="">
-        <div tal:omit-tag="" 
+        <div tal:omit-tag=""
              tal:define="adding nocall:context/@@+;
                          addingInfo adding/addingInfo;
-                         has_custom_add_view adding/hasCustomAddView; 
+                         has_custom_add_view adding/hasCustomAddView;
                          names_required adding/nameAllowed"
              tal:condition="adding/isSingleMenuItem">
           <input type="submit" name="container_add_button" value="Add"
@@ -163,12 +163,12 @@
                />
           <input type="hidden" name="single_type_name"
                value=""
-               tal:attributes="value python:addingInfo[0]['action']" 
+               tal:attributes="value python:addingInfo[0]['action']"
                />
         </div>
         </div>
 
-      </div>
+      </tal:block>
 
       <div tal:condition="view/specialButtons">
         <input type="submit" value="Apply"
