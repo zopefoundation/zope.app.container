@@ -2,19 +2,6 @@
    xmlns:zope="http://namespaces.zope.org/zope"
    xmlns="http://namespaces.zope.org/browser">
 
-  <view
-      for="zope.app.container.interfaces.IContentContainer"
-      name="+"
-      menu="zmi_actions" title="Add"
-      class="zope.app.container.browser.adding.ContentAdding"
-      permission="zope.ManageContent"
-      allowed_attributes="addingInfo isSingleMenuItem hasCustomAddView">
-
-    <page name="index.html"  template="add.pt" />
-    <page name="action.html" attribute="action" />
-
-  </view>
-
   <page
       for="zope.app.container.interfaces.IReadContainer"
       name="find.html"
