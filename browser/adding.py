@@ -18,7 +18,9 @@ factory screen.
 
 $Id$
 """
+
 __docformat__ = 'restructuredtext'
+
 from warnings import warn
 
 import zope.security.checker
@@ -40,6 +42,7 @@ from zope.app.location import LocationProxy
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser import BrowserView
 from zope.app.publisher.browser.menu import getMenu
+
 
 class Adding(BrowserView):
     implements(IAdding, IPublishTraverse)
@@ -199,9 +202,3 @@ class Adding(BrowserView):
            if 'has_custom_add_view' in menu_item:
                return True
        return False
-
-
-class ContentAdding(Adding):
-
-    menu_id = "add_content"
-
