@@ -21,8 +21,6 @@ $Id$
 
 __docformat__ = 'restructuredtext'
 
-from warnings import warn
-
 import zope.security.checker
 from zope.component.interfaces import IFactory
 from zope.event import notify
@@ -84,11 +82,6 @@ class Adding(BrowserView):
     # set in BrowserView.__init__
     request = None
     context = None
-
-    def renderAddButton(self):
-        warn("The renderAddButton method is deprecated, use nameAllowed",
-            DeprecationWarning, 2)
-
 
     def publishTraverse(self, request, name):
         """See zope.app.container.interfaces.IAdding"""
