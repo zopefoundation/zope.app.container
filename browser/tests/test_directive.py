@@ -21,7 +21,7 @@ import cStringIO
 
 import unittest
 from zope.interface import Interface
-from zope.publisher.interfaces import ILayer
+from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.testing.doctestunit import DocTestSuite
 from zope.app.container.browser.metaconfigure import containerViews
 
@@ -46,7 +46,7 @@ class I(Interface):
     pass
 
 
-class ITestLayer(ILayer):
+class ITestLayer(IBrowserRequest):
     pass
 
 
