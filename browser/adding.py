@@ -67,7 +67,7 @@ class Adding(BrowserView):
                 name = chooser.chooseName(self.contentName or '', content)
             elif name == '':
                 name = chooser.chooseName('', content)
-            chooser.checkName(name, container)
+            chooser.checkName(name, content)
 
         container[name] = content
         self.contentName = name # Set the added object Name
