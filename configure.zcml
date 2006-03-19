@@ -63,8 +63,8 @@
       factory=".contained.ContainerSublocations"
       />
 
-  <content class=".constraints.ItemTypePrecondition">
+  <class class=".constraints.ItemTypePrecondition">
     <allow interface=".constraints.IItemTypePrecondition" />
-  </content>
+  </class>
 
 </configure>
