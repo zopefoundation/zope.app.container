@@ -47,6 +47,7 @@ from zope.app.container.contained import contained
 from zope.app.container.browser.adding import Adding
 from zope.app.container.sample import SampleContainer
 
+
 class Root(object):
     implements(IContainmentRoot)
 
@@ -139,7 +140,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         ztapi.provideUtility(IFactory, Factory(), 'fooprivate')
 
         factory = Factory()
-        factory.__Security_checker__ = zope.security.checker.NamesChecker(      
+        factory.__Security_checker__ = zope.security.checker.NamesChecker(
             ['__call__'])
         ztapi.provideUtility(IFactory, factory, 'foo')
 
@@ -149,7 +150,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         adding.nameAllowed = lambda: True
 
         # we can't use a private factory:
-        self.assertRaises(ForbiddenAttribute, 
+        self.assertRaises(ForbiddenAttribute,
                           adding.action, type_name='fooprivate', id='bar')
 
         # typical add - id is provided by user
@@ -163,7 +164,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         self.assertRaises(UserError, adding.action, type_name='foo')
 
         # bad type_name
-        self.assertRaises(ComponentLookupError, adding.action, 
+        self.assertRaises(ComponentLookupError, adding.action,
             type_name='***', id='bar')
 
         # alternative add - id is provided internally instead of from user
@@ -182,7 +183,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         adding.contentName = None
         adding.action(type_name='foo')
         self.assert_('Content' in container)
-        
+
 
     def test_action(self):
         container = Container()
@@ -308,7 +309,7 @@ def test_constraint_driven_add():
     
     This test should fail, because the container only
     accepts instances of F1
-    
+
     >>> adding.add(F2())
     Traceback (most recent call last):
     ...
@@ -329,7 +330,7 @@ def test_constraint_driven_add():
     >>> zope.interface.classImplements(F1, I2)
 
     This adding now fails, because the Container is not a valid
-    parent for F1 
+    parent for F1
 
     >>> c = adding.add(F1())
     Traceback (most recent call last):
@@ -345,26 +346,26 @@ def test_constraint_driven_add():
 
 def test_nameAllowed():
     """
-    Test for nameAllowed in adding.py 
-    
+    Test for nameAllowed in adding.py
+
     >>> setUp()
     >>> from zope.app.container.browser.adding import Adding
     >>> from zope.app.container.interfaces import IContainerNamesContainer
 
     Class implements IContainerNamesContainer
-    
+
     >>> class FakeContainer(object):
     ...    zope.interface.implements(IContainerNamesContainer)
 
     nameAllowed returns False if the class imlements
     IContainerNamesContainer
-    
+
     >>> adding = Adding(FakeContainer(),TestRequest())
     >>> adding.nameAllowed()
     False
 
     Fake class without IContainerNamesContainer
-    
+
     >>> class Fake(object):
     ...    pass
 
@@ -381,13 +382,15 @@ def test_nameAllowed():
 
 def test_chooseName():
     """If user don't enter name, pick one
-    
+
     >>> class MyContainer(object):
+    ...    args = {}
     ...    zope.interface.implements(INameChooser, IContainer)
     ...    def chooseName(self, name, object):
+    ...        self.args["choose"] = name, object
     ...        return 'pickone'
     ...    def checkName(self, name, object):
-    ...        pass
+    ...        self.args["check"] = name, object
     ...    def __setitem__(self, name, object):
     ...        setattr(self, name, object)
     ...        self.name = name
@@ -403,15 +406,28 @@ def test_chooseName():
     'pickone'
     >>> add_obj is o
     True
+
+    Make sure right arguments passed to INameChooser adapter:
+
+    >>> name, obj = mycontainer.args["choose"]
+    >>> name
+    ''
+    >>> obj is o
+    True
+    >>> name, obj = mycontainer.args["check"]
+    >>> name
+    'pickone'
+    >>> obj is o
+    True
     """
-    
+
 
 
 def test_SingleMenuItem_and_CustomAddView_NonICNC():
     """
     This tests the condition if the content has Custom Add views and
     the container contains only a single content object
-    
+
     >>> setUp()
     >>> registerAddMenu()
     >>> defineMenuItem(AddMenu, IAdding, '', 'item3', extra={'factory': 'f1'})
@@ -452,13 +468,13 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
 
     isSingleMenuItem returns True if there is only one content class
     inside the Container
-    
+
     >>> adding.isSingleMenuItem()
     True
 
     hasCustomAddView will return False as the content does not have
     a custom Add View
-    
+
     >>> adding.hasCustomAddView()
     True
     
@@ -467,11 +483,11 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
 
 def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     """
-    
+
     This function checks the case where there is a single content object
     and there is non custom add view . Also the container does not
     implement IContainerNamesContainer
-    
+
     >>> setUp()
     >>> registerAddMenu()
     >>> defineMenuItem(AddMenu, None, '', 'item3', extra={'factory': ''})
@@ -511,7 +527,7 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
 
     The isSingleMenuItem will return True if there is one single content
     that can be added inside the Container
-    
+
     >>> adding.isSingleMenuItem()
     True
 
@@ -579,4 +595,3 @@ def test_suite():
 
 if __name__=='__main__':
     unittest.main(defaultTest='test_suite')
-

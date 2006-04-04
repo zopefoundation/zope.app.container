@@ -18,8 +18,8 @@ factory screen.
 
 $Id$
 """
+
 __docformat__ = 'restructuredtext'
-from warnings import warn
 
 import zope.security.checker
 from zope.component.interfaces import IFactory
@@ -40,6 +40,7 @@ from zope.app.location import LocationProxy
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser import BrowserView
 from zope.app.publisher.browser.menu import getMenu
+
 
 class Adding(BrowserView):
     implements(IAdding, IPublishTraverse)
@@ -66,7 +67,7 @@ class Adding(BrowserView):
                 name = chooser.chooseName(self.contentName or '', content)
             elif name == '':
                 name = chooser.chooseName('', content)
-            chooser.checkName(name, container)
+            chooser.checkName(name, content)
 
         container[name] = content
         self.contentName = name # Set the added object Name
@@ -81,11 +82,6 @@ class Adding(BrowserView):
     # set in BrowserView.__init__
     request = None
     context = None
-
-    def renderAddButton(self):
-        warn("The renderAddButton method is deprecated, use nameAllowed",
-            DeprecationWarning, 2)
-
 
     def publishTraverse(self, request, name):
         """See zope.app.container.interfaces.IAdding"""
@@ -199,9 +195,3 @@ class Adding(BrowserView):
            if 'has_custom_add_view' in menu_item:
                return True
        return False
-
-
-class ContentAdding(Adding):
-
-    menu_id = "add_content"
-
