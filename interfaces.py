@@ -20,11 +20,10 @@ __docformat__ = 'restructuredtext'
 from zope.deprecation import deprecated
 
 from zope.interface import Interface, Attribute, Invalid
-from zope.component.interfaces import IView
+from zope.component.interfaces import IView, IObjectEvent
 from zope.interface.common.mapping import IItemMapping
 from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
-from zope.app.location.interfaces import ILocation
-from zope.component.interfaces import IObjectEvent
+from zope.location.interfaces import ILocation
 from zope.app.event.interfaces import IObjectModifiedEvent
 
 deprecated('IContentContainer',

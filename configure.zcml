@@ -50,7 +50,7 @@
       />
 
   <subscriber
-      for="zope.app.location.interfaces.ILocation
+      for="zope.location.interfaces.ILocation
            zope.app.container.interfaces.IObjectMovedEvent"
       handler=".contained.dispatchToSublocations"
       >
@@ -58,7 +58,7 @@
   </subscriber>
 
   <adapter
-      provides="zope.app.location.interfaces.ISublocations"
+      provides="zope.location.interfaces.ISublocations"
       for="zope.app.container.interfaces.IReadContainer"
       factory=".contained.ContainerSublocations"
       />
