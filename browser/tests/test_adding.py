@@ -27,13 +27,13 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.security.interfaces import ForbiddenAttribute
 from zope.testing.doctestunit import DocTestSuite
 from zope.exceptions.interfaces import UserError
+from zope.traversing.browser import AbsoluteURL
+from zope.traversing.browser.interfaces import IAbsoluteURL
+from zope.traversing.interfaces import IContainmentRoot
 
 from zope.app import zapi
 from zope.app.testing import ztapi
 from zope.app.testing.placelesssetup import PlacelessSetup, setUp, tearDown
-from zope.app.traversing.browser import AbsoluteURL
-from zope.app.traversing.browser.interfaces import IAbsoluteURL
-from zope.app.traversing.interfaces import IContainmentRoot
 from zope.app.publisher.browser import BrowserView
 from zope.app.publisher.interfaces.browser import AddMenu
 from zope.app.publisher.interfaces.browser import IMenuItemType, IBrowserMenu
