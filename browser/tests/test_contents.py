@@ -20,8 +20,8 @@ from unittest import TestCase, TestSuite, main, makeSuite
 from zope.interface import Interface, implements
 from zope.security import checker
 from zope.traversing.api import traverse
+from zope.annotation.interfaces import IAnnotations
 
-from zope.app.annotation.interfaces import IAnnotations
 from zope.app.component.testing import PlacefulSetup
 from zope.app.container.contained import contained
 from zope.app.copypastemove import ContainerItemRenamer
