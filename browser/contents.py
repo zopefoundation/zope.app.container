@@ -24,23 +24,21 @@ from zope.security.interfaces import Unauthorized
 from zope.security import canWrite
 from zope.size.interfaces import ISized
 from zope.traversing.interfaces import TraversalError
+from zope.publisher.browser import BrowserView
 
 from zope.app import zapi
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.app.publisher.browser import BrowserView
 from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.dublincore.interfaces import IZopeDublinCore
 from zope.app.dublincore.interfaces import IDCDescriptiveProperties
 from zope.app.copypastemove.interfaces import IPrincipalClipboard
-from zope.app.copypastemove.interfaces import IObjectCopier
-from zope.app.copypastemove.interfaces import IObjectMover
+from zope.app.copypastemove.interfaces import IObjectCopier, IObjectMover
 from zope.app.copypastemove.interfaces import IContainerItemRenamer
 from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 
 from zope.app.container.browser.adding import Adding
-from zope.app.container.interfaces import IContainer
+from zope.app.container.interfaces import IContainer, DuplicateIDError
 from zope.app.container.interfaces import IContainerNamesContainer
-from zope.app.container.interfaces import DuplicateIDError
 
 class Contents(BrowserView):
 

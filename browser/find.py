@@ -19,10 +19,10 @@ __docformat__ = 'restructuredtext'
 
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
+from zope.publisher.browser import BrowserView
 
 from zope.app.container.find import SimpleIdFindFilter
 from zope.app.container.interfaces import IFind
-from zope.app.publisher.browser import BrowserView
 
 # Very simple implementation right now
 class Find(BrowserView):

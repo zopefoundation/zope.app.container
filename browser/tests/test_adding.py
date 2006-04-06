@@ -24,6 +24,7 @@ from zope.component.interfaces import ComponentLookupError
 from zope.interface import implements, Interface, directlyProvides
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.publisher.browser import BrowserView
 from zope.security.interfaces import ForbiddenAttribute
 from zope.testing.doctestunit import DocTestSuite
 from zope.exceptions.interfaces import UserError
@@ -34,7 +35,6 @@ from zope.traversing.interfaces import IContainmentRoot
 from zope.app import zapi
 from zope.app.testing import ztapi
 from zope.app.testing.placelesssetup import PlacelessSetup, setUp, tearDown
-from zope.app.publisher.browser import BrowserView
 from zope.app.publisher.interfaces.browser import AddMenu
 from zope.app.publisher.interfaces.browser import IMenuItemType, IBrowserMenu
 from zope.app.publisher.browser.menu import BrowserMenuItem, BrowserMenu

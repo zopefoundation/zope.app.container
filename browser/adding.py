@@ -26,6 +26,7 @@ from zope.component.interfaces import IFactory
 from zope.event import notify
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
+from zope.publisher.browser import BrowserView
 from zope.security.proxy import removeSecurityProxy
 from zope.exceptions.interfaces import UserError
 from zope.location import LocationProxy
@@ -38,7 +39,6 @@ from zope.app import zapi
 from zope.app.event.objectevent import ObjectCreatedEvent
 from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.app.publisher.browser import BrowserView
 from zope.app.publisher.browser.menu import getMenu
 
 
