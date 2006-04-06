@@ -24,7 +24,7 @@ from zope.component.interfaces import IView, IObjectEvent
 from zope.interface.common.mapping import IItemMapping
 from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
 from zope.location.interfaces import ILocation
-from zope.app.event.interfaces import IObjectModifiedEvent
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
 deprecated('IContentContainer',
            'This interface has been deprecated. '
