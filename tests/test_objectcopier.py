@@ -16,15 +16,15 @@
 $Id$
 """
 from unittest import TestCase, TestSuite, main, makeSuite
+
+import zope.component
 from zope.testing import doctest
 from zope.traversing.api import traverse
+from zope.component.testing import getEvents, clearEvents
 
-from zope.app.event.tests.placelesssetup import getEvents
-from zope.app.event.tests.placelesssetup import clearEvents
 from zope.app.component.testing import PlacefulSetup
 from zope.app.copypastemove import ObjectCopier
 from zope.app.copypastemove.interfaces import IObjectCopier
-from zope.app.testing import ztapi
 from zope.app.testing import setup
 from zope.app.folder import Folder
 
@@ -36,7 +36,7 @@ def test_copy_events():
     Prepare the setup::
 
       >>> root = setup.placefulSetUp(site=True)
-      >>> ztapi.provideAdapter(None, IObjectCopier, ObjectCopier)
+      >>> zope.component.provideAdapter(ObjectCopier, (None,), IObjectCopier)
 
     Prepare some objects::
 
@@ -83,7 +83,7 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
     def setUp(self):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
-        ztapi.provideAdapter(None, IObjectCopier, ObjectCopier)
+        zope.component.provideAdapter(ObjectCopier, (None,), IObjectCopier)
 
     def test_copytosame(self):
         root = self.rootFolder

@@ -406,8 +406,8 @@ def setitem(container, setitemf, name, object):
     If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
 
-    >>> from zope.app.event.tests.placelesssetup import getEvents
-    >>> from zope.app.event.interfaces import IObjectModifiedEvent
+    >>> from zope.component.testing import getEvents
+    >>> from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
     We have an added event:
 
@@ -601,9 +601,9 @@ def uncontained(object, container, name=None):
     If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
 
-    >>> from zope.app.event.tests.placelesssetup import getEvents
+    >>> from zope.component.testing import getEvents
+    >>> from zope.lifecycleevent.interfaces import IObjectModifiedEvent
     >>> from zope.app.container.interfaces import IObjectRemovedEvent
-    >>> from zope.app.event.interfaces import IObjectModifiedEvent
 
     We'll start by creating a container with an item:
 

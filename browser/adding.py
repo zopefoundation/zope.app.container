@@ -30,13 +30,13 @@ from zope.publisher.browser import BrowserView
 from zope.security.proxy import removeSecurityProxy
 from zope.exceptions.interfaces import UserError
 from zope.location import LocationProxy
+from zope.lifecycleevent import ObjectCreatedEvent
 
 from zope.app.container.interfaces import IAdding, INameChooser
 from zope.app.container.interfaces import IContainerNamesContainer
 from zope.app.container.constraints import checkFactory, checkObject
 
 from zope.app import zapi
-from zope.app.event.objectevent import ObjectCreatedEvent
 from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser.menu import getMenu
