@@ -32,7 +32,7 @@ class Tests(BrowserTestCase):
         """Tests the default view permissions.
 
         See zope/app/securitypolicy/configure.zcml for the grants of
-        zope.View and zope.dublincore.view to zope.Anonymous. These
+        zope.View and zope.app.dublincore.view to zope.Anonymous. These
         ensure that, by default, anonymous users can view container contents.
         """
         # add an item that can be viewed from the root folder
@@ -77,7 +77,7 @@ class Tests(BrowserTestCase):
         self.getRootFolder()['file'] = file
         IZopeDublinCore(file).title = u'My File'
 
-        # deny zope.dublincore.view to zope.Anonymous
+        # deny zope.app.dublincore.view to zope.Anonymous
         prm = IRolePermissionManager(self.getRootFolder())
         prm.denyPermissionToRole('zope.app.dublincore.view', 'zope.Anonymous')
         transaction.commit()
