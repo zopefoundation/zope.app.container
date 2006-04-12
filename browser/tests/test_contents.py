@@ -102,7 +102,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         container['document'] = document
 
         from datetime import datetime
-        from zope.app.dublincore.interfaces import IZopeDublinCore
+        from zope.dublincore.interfaces import IZopeDublinCore
         class FauxDCAdapter(object):
             implements(IZopeDublinCore)
 

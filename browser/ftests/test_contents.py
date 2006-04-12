@@ -22,10 +22,10 @@ from persistent import Persistent
 import transaction
 from zope.interface import implements, Interface
 from zope.annotation.interfaces import IAttributeAnnotatable
+from zope.dublincore.interfaces import IZopeDublinCore
 
 from zope.app import copypastemove
 from zope.app.container.interfaces import IReadContainer, IContained
-from zope.app.dublincore.interfaces import IZopeDublinCore
 from zope.app.testing import ztapi
 from zope.app.testing.functional import BrowserTestCase
 from zope.app.testing.functional import FunctionalDocFileSuite
