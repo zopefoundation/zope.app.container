@@ -21,15 +21,15 @@ from zope.interface import Interface, implements
 from zope.security import checker
 from zope.traversing.api import traverse
 from zope.annotation.interfaces import IAnnotations
+from zope.copypastemove import ContainerItemRenamer
+from zope.copypastemove import ObjectMover, ObjectCopier
+from zope.copypastemove import PrincipalClipboard
+from zope.copypastemove.interfaces import IContainerItemRenamer
+from zope.copypastemove.interfaces import IObjectMover, IObjectCopier
+from zope.copypastemove.interfaces import IPrincipalClipboard
 
 from zope.app.component.testing import PlacefulSetup
 from zope.app.container.contained import contained
-from zope.app.copypastemove import ContainerItemRenamer
-from zope.app.copypastemove import ObjectMover, ObjectCopier
-from zope.app.copypastemove import PrincipalClipboard
-from zope.app.copypastemove.interfaces import IContainerItemRenamer
-from zope.app.copypastemove.interfaces import IObjectMover, IObjectCopier
-from zope.app.copypastemove.interfaces import IPrincipalClipboard
 from zope.app.principalannotation import PrincipalAnnotationUtility
 from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.app.testing import ztapi

@@ -27,13 +27,13 @@ from zope.traversing.interfaces import TraversalError
 from zope.publisher.browser import BrowserView
 from zope.dublincore.interfaces import IZopeDublinCore
 from zope.dublincore.interfaces import IDCDescriptiveProperties
+from zope.copypastemove.interfaces import IPrincipalClipboard
+from zope.copypastemove.interfaces import IObjectCopier, IObjectMover
+from zope.copypastemove.interfaces import IContainerItemRenamer
 
 from zope.app import zapi
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.i18n import ZopeMessageFactory as _
-from zope.app.copypastemove.interfaces import IPrincipalClipboard
-from zope.app.copypastemove.interfaces import IObjectCopier, IObjectMover
-from zope.app.copypastemove.interfaces import IContainerItemRenamer
 from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 
 from zope.app.container.browser.adding import Adding

@@ -21,10 +21,10 @@ import zope.component
 from zope.testing import doctest
 from zope.traversing.api import traverse
 from zope.component.testing import getEvents, clearEvents
+from zope.copypastemove import ObjectMover
+from zope.copypastemove.interfaces import IObjectMover
 
 from zope.app.component.testing import PlacefulSetup
-from zope.app.copypastemove import ObjectMover
-from zope.app.copypastemove.interfaces import IObjectMover
 from zope.app.testing import setup
 from zope.app.folder import Folder
 
