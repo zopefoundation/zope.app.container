@@ -26,7 +26,7 @@ from zope.security.zcml import Permission
 from zope.app.publisher.browser.viewmeta import page, view
 from zope.app.container.browser.contents import Contents
 from zope.app.container.browser.adding import Adding
-from zope.app.component.fields import LayerField
+from zope.app.component.back35 import LayerField
 from zope.app.i18n import ZopeMessageFactory as _
 
 
