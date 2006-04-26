@@ -20,7 +20,7 @@ from unittest import TestCase, TestSuite, main, makeSuite
 import zope.component
 from zope.testing import doctest
 from zope.traversing.api import traverse
-from zope.component.testing import getEvents, clearEvents
+from zope.component.eventtesting import getEvents, clearEvents
 from zope.copypastemove import ObjectMover
 from zope.copypastemove.interfaces import IObjectMover
 

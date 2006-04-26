@@ -17,7 +17,7 @@ $Id$
 """
 import unittest
 from zope.testing.doctestunit import DocTestSuite
-from zope.component.testing import getEvents, clearEvents
+from zope.component.eventtesting import getEvents, clearEvents
 from zope.app.testing import placelesssetup, setup
 
 def test_order_events():
