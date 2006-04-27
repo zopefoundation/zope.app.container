@@ -17,9 +17,9 @@ $Id$
 """
 import unittest
 
-from zope.app.size.interfaces import ISized
-from zope.app.container.interfaces import IContainer
 from zope.interface import implements
+from zope.size.interfaces import ISized
+from zope.app.container.interfaces import IContainer
 
 class DummyContainer(object):
 

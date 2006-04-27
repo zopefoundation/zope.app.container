@@ -14,26 +14,26 @@
 
   <adapter
       for=".interfaces.IReadContainer"
-      provides="zope.app.filerepresentation.interfaces.IReadDirectory"
+      provides="zope.filerepresentation.interfaces.IReadDirectory"
       factory=".directory.noop"
       />
 
   <adapter
       for=".interfaces.IWriteContainer"
-      provides="zope.app.filerepresentation.interfaces.IWriteDirectory"
+      provides="zope.filerepresentation.interfaces.IWriteDirectory"
       factory=".directory.noop"
       />
 
   <adapter
       factory="zope.app.container.traversal.ContainerTraversable"
-      provides="zope.app.traversing.interfaces.ITraversable"
+      provides="zope.traversing.interfaces.ITraversable"
       for="zope.app.container.interfaces.IReadContainer"
       />
 
 
   <adapter
       factory="zope.app.container.size.ContainerSized"
-      provides="zope.app.size.interfaces.ISized"
+      provides="zope.size.interfaces.ISized"
       for="zope.app.container.interfaces.IReadContainer"
       />
 
@@ -50,7 +50,7 @@
       />
 
   <subscriber
-      for="zope.app.location.interfaces.ILocation
+      for="zope.location.interfaces.ILocation
            zope.app.container.interfaces.IObjectMovedEvent"
       handler=".contained.dispatchToSublocations"
       >
@@ -58,7 +58,7 @@
   </subscriber>
 
   <adapter
-      provides="zope.app.location.interfaces.ISublocations"
+      provides="zope.location.interfaces.ISublocations"
       for="zope.app.container.interfaces.IReadContainer"
       factory=".contained.ContainerSublocations"
       />
@@ -66,5 +66,23 @@
   <class class=".constraints.ItemTypePrecondition">
     <allow interface=".constraints.IItemTypePrecondition" />
   </class>
+
+  <view
+      for="zope.app.container.interfaces.IItemContainer"
+      type="zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+      factory="zope.app.container.traversal.ItemTraverser"
+      permission="zope.Public"
+      allowed_interface="zope.publisher.interfaces.browser.IBrowserPublisher"
+      />
+
+  <view
+      for="zope.app.container.interfaces.ISimpleReadContainer"
+      type="zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+      factory="zope.app.container.traversal.ItemTraverser"
+      permission="zope.Public"
+      allowed_interface="zope.publisher.interfaces.browser.IBrowserPublisher"
+      />
 
 </configure>

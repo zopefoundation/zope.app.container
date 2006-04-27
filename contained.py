@@ -17,19 +17,18 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.exceptions import DuplicationError
-from zope.security.checker import selectChecker, CombinedChecker
-
+import zope.component
 import zope.interface.declarations
+from zope.interface import providedBy
 from zope.interface.declarations import getObjectSpecification
 from zope.interface.declarations import ObjectSpecification
-from zope.interface import providedBy
-
-from zope.app import zapi
-from zope.app.exception.interfaces import UserError
-from zope.app.event.objectevent import ObjectEvent
-from zope.app.event.objectevent import ObjectModifiedEvent
 from zope.event import notify
+from zope.component.interfaces import ObjectEvent
+from zope.location.interfaces import ILocation, ISublocations
+from zope.exceptions.interfaces import DuplicationError, UserError
+from zope.security.checker import selectChecker, CombinedChecker
+from zope.lifecycleevent import ObjectModifiedEvent
+
 from zope.app.i18n import ZopeMessageFactory as _
 from zope.app.container.interfaces import IContained
 from zope.app.container.interfaces import INameChooser
@@ -37,7 +36,6 @@ from zope.app.container.interfaces import IObjectAddedEvent
 from zope.app.container.interfaces import IObjectMovedEvent
 from zope.app.container.interfaces import IObjectRemovedEvent
 from zope.app.container.interfaces import IContainerModifiedEvent
-from zope.app.location.interfaces import ILocation, ISublocations
 from zope.app.container._zope_app_container_contained import ContainedProxyBase
 from zope.app.container._zope_app_container_contained import getProxiedObject
 from zope.app.broken.broken import IBroken
@@ -181,7 +179,7 @@ def dispatchToSublocations(object, event):
     subs = ISublocations(object, None)
     if subs is not None:
         for sub in subs.sublocations():
-            for ignored in zapi.subscribers((sub, event), None):
+            for ignored in zope.component.subscribers((sub, event), None):
                 pass # They do work in the adapter fetch
 
 class ContainerSublocations(object):
@@ -283,7 +281,7 @@ def containedEvent(object, container, name=None):
     `__parent__` and `__name__` attributes *and* declare that it
     implements `IContained`:
 
-        >>> from zope.app.location import Location
+        >>> from zope.location import Location
         >>> item = Location()
         >>> IContained.providedBy(item)
         False
@@ -315,7 +313,7 @@ def containedEvent(object, container, name=None):
         >>> from zope.interface import Interface, directlyProvides
         >>> class IOther(Interface):
         ...     pass
-        >>> from zope.app.location import Location
+        >>> from zope.location import Location
         >>> item = Location()
         >>> directlyProvides(item, IOther)
         >>> IOther.providedBy(item)
@@ -408,8 +406,8 @@ def setitem(container, setitemf, name, object):
     If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
 
-    >>> from zope.app.event.tests.placelesssetup import getEvents
-    >>> from zope.app.event.interfaces import IObjectModifiedEvent
+    >>> from zope.component.eventtesting import getEvents
+    >>> from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
     We have an added event:
 
@@ -498,7 +496,7 @@ def setitem(container, setitemf, name, object):
     `__parent__` and `__name__` attributes *and* declare that it
     implements `IContained`:
 
-    >>> from zope.app.location import Location
+    >>> from zope.location import Location
     >>> item = Location()
     >>> IContained.providedBy(item)
     0
@@ -603,9 +601,9 @@ def uncontained(object, container, name=None):
     If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
 
-    >>> from zope.app.event.tests.placelesssetup import getEvents
+    >>> from zope.component.eventtesting import getEvents
+    >>> from zope.lifecycleevent.interfaces import IObjectModifiedEvent
     >>> from zope.app.container.interfaces import IObjectRemovedEvent
-    >>> from zope.app.event.interfaces import IObjectModifiedEvent
 
     We'll start by creating a container with an item:
 

@@ -16,12 +16,12 @@
 $Id$
 """
 import unittest
-from zope.app.container.traversal import ContainerTraversable
-from zope.app.traversing.interfaces import TraversalError
-from zope.app.container.interfaces import IContainer
 from zope.testing.cleanup import CleanUp
 from zope.interface import implements
+from zope.traversing.interfaces import TraversalError
 
+from zope.app.container.traversal import ContainerTraversable
+from zope.app.container.interfaces import IContainer
 
 class Container(object):
 

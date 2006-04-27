@@ -25,7 +25,7 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-import zope.app.filerepresentation.interfaces
+import zope.filerepresentation.interfaces
 from zope.security.proxy import removeSecurityProxy
 from zope.interface import implements
 
@@ -45,7 +45,7 @@ class Cloner(object):
     of the same class as it's context.
     """
 
-    implements(zope.app.filerepresentation.interfaces.IDirectoryFactory)
+    implements(zope.filerepresentation.interfaces.IDirectoryFactory)
 
     def __init__(self, context):
         self.context = context

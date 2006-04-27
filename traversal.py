@@ -18,7 +18,8 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.interface import implements
-from zope.app.traversing.interfaces import TraversalError
+from zope.component import queryMultiAdapter
+from zope.traversing.interfaces import TraversalError, ITraversable
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.xmlrpc import IXMLRPCPublisher
 from zope.publisher.interfaces import NotFound
@@ -26,7 +27,6 @@ from zope.publisher.interfaces import NotFound
 from zope.app import zapi
 from zope.app.container.interfaces import ISimpleReadContainer, IItemContainer
 from zope.app.container.interfaces import IReadContainer
-from zope.app.traversing.interfaces import ITraversable
 
 # Note that the next two classes are included here because they
 # can be used for multiple view types.
@@ -45,7 +45,7 @@ class ContainerTraverser(object):
         """See zope.publisher.interfaces.IPublishTraverse"""
         subob = self.context.get(name, None)
         if subob is None:
-            view = zapi.queryMultiAdapter((self.context, request), name=name)
+            view = queryMultiAdapter((self.context, request), name=name)
             if view is not None:
                 return view
 
@@ -71,7 +71,7 @@ class ItemTraverser(ContainerTraverser):
         try:
             return self.context[name]
         except KeyError:
-            view = zapi.queryMultiAdapter((self.context, request), name=name)
+            view = queryMultiAdapter((self.context, request), name=name)
             if view is not None:
                 return view
 

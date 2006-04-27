@@ -16,12 +16,9 @@
 $Id$
 """
 import unittest
-
 from zope.testing.doctestunit import DocTestSuite
-from zope.app.testing import placelesssetup
-from zope.app.testing import setup
-from zope.app.event.tests.placelesssetup import getEvents
-from zope.app.event.tests.placelesssetup import clearEvents
+from zope.component.eventtesting import getEvents, clearEvents
+from zope.app.testing import placelesssetup, setup
 
 def test_order_events():
     """
@@ -54,7 +51,7 @@ def test_order_events():
 
     This is in fact a specialized modification event::
 
-        >>> from zope.app.event.interfaces import IObjectModifiedEvent
+        >>> from zope.lifecycleevent.interfaces import IObjectModifiedEvent
         >>> IObjectModifiedEvent.providedBy(events[0])
         True
 
