@@ -18,7 +18,7 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.interface import implements
-from interfaces import IFind, IIdFindFilter
+from interfaces import IFind, IIdFindFilter, IObjectFindFilter
 from interfaces import IReadContainer
 
 class FindAdapter(object):
@@ -74,3 +74,16 @@ class SimpleIdFindFilter(object):
     def matches(self, id):
         'See INameFindFilter'
         return id in self._ids
+    
+class SimpleInterfacesFindFilter(object):
+    """Filter objects on the provided interfaces"""
+    implements(IObjectFindFilter)
+    
+    def __init__(self, *interfaces):
+        self.interfaces = interfaces
+    
+    def matches(self, object):
+        for iface in self.interfaces:
+            if iface.providedBy(object):
+                return True
+        return False

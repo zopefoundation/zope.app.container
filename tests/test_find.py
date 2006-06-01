@@ -19,7 +19,8 @@ from unittest import TestCase, main, makeSuite
 from zope.app.container.interfaces import IReadContainer
 from zope.app.container.interfaces import IObjectFindFilter
 from zope.app.container.find import FindAdapter, SimpleIdFindFilter
-from zope.interface import implements
+from zope.app.container.find import SimpleInterfacesFindFilter
+from zope.interface import implements, Interface, directlyProvides
 
 class FakeContainer(object):
     implements(IReadContainer)
@@ -58,6 +59,15 @@ class FakeContainer(object):
 
     def __len__(self):
         return len(self._objects)
+    
+class FakeInterfaceFoo(Interface):
+    """Test interface Foo"""
+    
+class FakeInterfaceBar(Interface):
+    """Test interface Bar"""
+    
+class FakeInterfaceSpam(Interface):
+    """Test interface Spam"""
 
 class TestObjectFindFilter(object):
     implements(IObjectFindFilter)
@@ -140,6 +150,22 @@ class Test(TestCase):
         result = find.find(id_filters=[SimpleIdFindFilter(['alpha'])],
                            object_filters=[TestObjectFindFilter(1)])
         self.assertEquals([], result)
+        
+    def test_interfaceFind(self):
+        alpha = FakeContainer('alpha', [])
+        directlyProvides(alpha, FakeInterfaceBar)
+        delta = FakeContainer('delta', [])
+        directlyProvides(delta, FakeInterfaceFoo)
+        beta = FakeContainer('beta', [delta])
+        directlyProvides(beta, FakeInterfaceSpam)
+        gamma = FakeContainer('gamma', [])
+        tree = FakeContainer(
+            'tree',
+            [alpha, beta, gamma])
+        find = FindAdapter(tree)
+        result = find.find(object_filters=[
+            SimpleInterfacesFindFilter(FakeInterfaceFoo, FakeInterfaceSpam)])
+        self.assertEqual([beta, delta], result)
 
 def test_suite():
     return makeSuite(Test)
