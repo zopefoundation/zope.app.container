@@ -205,7 +205,7 @@ class Contents(BrowserView):
         newids = request.get("new_value")
 
         renamer = IContainerItemRenamer(self.context)
-        for oldid, newid in map(None, ids, newids):
+        for oldid, newid in zip(ids, newids):
             if newid != oldid:
                 renamer.renameItem(oldid, newid)
 
