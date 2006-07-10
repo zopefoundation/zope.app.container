@@ -79,7 +79,6 @@
                      tal:attributes="href
                                  string:${url}/@@SelectedManagementView.html"
                      tal:content="item/id"
-                     i18n:translate=""
                      >foo</a
                   ><a href="#"
                      tal:attributes="href
