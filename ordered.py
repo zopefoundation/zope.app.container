@@ -191,16 +191,20 @@ class OrderedContainer(Persistent, Contained):
                 bad = True
         else:
             bad = True
-        if bad: 
+        if bad:
             raise TypeError("'%s' is invalid, the key must be an "
                             "ascii or unicode string" % key)
         if len(key) == 0:
             raise ValueError("The key cannot be an empty string")
 
-        setitem(self, self._data.__setitem__, key, object)
-
+        # We have to first update the order, so that the item is available,
+        # otherwise most API functions will lie about their available values
+        # when an event subscriber tries to do something with the container.
         if not existed:
             self._order.append(key)
+
+        # This function creates a lot of events that other code listens to.
+        setitem(self, self._data.__setitem__, key, object)
 
         return key
 

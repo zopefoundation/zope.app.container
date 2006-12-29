@@ -60,6 +60,35 @@ def test_order_events():
         >>> setup.placefulTearDown()
     """
 
+def test_all_items_available_at_object_added_event():
+    """
+    Prepare the setup::
+
+        >>> root = setup.placefulSetUp(site=True)
+
+    Now register an event subscriber to object added events.
+
+        >>> import zope.component
+        >>> from zope.app.container import interfaces
+
+        >>> @zope.component.adapter(interfaces.IObjectAddedEvent)
+        ... def printContainerKeys(event):
+        ...     print event.newParent.keys()
+
+        >>> zope.component.provideHandler(printContainerKeys)
+
+    Now we are adding an object to the container. 
+
+        >>> from zope.app.container.ordered import OrderedContainer
+        >>> oc = OrderedContainer()
+        >>> oc['foo'] = 'FOO'
+        ['foo']
+
+    Finally, tear down::
+
+        >>> setup.placefulTearDown()
+    """
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(DocTestSuite("zope.app.container.ordered",
