@@ -265,7 +265,7 @@ def test_constraint_driven_addingInfo():
     1
     >>> items[0]['title']
     'item3'
-    
+
     >>> adding.menu_id = 'TestMenu'
     >>> items = adding.addingInfo()
     >>> len(items)
@@ -276,7 +276,7 @@ def test_constraint_driven_addingInfo():
     'item2'
     >>> items[2]['title']
     'item3'
-    >>> tearDown()    
+    >>> tearDown()
     """
 
 def test_constraint_driven_add():
@@ -295,7 +295,7 @@ def test_constraint_driven_add():
     ...     "a mock item constraint "
     ...     if not isinstance(object, F1):
     ...         raise zope.interface.Invalid('not a valid child')
-    
+
     >>> class ITestContainer(zope.interface.Interface):
     ...     def __setitem__(name, object):
     ...         pass
@@ -306,7 +306,7 @@ def test_constraint_driven_add():
 
     >>> adding = Adding(Container(), TestRequest())
     >>> c = adding.add(F1())
-    
+
     This test should fail, because the container only
     accepts instances of F1
 
@@ -376,7 +376,7 @@ def test_nameAllowed():
     >>> adding.nameAllowed()
     True
 
-    >>> tearDown()    
+    >>> tearDown()
     """
 
 
@@ -478,8 +478,8 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
 
     >>> adding.hasCustomAddView()
     True
-    
-    >>> tearDown()    
+
+    >>> tearDown()
     """
 
 def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
@@ -519,7 +519,7 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     >>> from zope.component.factory import Factory
     >>> ztapi.provideUtility(IFactory, Factory(F1), 'f1')
     >>> ztapi.provideUtility(IFactory, Factory(F2), 'f2')
-    
+
     >>> from zope.app.container.browser.adding import Adding
     >>> adding = Adding(Container(), TestRequest())
     >>> items = adding.addingInfo()
@@ -537,7 +537,7 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
 
     >>> adding.hasCustomAddView()
     False
-    
+
     >>> tearDown()
     """
 
@@ -549,7 +549,7 @@ def test_isSingleMenuItem_with_ICNC():
     >>> setUp()
     >>> registerAddMenu()
     >>> defineMenuItem(AddMenu, None, '', 'item3', extra={'factory': ''})
-    
+
     >>> class F1(object):
     ...     pass
 
@@ -583,9 +583,9 @@ def test_isSingleMenuItem_with_ICNC():
     True
     >>> adding.hasCustomAddView()
     False
-    
+
     >>> tearDown()
-    
+
     """
 
 def test_suite():
