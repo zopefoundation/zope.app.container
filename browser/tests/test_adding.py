@@ -376,6 +376,7 @@ def test_nameAllowed():
     >>> adding.nameAllowed()
     True
 
+    >>> tearDown()    
     """
 
 
