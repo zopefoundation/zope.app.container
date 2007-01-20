@@ -29,6 +29,7 @@ from zope.app.container.interfaces import IReadContainer, IContained
 from zope.app.testing import ztapi
 from zope.app.testing.functional import BrowserTestCase
 from zope.app.testing.functional import FunctionalDocFileSuite
+from zope.app.container.testing import AppContainerLayer
 
 
 class IImmovable(Interface):
@@ -339,8 +340,11 @@ class Test(BrowserTestCase):
 
 def test_suite():
     suite = unittest.TestSuite()
+    Test.layer = AppContainerLayer
     suite.addTest(unittest.makeSuite(Test))
-    suite.addTest(FunctionalDocFileSuite("index.txt"))
+    index = FunctionalDocFileSuite("index.txt")
+    index.layer = AppContainerLayer
+    suite.addTest(index)
     return suite
 
 if __name__=='__main__':

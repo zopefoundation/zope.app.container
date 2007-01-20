@@ -13,7 +13,7 @@
 ##############################################################################
 """Container View Permissions Tests
 
-$Id: $
+$Id$
 """
 import unittest
 import transaction
@@ -24,7 +24,7 @@ from zope.app.testing.functional import BrowserTestCase
 from zope.app.file import File
 from zope.dublincore.interfaces import IZopeDublinCore
 from zope.app.securitypolicy.interfaces import IRolePermissionManager
-
+from zope.app.container.testing import AppContainerLayer
 
 class Tests(BrowserTestCase):
 
@@ -95,6 +95,7 @@ class Tests(BrowserTestCase):
 
 def test_suite():
     suite = unittest.TestSuite()
+    Tests.layer = AppContainerLayer
     suite.addTest(unittest.makeSuite(Tests))
     return suite
 
