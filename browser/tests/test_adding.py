@@ -213,7 +213,6 @@ class Test(PlacelessSetup, unittest.TestCase):
 
 def test_constraint_driven_addingInfo():
     """
-    >>> setUp()
     >>> registerAddMenu()
 
     >>> class TestMenu(zope.interface.Interface):
@@ -276,12 +275,10 @@ def test_constraint_driven_addingInfo():
     'item2'
     >>> items[2]['title']
     'item3'
-    >>> tearDown()
     """
 
 def test_constraint_driven_add():
     """
-    >>> setUp()
     >>> from zope.app.container.sample import SampleContainer
     >>> from zope.app.container.browser.adding import Adding
 
@@ -340,7 +337,6 @@ def test_constraint_driven_add():
     >>> adding = Adding(ValidContainer(), TestRequest())
     >>> c = adding.add(F1())
 
-    >>> tearDown()
     """
 
 
@@ -348,7 +344,6 @@ def test_nameAllowed():
     """
     Test for nameAllowed in adding.py
 
-    >>> setUp()
     >>> from zope.app.container.browser.adding import Adding
     >>> from zope.app.container.interfaces import IContainerNamesContainer
 
@@ -376,7 +371,6 @@ def test_nameAllowed():
     >>> adding.nameAllowed()
     True
 
-    >>> tearDown()
     """
 
 
@@ -429,7 +423,6 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
     This tests the condition if the content has Custom Add views and
     the container contains only a single content object
 
-    >>> setUp()
     >>> registerAddMenu()
     >>> defineMenuItem(AddMenu, IAdding, '', 'item3', extra={'factory': 'f1'})
 
@@ -479,7 +472,6 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
     >>> adding.hasCustomAddView()
     True
 
-    >>> tearDown()
     """
 
 def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
@@ -489,7 +481,6 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     and there is non custom add view . Also the container does not
     implement IContainerNamesContainer
 
-    >>> setUp()
     >>> registerAddMenu()
     >>> defineMenuItem(AddMenu, None, '', 'item3', extra={'factory': ''})
     >>> class F1(object):
@@ -538,7 +529,6 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     >>> adding.hasCustomAddView()
     False
 
-    >>> tearDown()
     """
 
 def test_isSingleMenuItem_with_ICNC():
@@ -546,7 +536,6 @@ def test_isSingleMenuItem_with_ICNC():
     This test checks for whether there is a single content that can be added
     and the container uses IContainerNamesContaienr
 
-    >>> setUp()
     >>> registerAddMenu()
     >>> defineMenuItem(AddMenu, None, '', 'item3', extra={'factory': ''})
 
@@ -584,14 +573,12 @@ def test_isSingleMenuItem_with_ICNC():
     >>> adding.hasCustomAddView()
     False
 
-    >>> tearDown()
-
     """
 
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(Test),
-        DocTestSuite(),
+        DocTestSuite(setUp=setUp, tearDown=tearDown),
         ))
 
 if __name__=='__main__':
