@@ -29,7 +29,7 @@
 
         <thead>
           <tr>
-            <th>&nbsp;</th>
+            <th><input type="checkbox" onchange="updateCheckboxes(this, 'slaveBox');" /></th>
             <th i18n:translate="">Name</th>
             <th i18n:translate="">Title</th>
             <th i18n:translate="">Size</th>
@@ -57,7 +57,7 @@
                           id_quoted item/id/url:quote"
               tal:attributes="class python:oddrow and 'even' or 'odd'" >
             <td>
-              <input type="checkbox" class="noborder" name="ids:list" id="#"
+              <input type="checkbox" class="noborder slaveBox" name="ids:list" id="#"
                      value="#"
                      tal:attributes="value item/id;
                                      id item/cb_id;
