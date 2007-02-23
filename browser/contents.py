@@ -30,11 +30,11 @@ from zope.dublincore.interfaces import IDCDescriptiveProperties
 from zope.copypastemove.interfaces import IPrincipalClipboard
 from zope.copypastemove.interfaces import IObjectCopier, IObjectMover
 from zope.copypastemove.interfaces import IContainerItemRenamer
+from zope.annotation.interfaces import IAnnotations
 
 from zope.app import zapi
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.i18n import ZopeMessageFactory as _
-from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 
 from zope.app.container.browser.adding import Adding
 from zope.app.container.interfaces import IContainer, DuplicateIDError
@@ -456,6 +456,5 @@ def getDCTitle(ob):
 def getPrincipalClipboard(request):
     """Return the clipboard based on the request."""
     user = request.principal
-    annotationutil = zapi.getUtility(IPrincipalAnnotationUtility)
-    annotations = annotationutil.getAnnotations(user)
+    annotations = IAnnotations(user)
     return IPrincipalClipboard(annotations)

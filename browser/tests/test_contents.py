@@ -30,8 +30,6 @@ from zope.copypastemove.interfaces import IPrincipalClipboard
 
 from zope.app.component.testing import PlacefulSetup
 from zope.app.container.contained import contained
-from zope.app.principalannotation import PrincipalAnnotationUtility
-from zope.app.principalannotation.interfaces import IPrincipalAnnotationUtility
 from zope.app.testing import ztapi
 from zope.app.container.interfaces import IContainer, IContained
 
@@ -57,8 +55,8 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         ztapi.provideAdapter(IAnnotations, IPrincipalClipboard,
                              PrincipalClipboard)
-        ztapi.provideUtility(IPrincipalAnnotationUtility,
-                             PrincipalAnnotationUtility())
+        ztapi.provideAdapter(Principal, IAnnotations,
+                             PrincipalAnnotations)
 
     def testInfo(self):
         # Do we get the correct information back from ContainerContents?
@@ -171,6 +169,21 @@ class Principal(object):
 
     id = 'bob'
 
+class PrincipalAnnotations(dict):
+    implements(IAnnotations)
+    data = {}
+    def __new__(class_, context):
+        try:
+            annotations = class_.data[context.id]
+        except KeyError:
+            annotations = dict.__new__(class_)
+            class_.data[context.id] = annotations
+        return annotations
+    def __init__(self, context):
+        pass
+    def __repr__(self):
+        return "<%s.PrincipalAnnotations object>" % __name__
+
 
 class TestCutCopyPaste(PlacefulSetup, TestCase):
 
@@ -184,8 +197,8 @@ class TestCutCopyPaste(PlacefulSetup, TestCase):
 
         ztapi.provideAdapter(IAnnotations, IPrincipalClipboard,
                              PrincipalClipboard)
-        ztapi.provideUtility(IPrincipalAnnotationUtility,
-                             PrincipalAnnotationUtility())
+        ztapi.provideAdapter(Principal, IAnnotations,
+                             PrincipalAnnotations)
 
     def testRename(self):
         container = traverse(self.rootFolder, 'folder1')
