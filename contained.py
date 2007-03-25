@@ -29,7 +29,7 @@ from zope.exceptions.interfaces import DuplicationError, UserError
 from zope.security.checker import selectChecker, CombinedChecker
 from zope.lifecycleevent import ObjectModifiedEvent
 
-from zope.app.i18n import ZopeMessageFactory as _
+from zope.app.container.i18n import ZopeMessageFactory as _
 from zope.app.container.interfaces import IContained
 from zope.app.container.interfaces import INameChooser
 from zope.app.container.interfaces import IObjectAddedEvent

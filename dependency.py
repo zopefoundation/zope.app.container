@@ -22,7 +22,7 @@ __docformat__ = 'restructuredtext'
 
 from zope.app import zapi
 from zope.i18nmessageid import Message
-from zope.app.i18n import ZopeMessageFactory as _
+from zope.app.container.i18n import ZopeMessageFactory as _
 from zope.app.dependable.interfaces import IDependable, DependencyError
 
 exception_msg = _("""

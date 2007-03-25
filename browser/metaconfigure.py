@@ -27,7 +27,7 @@ from zope.app.publisher.browser.viewmeta import page, view
 from zope.app.container.browser.contents import Contents
 from zope.app.container.browser.adding import Adding
 from zope.app.component.back35 import LayerField
-from zope.app.i18n import ZopeMessageFactory as _
+from zope.app.container.i18n import ZopeMessageFactory as _
 
 
 class IContainerViews(Interface):

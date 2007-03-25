@@ -37,7 +37,7 @@ from zope.app.container.interfaces import IContainerNamesContainer
 from zope.app.container.constraints import checkFactory, checkObject
 
 from zope.app import zapi
-from zope.app.i18n import ZopeMessageFactory as _
+from zope.app.container.i18n import ZopeMessageFactory as _
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser.menu import getMenu
 

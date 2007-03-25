@@ -34,7 +34,7 @@ from zope.annotation.interfaces import IAnnotations
 
 from zope.app import zapi
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.app.i18n import ZopeMessageFactory as _
+from zope.app.container.i18n import ZopeMessageFactory as _
 
 from zope.app.container.browser.adding import Adding
 from zope.app.container.interfaces import IContainer, DuplicateIDError
