@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.5.3 (unreleased)
+3.5.3 (2007-11-09)
 ------------------
 
 - Send ``IObjectModifiedEvent`` when changing the title through the
