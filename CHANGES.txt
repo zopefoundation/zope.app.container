@@ -8,6 +8,10 @@ CHANGES
 - fixed #238579 / #163149: error with unicode traversing
 - fixed #221025 : adding menu is sorted with translated item
                   by using a collator (better localized sorting)
+- fixed #227617 :
+    - prevent the namechooser from failing on '+', '@' and '/'
+    - added tests in the namechooser
+    - be sure the name chooser returns unicode
 
 3.5.3 (2007-11-09)
 ------------------
