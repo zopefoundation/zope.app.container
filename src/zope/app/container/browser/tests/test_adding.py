@@ -224,7 +224,7 @@ def test_constraint_driven_addingInfo():
     ...                      'TestMenu')
 
     >>> defineMenuItem(TestMenu, IAdding, '', 'item1')
-    >>> defineMenuItem(TestMenu, IAdding, '', 'item2')
+    >>> defineMenuItem(TestMenu, IAdding, '', 'Item2')
 
     >>> defineMenuItem(AddMenu, IAdding, '', 'item3', extra={'factory': 'f1'})
     >>> defineMenuItem(AddMenu, IAdding, '', 'item4', extra={'factory': 'f2'})
@@ -263,18 +263,18 @@ def test_constraint_driven_addingInfo():
     >>> len(items)
     1
     >>> items[0]['title']
-    'item3'
+    u'item3'
 
     >>> adding.menu_id = 'TestMenu'
     >>> items = adding.addingInfo()
     >>> len(items)
     3
     >>> items[0]['title']
-    'item1'
-    >>> items[1]['title']
-    'item2'
+    u'item1'
+    >>> items[1]['title'] # the collator ordered this one correctly!
+    u'Item2'
     >>> items[2]['title']
-    'item3'
+    u'item3'
     """
 
 def test_constraint_driven_add():

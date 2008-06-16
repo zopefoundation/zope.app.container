@@ -22,6 +22,7 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 import zope.security.checker
+from zope.component import queryAdapter
 from zope.component.interfaces import IFactory
 from zope.event import notify
 from zope.interface import implements
@@ -40,7 +41,8 @@ from zope.app import zapi
 from zope.app.container.i18n import ZopeMessageFactory as _
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser.menu import getMenu
-
+from zope.i18n.interfaces.locales import ICollator
+from zope.i18n.locales.fallbackcollator import FallbackCollator
 
 class Adding(BrowserView):
     implements(IAdding, IPublishTraverse)
@@ -179,9 +181,16 @@ class Adding(BrowserView):
                             continue
                         elif item['extra']['factory'] != item['action']:
                             item['has_custom_add_view']=True
+                # translate here to have a localized sorting
+                item['title'] = zope.i18n.translate(item['title'],
+                                                    context=self.request)
                 result.append(item)
 
-        result.sort(lambda a, b: cmp(a['title'], b['title']))
+        # sort the adding info with a collator instead of a basic unicode sort
+        collator = queryAdapter(self.request.locale, ICollator)
+        if collator is None:
+            collator = FallbackCollator(self.request.locale)
+        result.sort(key = lambda x: collator.key(x['title']))
         return result
 
     def isSingleMenuItem(self):
