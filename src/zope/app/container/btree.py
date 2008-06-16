@@ -11,12 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""This module provides a sample container implementation.
-
-This is primarily for testing purposes.
-
-It might be useful as a mix-in for some classes, but many classes will
-need a very different implementation.
+"""This module provides a sample btree container implementation.
 
 $Id$
 """
@@ -25,22 +20,19 @@ __docformat__ = 'restructuredtext'
 from persistent import Persistent
 from BTrees.OOBTree import OOBTree
 from BTrees.Length import Length
-
-from zope.app.container.sample import SampleContainer
+from zope.interface import implements
+from zope.app.container.contained import Contained, setitem, uncontained
+from zope.app.container.interfaces import IContainer
 from zope.cachedescriptors.property import Lazy
 
-class BTreeContainer(SampleContainer, Persistent):
+class BTreeContainer(Contained, Persistent):
 
-    # implements(what my base classes implement)
-
-    # TODO: It appears that BTreeContainer uses SampleContainer only to
-    # get the implementation of __setitem__().  All the other methods
-    # provided by that base class are just slower replacements for
-    # operations on the BTree itself.  It would probably be clearer to
-    # just delegate those methods directly to the btree.
+    implements(IContainer)
 
     def __init__(self):
-        super(BTreeContainer, self).__init__()
+        # We keep the previous attribute to store the data
+        # for backward compatibility
+        self._SampleContainer__data = self._newContainerData()
         self.__len = Length()
 
     def _newContainerData(self):
@@ -50,14 +42,12 @@ class BTreeContainer(SampleContainer, Persistent):
 
         The value returned is a mapping object that also has get,
         has_key, keys, items, and values methods.
+        The default implementation uses an OOBTree.
         """
         return OOBTree()
 
     def __contains__(self, key):
         '''See interface IReadContainer
-
-        Reimplement this method, since has_key() returns the key if available,
-        while we expect True or False.
 
         >>> c = BTreeContainer()
         >>> "a" in c
@@ -72,29 +62,53 @@ class BTreeContainer(SampleContainer, Persistent):
 
     @Lazy
     def _BTreeContainer__len(self):
-        import logging
-        log = logging.getLogger('zope.app.container.btree')
         l=Length()
-        ol = super(BTreeContainer, self).__len__()
+        ol = len(self._SampleContainer__data)
         if ol>0:
             l.change(ol)
         self._p_changed=True
-        log.info("Storing length of %r" % self)
         return l
 
     def __len__(self):
         return self.__len()
 
-    def __setitem__(self, key, value):
+    def _setitemf(self, key, value):
         # make sure our lazy property gets set
         l = self.__len
-        super(BTreeContainer, self).__setitem__(key, value)
+        self._SampleContainer__data[key] = value
         l.change(1)
+
+    def __iter__(self):
+        return iter(self._SampleContainer__data)
+
+    def __getitem__(self, key):
+        '''See interface `IReadContainer`'''
+        return self._SampleContainer__data[key]
+
+    def get(self, key, default=None):
+        '''See interface `IReadContainer`'''
+        return self._SampleContainer__data.get(key, default)
+        
+    def __setitem__(self, key, value):
+        setitem(self, self._setitemf, key, value)
 
     def __delitem__(self, key):
         # make sure our lazy property gets set
         l = self.__len
-        super(BTreeContainer, self).__delitem__(key)
+        uncontained(self._SampleContainer__data[key], self, key)
+        del self._SampleContainer__data[key]
         l.change(-1)
 
     has_key = __contains__
+
+    def items(self):
+        '''See interface `IReadContainer`'''
+        return self._SampleContainer__data.items()
+
+    def keys(self):
+        '''See interface `IReadContainer`'''
+        return self._SampleContainer__data.keys()
+
+    def values(self):
+        '''See interface `IReadContainer`'''
+        return self._SampleContainer__data.values()

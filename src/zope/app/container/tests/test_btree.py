@@ -40,6 +40,17 @@ class TestBTreeLength(TestCase):
         self.assertEqual(len(bc), 1)
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 1)
 
+    def testCorrectLengthWhenAddingExistingItem(self):
+        """
+        for bug #175388
+        """
+        bc = BTreeContainer()
+        bc[u'x'] = object()
+        self.assertEqual(len(bc), 1)
+        bc[u'x'] = bc[u'x']
+        self.assertEqual(len(bc), 1)
+        self.assertEqual(list(bc), [u'x'])
+
 
 def test_suite():
     return TestSuite((
