@@ -16,10 +16,12 @@
 $Id$
 """
 from unittest import TestCase, main, makeSuite, TestSuite
+from zope.interface.verify import verifyObject
 from zope.testing.doctestunit import DocTestSuite
 from zope.app.testing import placelesssetup
 from test_icontainer import TestSampleContainer
 from zope.app.container.btree import BTreeContainer
+from zope.app.container.interfaces import IContainer
 
 class TestBTreeContainer(TestSampleContainer, TestCase):
 
@@ -40,6 +42,14 @@ class TestBTreeLength(TestCase):
         self.assertEqual(len(bc), 1)
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 1)
 
+    def testContainerInterface(self):
+        bc = BTreeContainer()
+        self.assert_(verifyObject(IContainer, bc))
+        self.checkIterable(bc.items())
+        self.checkIterable(bc.keys())
+        self.checkIterable(bc.values())
+
+
     def testCorrectLengthWhenAddingExistingItem(self):
         """
         for bug #175388
@@ -50,6 +60,19 @@ class TestBTreeLength(TestCase):
         bc[u'x'] = bc[u'x']
         self.assertEqual(len(bc), 1)
         self.assertEqual(list(bc), [u'x'])
+
+    def checkIterable(self, iterable):
+        it = iter(iterable)
+        self.assert_(callable(it.next))
+        self.assert_(callable(it.__iter__))
+        self.assert_(iter(it) is it)
+        # Exhaust the iterator:
+        first_time = list(it)
+        self.assertRaises(StopIteration, it.next)
+        # Subsequent iterations will return the same values:
+        self.assertEqual(list(iterable), first_time)
+        self.assertEqual(list(iterable), first_time)
+
 
 
 def test_suite():
