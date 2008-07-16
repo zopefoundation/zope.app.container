@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.5.4dev (unreleased)
+3.5.4 (2008-07-16)
 ---------------------
 
 - fixed #238579 / #163149: error with unicode traversing
