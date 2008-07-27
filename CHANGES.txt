@@ -2,8 +2,8 @@
 CHANGES
 =======
 
-3.5.5dev (unreleased)
----------------------
+3.5.5 (2008-07-27)
+------------------
 
 - Made C code compatible with Python 2.5 on 64bit architectures.
 
