@@ -7,6 +7,17 @@ CHANGES
 
 - Remove long-time deprecated IContentContainer class.
 
+- We now rely on a new package called ``zope.container``, which
+  contains the basic implementation of ``zope.container`` and is
+  intended to have less dependencies. We have gone through a wide
+  range of packages and updated their dependencies to point to
+  ``zope.container`` so that they will also have less indirect
+  dependencies.
+
+  For backwards compatibility we have left the original modules in
+  ``zope.app.container`` in place and have placed imports to make sure
+  the symbols exist in their original locations.
+
 3.6.2 (2008-10-21)
 ------------------
 
