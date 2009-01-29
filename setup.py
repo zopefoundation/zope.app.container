@@ -16,7 +16,7 @@
 $Id$
 """
 import os
-from setuptools import setup, find_packages, Extension
+from setuptools import setup, find_packages
 
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
@@ -28,11 +28,6 @@ setup(name='zope.app.container',
       description='Zope Container',
       long_description=(
           read('README.txt')
-          + '\n\n' +
-          'Detailed Documentation\n'
-          '**********************\n'
-          + '\n\n' +
-          read('src', 'zope', 'app', 'container', 'constraints.txt')
           + '\n\n' +
           read('CHANGES.txt')
           ),
@@ -52,11 +47,6 @@ setup(name='zope.app.container',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
       namespace_packages=['zope', 'zope.app'],
-      ext_modules=[Extension("zope.app.container._zope_app_container_contained",
-                             [os.path.join("src", "zope", "app", "container",
-                                           "_zope_app_container_contained.c")
-                              ], include_dirs=['include']),
-                   ],
 
       extras_require=dict(test=['zope.app.testing',
                                 'zope.app.securitypolicy',
@@ -64,9 +54,7 @@ setup(name='zope.app.container',
                                 'zope.app.file']),
       install_requires=['setuptools',
                         'zope.interface',
-                        'zope.app.publisher',
-                        'zope.cachedescriptors',
-                        'zope.dottedname',
+                        'zope.container',
                         'zope.schema',
                         'zope.component',
                         'zope.event',
@@ -74,17 +62,15 @@ setup(name='zope.app.container',
                         'zope.exceptions',
                         'zope.security',
                         'zope.lifecycleevent',
+                        'zope.i18n',
                         'zope.i18nmessageid',
-                        'zope.filerepresentation',
                         'zope.size',
                         'zope.traversing',
                         'zope.publisher',
                         'zope.dublincore',
-                        'zope.app.broken',
                         'zope.copypastemove',
-                        'ZODB3',
-                        'zope.i18n',
                         ],
       include_package_data = True,
       zip_safe = False,
       )
+
