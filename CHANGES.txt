@@ -2,10 +2,12 @@
 CHANGES
 =======
 
-3.7.1. (unreleased)
+3.7.1. (2009-02-05)
 -------------------
 
-- ...
+- Updated test to accomodate "Pythonic" exception now raised from
+  ``__setitem__`` provided by ``zope.container`` (``KeyError`` instead
+  of ``zope.exceptions.UserError``).
 
 3.7.0 (2009-01-31)
 ------------------
