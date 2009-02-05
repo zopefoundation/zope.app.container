@@ -2,7 +2,12 @@
 CHANGES
 =======
 
-3.7.1. (2009-02-05)
+3.7.2 (unreleased)
+------------------
+
+- ...
+
+3.7.1 (2009-02-05)
 -------------------
 
 - Updated test to accomodate "Pythonic" exception now raised from
