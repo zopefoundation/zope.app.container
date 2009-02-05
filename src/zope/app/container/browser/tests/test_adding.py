@@ -162,7 +162,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         self.assertRaises(UserError, adding.action, id='bar')
 
         # missing id
-        self.assertRaises(UserError, adding.action, type_name='foo')
+        self.assertRaises(KeyError, adding.action, type_name='foo')
 
         # bad type_name
         self.assertRaises(ComponentLookupError, adding.action,
