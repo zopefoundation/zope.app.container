@@ -8,6 +8,8 @@ CHANGES
 - Show a "nothing to add" message instead of empty list in the
   adding view, if there's nothing to add.
 
+- Don't show the "Add" menu item if there's nothing to add.
+
 3.7.1 (2009-02-05)
 -------------------
 

@@ -19,11 +19,13 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.interface import Interface
+from zope.component import queryMultiAdapter
 from zope.configuration.fields import GlobalObject, GlobalInterface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.schema import Id
 from zope.security.zcml import Permission
 from zope.app.publisher.browser.viewmeta import page, view
+from zope.app.publisher.browser.menumeta import menuItemDirective
 from zope.app.container.browser.contents import Contents
 from zope.app.container.browser.adding import Adding
 from zope.app.container.i18n import ZopeMessageFactory as _
@@ -80,9 +82,21 @@ def containerViews(_context, for_, contents=None, add=None, index=None,
 
     if add is not None:
         from zope.app.menus import zmi_actions
-        viewObj = view(_context, name='+', layer=layer, menu=zmi_actions,
-                       title=_('Add'), for_=for_, permission=add,
-                       class_=Adding)
+        viewObj = view(_context, name='+', layer=layer, for_=for_,
+                       permission=add, class_=Adding)
+        menuItemDirective(
+            _context, zmi_actions, for_, '+', _('Add'), permission=add, layer=layer,
+            filter='python:modules["zope.app.container.browser.metaconfigure"].menuFilter(context, request)')
         viewObj.page(_context, name='index.html', attribute='index')
         viewObj.page(_context, name='action.html', attribute='action')
         viewObj()
+
+def menuFilter(context, request):
+    '''This is a function that filters the "Add" menu item'''
+    adding = queryMultiAdapter((context, request), name="+")
+    if adding is None:
+        adding = Adding(context, request)
+    adding.__parent__ = context
+    adding.__name__ = '+'
+    info = adding.addingInfo()
+    return bool(info)
