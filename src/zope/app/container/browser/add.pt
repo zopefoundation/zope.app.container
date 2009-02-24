@@ -1,9 +1,13 @@
 <html metal:use-macro="context/@@standard_macros/addingdialog"
     i18n:domain="zope">
 <body>
-<div metal:fill-slot="body">
+<div metal:fill-slot="body" tal:define="infos view/addingInfo">
 
-  <form method="post" action="action.html">
+  <p tal:condition="not:infos" i18n:translate="">
+    There are no addable content types for this container.
+  </p>
+
+  <form method="post" action="action.html" tal:condition="infos">
     <table class="TypeListing" cellpadding="3">
 
       <tal:block define="title view/title | nothing">
@@ -13,7 +17,7 @@
              i18n:translate="">Add Content</caption>
       </tal:block>
 
-      <tbody tal:define="infos view/addingInfo">
+      <tbody>
 
         <tr tal:repeat="info infos">
 

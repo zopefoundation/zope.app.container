@@ -5,7 +5,8 @@ CHANGES
 3.7.2 (unreleased)
 ------------------
 
-- ...
+- Show a "nothing to add" message instead of empty list in the
+  adding view, if there's nothing to add.
 
 3.7.1 (2009-02-05)
 -------------------
