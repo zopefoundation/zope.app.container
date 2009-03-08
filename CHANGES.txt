@@ -10,6 +10,10 @@ CHANGES
 
 - Don't show the "Add" menu item if there's nothing to add.
 
+- Adapt to the removal of deprecated interfaces from
+  zope.component.interfaces. Now IAdding inherits from
+  zope.publisher.interfaces.browser.IBrowserView.
+
 3.7.1 (2009-02-05)
 -------------------
 

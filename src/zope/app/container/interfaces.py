@@ -45,11 +45,11 @@ from zope.container.interfaces import (
     IIdFindFilter
 )
 
-import zope.component.interfaces
+import zope.publisher.interfaces.browser
 import zope.interface
 
 
-class IAdding(zope.component.interfaces.IView):
+class IAdding(zope.publisher.interfaces.browser.IBrowserView):
     def add(content):
         """Add content object to container.
 
