@@ -22,7 +22,7 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 setup(name='zope.app.container',
-      version = '3.7.3dev',
+      version = '3.8.0dev',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -53,6 +53,7 @@ setup(name='zope.app.container',
                                 'zope.app.zcmlfiles',
                                 'zope.app.file']),
       install_requires=['setuptools',
+                        'zope.browser',
                         'zope.component',
                         'zope.container',
                         'zope.copypastemove',

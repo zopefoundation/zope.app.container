@@ -2,10 +2,11 @@
 CHANGES
 =======
 
-3.7.3 (unreleased)
+3.8.0 (unreleased)
 ------------------
 
-- ...
+- Moved ``IAdding`` interface to ``zope.browser.interfaces``, leaving
+  BBB imports.
 
 3.7.2 (2009-03-12)
 ------------------
@@ -16,8 +17,8 @@ CHANGES
 - Don't show the "Add" menu item if there's nothing to add.
 
 - Adapt to the removal of deprecated interfaces from
-  zope.component.interfaces. Now IAdding inherits from
-  zope.publisher.interfaces.browser.IBrowserView.
+  ``zope.component.interfaces``. Now ``IAdding`` inherits from
+  ``zope.publisher.interfaces.browser.IBrowserView``.
 
 3.7.1 (2009-02-05)
 -------------------
@@ -29,7 +30,7 @@ CHANGES
 3.7.0 (2009-01-31)
 ------------------
 
-- Remove long-time deprecated IContentContainer class.
+- Remove long-time deprecated ``IContentContainer`` class.
 
 - We now rely on a new package called ``zope.container``, which
   contains the basic implementation of ``zope.container`` and is
@@ -50,14 +51,14 @@ CHANGES
 3.6.1 (2008-10-15)
 ------------------
 
-- Reimplemented the BTreeContainer so that it directly accesses the btree
+- Reimplemented the ``BTreeContainer`` so that it directly accesses the btree
   methods (removed an old #TODO)
 
-- Removed usage of deprecated LayerField.
+- Removed usage of deprecated ``LayerField``.
 
 - Made C code compatible with Python 2.5 on 64bit architectures.
 
-- Fixed bug: Error thrown during __setitem__ for an ordered container
+- Fixed bug: Error thrown during ``__setitem__`` for an ordered container
   leaves bad key in order
 
 - Fixed https://bugs.launchpad.net/zope3/+bug/238579,
