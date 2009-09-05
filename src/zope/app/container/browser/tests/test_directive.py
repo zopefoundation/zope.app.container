@@ -52,7 +52,7 @@ class ITestLayer(IBrowserRequest):
 
 def test_containerViews():
     """
-    >>> from zope.app.publisher.browser.menumeta import menus
+    >>> from zope.browsermenu.metaconfigure import menus
     >>> from zope.interface.interface import InterfaceClass
     >>> zmi_views = InterfaceClass('zmi_views', __module__='zope.app.menus')
     >>> menus.zmi_views = zmi_views
@@ -70,7 +70,7 @@ def test_containerViews():
        u'Contents'),
       <function handler>,
       ('registerAdapter',
-       <zope.app.publisher.browser.menumeta.MenuItemFactory object>,
+       <zope.browsermenu.metaconfigure.MenuItemFactory object>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
        <InterfaceClass zope.app.menus.zmi_views>,
@@ -98,7 +98,7 @@ def test_containerViews():
        <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
       <function handler>,
       ('registerAdapter',
-       <class 'zope.app.publisher.browser.viewmeta.Contents'>,
+       <class 'zope.browserpage.metaconfigure.Contents'>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
        <InterfaceClass zope.interface.Interface>,
@@ -115,7 +115,7 @@ def test_containerViews():
        <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
       <function handler>,
       ('registerAdapter',
-       <class 'zope.app.publisher.browser.viewmeta.Contents'>,
+       <class 'zope.browserpage.metaconfigure.Contents'>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
        <InterfaceClass zope.interface.Interface>,
@@ -128,7 +128,7 @@ def test_containerViews():
        u'Add'),
       <function handler>,
       ('registerAdapter',
-       <zope.app.publisher.browser.menumeta.MenuItemFactory object>,
+       <zope.browsermenu.metaconfigure.MenuItemFactory object>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
        <InterfaceClass zope.app.menus.zmi_actions>,
@@ -159,7 +159,7 @@ def test_containerViews():
        <InterfaceClass zope.interface.Interface>),
       <function handler>,
       ('registerAdapter',
-       <class 'zope.app.publisher.browser.viewmeta.+'>,
+       <class 'zope.browserpage.metaconfigure.+'>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
        <InterfaceClass zope.interface.Interface>,
@@ -169,7 +169,7 @@ def test_containerViews():
 
 def test_containerViews_layer():
     """
-    >>> from zope.app.publisher.browser.menumeta import menus
+    >>> from zope.browsermenu.metaconfigure import menus
     >>> from zope.interface.interface import InterfaceClass
     >>> zmi_views = InterfaceClass('zmi_views', __module__='zope.app.menus')
     >>> menus.zmi_views = zmi_views
@@ -187,7 +187,7 @@ def test_containerViews_layer():
        u'Contents'),
       <function handler>,
       ('registerAdapter',
-       <zope.app.publisher.browser.menumeta.MenuItemFactory object>,
+       <zope.browsermenu.metaconfigure.MenuItemFactory object>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
        <InterfaceClass zope.app.menus.zmi_views>,
@@ -215,7 +215,7 @@ def test_containerViews_layer():
        <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
       <function handler>,
       ('registerAdapter',
-       <class 'zope.app.publisher.browser.viewmeta.Contents'>,
+       <class 'zope.browserpage.metaconfigure.Contents'>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
        <InterfaceClass zope.interface.Interface>,
@@ -232,7 +232,7 @@ def test_containerViews_layer():
        <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
       <function handler>,
       ('registerAdapter',
-       <class 'zope.app.publisher.browser.viewmeta.Contents'>,
+       <class 'zope.browserpage.metaconfigure.Contents'>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
        <InterfaceClass zope.interface.Interface>,
@@ -245,7 +245,7 @@ def test_containerViews_layer():
        u'Add'),
       <function handler>,
       ('registerAdapter',
-       <zope.app.publisher.browser.menumeta.MenuItemFactory object>,
+       <zope.browsermenu.metaconfigure.MenuItemFactory object>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
        <InterfaceClass zope.app.menus.zmi_actions>,
@@ -276,7 +276,7 @@ def test_containerViews_layer():
        <InterfaceClass zope.interface.Interface>),
       <function handler>,
       ('registerAdapter',
-       <class 'zope.app.publisher.browser.viewmeta.+'>,
+       <class 'zope.browserpage.metaconfigure.+'>,
        (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
         <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
        <InterfaceClass zope.interface.Interface>,
