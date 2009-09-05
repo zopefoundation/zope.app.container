@@ -5,7 +5,8 @@ CHANGES
 3.8.1 (unreleased)
 ------------------
 
-- TBD
+- Fixed test_directive. Some parts of zope.app.publisher were moved
+  to zope.browsermenu and zope.browserpage.
 
 3.8.0 (2009-05-13)
 ------------------
