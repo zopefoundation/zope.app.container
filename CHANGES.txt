@@ -7,7 +7,14 @@ CHANGES
 
 - Fixed test_directive. Some parts of zope.app.publisher were moved
   to zope.browsermenu and zope.browserpage.
+
 - Moved tests/test_view_permissions.py to browser/tests.
+
+- Added undeclared install dependency on ``zope.app.publisher``.
+
+- Test no longer use deprecated ``zope.testing.doctestunit`` but
+  python's ``doctest`` instead.
+
 
 3.8.0 (2009-05-13)
 ------------------

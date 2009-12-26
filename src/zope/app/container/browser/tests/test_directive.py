@@ -15,14 +15,14 @@
 
 $Id$
 """
-import re
-import pprint
 import cStringIO
-
+import doctest
+import pprint
+import re
 import unittest
+
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
-from zope.testing.doctestunit import DocTestSuite
 from zope.app.container.browser.metaconfigure import containerViews
 
 atre = re.compile(' at [0-9a-fA-Fx]+')
@@ -30,7 +30,7 @@ atre = re.compile(' at [0-9a-fA-Fx]+')
 class Context(object):
     actions = ()
     info = ''
-    
+
     def action(self, discriminator, callable, args):
         self.actions += ((discriminator, callable, args), )
         self.info = 'info'
@@ -286,9 +286,4 @@ def test_containerViews_layer():
 
 
 def test_suite():
-    return unittest.TestSuite((
-        DocTestSuite(),
-        ))
-
-if __name__ == '__main__':
-    unittest.main()
+    return doctest.DocTestSuite()

@@ -15,6 +15,7 @@
 
 $Id$
 """
+import doctest
 import unittest
 
 import zope.interface
@@ -26,7 +27,6 @@ from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.browser import BrowserView
 from zope.security.interfaces import ForbiddenAttribute
-from zope.testing.doctestunit import DocTestSuite
 from zope.exceptions.interfaces import UserError
 from zope.traversing.api import getParent
 from zope.traversing.browser import AbsoluteURL
@@ -579,7 +579,7 @@ def test_isSingleMenuItem_with_ICNC():
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(Test),
-        DocTestSuite(setUp=setUp, tearDown=tearDown),
+        doctest.DocTestSuite(setUp=setUp, tearDown=tearDown),
         ))
 
 if __name__=='__main__':
