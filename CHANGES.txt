@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.8.1 (unreleased)
+3.8.1 (2009-12-26)
 ------------------
 
 - Fixed test_directive. Some parts of zope.app.publisher were moved
