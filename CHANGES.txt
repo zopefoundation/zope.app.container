@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.8.2 (unreleased)
+3.8.2 (2010-01-08)
 ------------------
 
 - Fix tests using a newer zope.publisher that requires zope.login.
