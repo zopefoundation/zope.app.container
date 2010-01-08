@@ -5,8 +5,7 @@ CHANGES
 3.8.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix tests using a newer zope.publisher that requires zope.login.
 
 3.8.1 (2009-12-26)
 ------------------
