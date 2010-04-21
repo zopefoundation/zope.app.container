@@ -5,7 +5,8 @@ CHANGES
 3.8.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Updated ``ftesting.zcml`` to use the permission names now exported by
+  ``zope.dublincore``.
 
 
 3.8.2 (2010-01-08)

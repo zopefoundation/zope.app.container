@@ -27,7 +27,7 @@
   <!-- Replace the following directive if you don't want public access -->
   <grant permission="zope.View"
                   role="zope.Anonymous" />
-  <grant permission="zope.app.dublincore.view"
+  <grant permission="zope.dublincore.view"
                   role="zope.Anonymous" />
 
   <grantAll role="zope.Manager" />
