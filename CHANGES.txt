@@ -2,6 +2,13 @@
 CHANGES
 =======
 
+3.6.3 (unreleased)
+------------------
+
+- never fail if the suggested name is in a wrong type (#227617)
+
+- checkName first checks the parameter type before the emptiness
+
 3.6.2 (2008-10-21)
 ------------------
 

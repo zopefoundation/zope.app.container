@@ -714,46 +714,43 @@ class NameChooser(object):
         >>> container['foo'] = 'bar'
         >>> from zope.app.container.contained import NameChooser
 
-        All these names are invalid:
+        An invalid name raises a UserError:
 
         >>> NameChooser(container).checkName('+foo', object())
         Traceback (most recent call last):
         ...
         UserError: Names cannot begin with '+' or '@' or contain '/'
-        >>> NameChooser(container).checkName('@foo', object())
-        Traceback (most recent call last):
-        ...
-        UserError: Names cannot begin with '+' or '@' or contain '/'
-        >>> NameChooser(container).checkName('f/oo', object())
-        Traceback (most recent call last):
-        ...
-        UserError: Names cannot begin with '+' or '@' or contain '/'
+
+        A name that already exists raises a UserError:
+
         >>> NameChooser(container).checkName('foo', object())
         Traceback (most recent call last):
         ...
         UserError: The given name is already being used
+
+        A name must be a string or unicode string:
+
         >>> NameChooser(container).checkName(2, object())
         Traceback (most recent call last):
         ...
         TypeError: ('Invalid name type', <type 'int'>)
 
-        This one is ok:
+        A correct name returns True:
 
         >>> NameChooser(container).checkName('2', object())
         True
 
-
         """
-
-        if not name:
-            raise UserError(
-                _("An empty name was provided. Names cannot be empty.")
-                )
 
         if isinstance(name, str):
             name = unicode(name)
         elif not isinstance(name, unicode):
             raise TypeError("Invalid name type", type(name))
+
+        if not name:
+            raise UserError(
+                _("An empty name was provided. Names cannot be empty.")
+                )
 
         if name[:1] in '+@' or '/' in name:
             raise UserError(
@@ -772,40 +769,57 @@ class NameChooser(object):
         """See zope.app.container.interfaces.INameChooser
 
         The name chooser is expected to choose a name without error
-        
+
         We create and populate a dummy container
 
         >>> from zope.app.container.sample import SampleContainer
         >>> container = SampleContainer()
-        >>> container['foo.old.rst'] = 'rst doc'
+        >>> container['foobar.old'] = 'rst doc'
 
         >>> from zope.app.container.contained import NameChooser
-        >>> NameChooser(container).chooseName('+@+@foo.old.rst', object())
-        u'foo.old-2.rst'
-        >>> NameChooser(container).chooseName('+@+@foo/foo', object())
+
+        the suggested name is converted to unicode:
+
+        >>> NameChooser(container).chooseName('foobar', object())
+        u'foobar'
+
+        If it already exists, a number is appended but keeps the same extension:
+
+        >>> NameChooser(container).chooseName('foobar.old', object())
+        u'foobar-2.old'
+
+        Bad characters are turned into dashes:
+
+        >>> NameChooser(container).chooseName('foo/foo', object())
         u'foo-foo'
-        >>> NameChooser(container).chooseName('', object())
-        u'object'
-        >>> NameChooser(container).chooseName('@+@', object())
-        u'object'
+
+        If no name is suggested, it is based on the object type:
+
+        >>> NameChooser(container).chooseName('', [])
+        u'list'
 
         """
 
         container = self.context
 
-        # remove characters that checkName does not allow
-        name = unicode(name.replace('/', '-').lstrip('+@'))
+        # convert to unicode and remove characters that checkName does not allow
+        try:
+            name = unicode(name)
+        except:
+            name = u''
+        name = name.replace('/', '-').lstrip('+@')
 
         if not name:
             name = unicode(object.__class__.__name__)
-        
+
+        # for an existing name, append a number.
+        # We should keep client's os.path.extsep (not ours), we assume it's '.'
         dot = name.rfind('.')
         if dot >= 0:
             suffix = name[dot:]
             name = name[:dot]
         else:
             suffix = ''
-
 
         n = name + suffix
         i = 1
