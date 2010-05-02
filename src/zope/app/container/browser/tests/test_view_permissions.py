@@ -79,6 +79,8 @@ class Tests(BrowserTestCase):
 
         # deny zope.app.dublincore.view to zope.Anonymous
         prm = IRolePermissionManager(self.getRootFolder())
+        prm.denyPermissionToRole('zope.dublincore.view', 'zope.Anonymous')
+        # Try both spellings just in case we are used with an older zope.dc
         prm.denyPermissionToRole('zope.app.dublincore.view', 'zope.Anonymous')
         transaction.commit()
 
