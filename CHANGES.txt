@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.8.3 (unreleased)
+3.9.0 (2010-08-19)
 ------------------
 
 - Updated ``ftesting.zcml`` to use the new permission names exported by
