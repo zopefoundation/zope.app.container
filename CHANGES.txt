@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.9.1 (unreleased)
+3.9.1 (2010-09-14)
 ------------------
 
 - Removed a testing dependency on zope.app.file.
