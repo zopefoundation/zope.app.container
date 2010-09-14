@@ -78,9 +78,10 @@ class Test(BrowserTestCase):
     def test_inplace_add(self):
         root = self.getRootFolder()
         self.assert_('foo' not in root)
-        response = self.publish('/@@contents.html',
-                                basic='mgr:mgrpw',
-                                form={'type_name': u'zope.app.content.File'})
+        response = self.publish(
+            '/@@contents.html',
+            basic='mgr:mgrpw',
+            form={'type_name': u'BrowserAdd__zope.site.folder.Folder'})
         body = ' '.join(response.getBody().split())
         self.assert_(body.find('type="hidden" name="type_name"') >= 0)
         self.assert_(body.find('input name="new_value"') >= 0)
@@ -89,10 +90,11 @@ class Test(BrowserTestCase):
         self.assert_(body.find('type="submit" name="container_rename_button"')
                      < 0)
 
-        response = self.publish('/@@contents.html',
-                                basic='mgr:mgrpw',
-                                form={'type_name': u'zope.app.content.File',
-                                      'new_value': 'foo'})
+        response = self.publish(
+            '/@@contents.html',
+            basic='mgr:mgrpw',
+            form={'type_name': u'BrowserAdd__zope.site.folder.Folder',
+                  'new_value': 'foo'})
         self.assertEqual(response.getStatus(), 302)
         self.assertEqual(response.getHeader('Location'),
                          'http://localhost/@@contents.html')

@@ -9,7 +9,6 @@
 
   <include package="zope.app.zcmlfiles" />
   <include package="zope.app.container.browser.tests" />
-  <include package="zope.app.file"/>
   <include package="zope.app.authentication" />
 
   <include package="zope.securitypolicy" file="meta.zcml" />

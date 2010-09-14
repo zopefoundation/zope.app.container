@@ -18,27 +18,28 @@ $Id$
 import unittest
 import transaction
 
+from zope.annotation.interfaces import IAttributeAnnotatable
+from zope.interface import alsoProvides
 from zope.security.interfaces import Unauthorized
 
 from zope.app.testing.functional import BrowserTestCase
-from zope.app.file import File
+from zope.container.ordered import OrderedContainer
 from zope.dublincore.interfaces import IZopeDublinCore
 from zope.securitypolicy.interfaces import IRolePermissionManager
 from zope.app.container.testing import AppContainerLayer
+
 
 class Tests(BrowserTestCase):
 
     def test_default_view_permissions(self):
         """Tests the default view permissions.
-
-        See zope/app/securitypolicy/configure.zcml for the grants of
-        zope.View and zope.app.dublincore.view to zope.Anonymous. These
-        ensure that, by default, anonymous users can view container contents.
         """
         # add an item that can be viewed from the root folder
-        file = File()
-        self.getRootFolder()['file'] = file
-        IZopeDublinCore(file).title = u'My File'
+        obj = OrderedContainer()
+        alsoProvides(obj, IAttributeAnnotatable)
+
+        self.getRootFolder()['obj'] = obj
+        IZopeDublinCore(obj).title = u'My object'
         transaction.commit()
 
         response = self.publish('/')
@@ -46,10 +47,10 @@ class Tests(BrowserTestCase):
         body = response.getBody()
 
         # confirm we can see the file name
-        self.assert_(body.find('<a href="file">file</a>') != -1)
+        self.assert_(body.find('<a href="obj">obj</a>') != -1)
 
         # confirm we can see the metadata title
-        self.assert_(body.find('<td><span>My File</span></td>') != -1)
+        self.assert_(body.find('<td><span>My object</span></td>') != -1)
 
     def test_deny_view(self):
         """Tests the denial of view permissions to anonymous.
@@ -73,9 +74,11 @@ class Tests(BrowserTestCase):
         title, modified, and created info.
         """
         # add an item that can be viewed from the root folder
-        file = File()
-        self.getRootFolder()['file'] = file
-        IZopeDublinCore(file).title = u'My File'
+        obj = OrderedContainer()
+        alsoProvides(obj, IAttributeAnnotatable)
+
+        self.getRootFolder()['obj'] = obj
+        IZopeDublinCore(obj).title = u'My object'
 
         # deny zope.app.dublincore.view to zope.Anonymous
         prm = IRolePermissionManager(self.getRootFolder())
@@ -89,10 +92,10 @@ class Tests(BrowserTestCase):
         body = response.getBody()
 
         # confirm we can see the file name
-        self.assert_(body.find('<a href="file">file</a>') != -1)
+        self.assert_(body.find('<a href="obj">obj</a>') != -1)
 
         # confirm we *cannot* see the metadata title
-        self.assert_(body.find('My File') == -1)
+        self.assert_(body.find('My object') == -1)
 
 
 def test_suite():

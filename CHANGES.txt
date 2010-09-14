@@ -5,6 +5,8 @@ CHANGES
 3.9.1 (unreleased)
 ------------------
 
+- Removed a testing dependency on zope.app.file.
+
 - Replaced a testing dependency on zope.app.securitypolicy with one on the base
   zope.securitypolicy distribution.
 
