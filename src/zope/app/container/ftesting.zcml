@@ -9,7 +9,7 @@
 
   <include package="zope.app.zcmlfiles" />
   <include package="zope.app.container.browser.tests" />
-  <include package="zope.app.authentication" />
+  <include package="zope.password" />
 
   <include package="zope.securitypolicy" file="meta.zcml" />
   <include package="zope.securitypolicy" />
