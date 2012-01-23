@@ -2,13 +2,13 @@
 CHANGES
 =======
 
-3.9.2 (unreleased)
+3.9.2 (2012-01-23)
 ------------------
 
-- Replaced an undeclared test dependency on zope.app.authentication with
-  zope.password.
+- Replaced an undeclared test dependency on ``zope.app.authentication`` with
+  ``zope.password``.
 
-- Removed undeclared test dependency on zope.app.folder.
+- Removed undeclared test dependency on ``zope.app.folder``.
 
 - Replaced the use of ``zope.app.pagetemplate`` and deprecated
   ``zope.app.publisher`` with ``zope.browserpage`` and ``zope.browsermenu``.
@@ -17,10 +17,10 @@ CHANGES
 3.9.1 (2010-09-14)
 ------------------
 
-- Removed a testing dependency on zope.app.file.
+- Removed a testing dependency on ``zope.app.file``.
 
-- Replaced a testing dependency on zope.app.securitypolicy with one on the base
-  zope.securitypolicy distribution.
+- Replaced a testing dependency on ``zope.app.securitypolicy`` with the base
+  ``zope.securitypolicy`` distribution.
 
 
 3.9.0 (2010-08-19)
