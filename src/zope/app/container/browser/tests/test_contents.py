@@ -356,7 +356,7 @@ class Test(BaseTestContentsBrowserView, TestCase):
 
     def _TestView__newContext(self):
         from zope.app.container.sample import SampleContainer
-        from zope.app.folder import rootFolder
+        from zope.site.folder import rootFolder
         root = rootFolder()
         container = SampleContainer()
         return contained(container, root, 'sample')

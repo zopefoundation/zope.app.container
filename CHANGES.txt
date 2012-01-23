@@ -8,6 +8,8 @@ CHANGES
 - Replaced an undeclared test dependency on zope.app.authentication with
   zope.password.
 
+- Removed undeclared test dependency on zope.app.folder.
+
 
 3.9.1 (2010-09-14)
 ------------------
