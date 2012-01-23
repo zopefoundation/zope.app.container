@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """View Class for the Container's Contents view.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

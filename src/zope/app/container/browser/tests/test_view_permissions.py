@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Container View Permissions Tests
-
-$Id$
 """
 import unittest
 import transaction

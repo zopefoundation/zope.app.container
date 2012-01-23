@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Unit test logic for setting up and tearing down basic infrastructure
-
-$Id$
 """
 from zope.app.testing import ztapi
 from zope.app.container.interfaces import IWriteContainer, INameChooser

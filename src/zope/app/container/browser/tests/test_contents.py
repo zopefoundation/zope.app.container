@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Test Container Contents
-
-$Id$
 """
 from unittest import TestCase, TestSuite, main, makeSuite
 

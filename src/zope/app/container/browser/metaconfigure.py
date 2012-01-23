@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Container-specific browser ZCML namespace directive handlers
-
-$Id$
 """
 
 __docformat__ = 'restructuredtext'
@@ -22,7 +20,6 @@ from zope.interface import Interface
 from zope.component import queryMultiAdapter
 from zope.configuration.fields import GlobalObject, GlobalInterface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope.schema import Id
 from zope.security.zcml import Permission
 from zope.app.publisher.browser.viewmeta import page, view
 from zope.app.publisher.browser.menumeta import menuItemDirective

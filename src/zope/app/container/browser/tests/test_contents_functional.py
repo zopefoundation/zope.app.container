@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Functional tests for the Container's 'Contents' view
-
-$Id$
 """
 
 import unittest

@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """'containerView' directive test
-
-$Id$
 """
 import cStringIO
 import doctest

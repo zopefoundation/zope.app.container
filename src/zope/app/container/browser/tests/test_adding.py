@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Adding implementation tests
-
-$Id$
 """
 import doctest
 import unittest
