@@ -26,8 +26,8 @@ from zope.app.container.i18n import ZopeMessageFactory as _
 from zope.app.container.interfaces import IAdding
 from zope.app.container.interfaces import IContainerNamesContainer
 from zope.app.container.interfaces import INameChooser
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.app.publisher.browser.menu import getMenu
+from zope.browsermenu.menu import getMenu
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryAdapter

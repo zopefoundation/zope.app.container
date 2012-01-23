@@ -25,6 +25,7 @@ from zope.security import canWrite
 from zope.size.interfaces import ISized
 from zope.traversing.interfaces import TraversalError
 from zope.publisher.browser import BrowserView
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.dublincore.interfaces import IZopeDublinCore
 from zope.dublincore.interfaces import IDCDescriptiveProperties
 from zope.copypastemove.interfaces import IPrincipalClipboard
@@ -34,9 +35,7 @@ from zope.annotation.interfaces import IAnnotations
 from zope.lifecycleevent import ObjectModifiedEvent, Attributes
 from zope.traversing.api import getName, getPath, joinPath, traverse
 
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.container.i18n import ZopeMessageFactory as _
-
 from zope.app.container.browser.adding import Adding
 from zope.app.container.interfaces import IContainer, DuplicateIDError
 from zope.app.container.interfaces import IContainerNamesContainer

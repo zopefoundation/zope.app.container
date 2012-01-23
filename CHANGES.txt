@@ -10,6 +10,9 @@ CHANGES
 
 - Removed undeclared test dependency on zope.app.folder.
 
+- Replaced the use of ``zope.app.pagetemplate`` and deprecated
+  ``zope.app.publisher`` with ``zope.browserpage`` and ``zope.browsermenu``.
+
 
 3.9.1 (2010-09-14)
 ------------------

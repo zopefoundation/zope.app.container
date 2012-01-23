@@ -21,8 +21,8 @@ from zope.component import queryMultiAdapter
 from zope.configuration.fields import GlobalObject, GlobalInterface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.security.zcml import Permission
-from zope.app.publisher.browser.viewmeta import page, view
-from zope.app.publisher.browser.menumeta import menuItemDirective
+from zope.browserpage.metaconfigure import page, view
+from zope.browsermenu.metaconfigure import menuItemDirective
 from zope.app.container.browser.contents import Contents
 from zope.app.container.browser.adding import Adding
 from zope.app.container.i18n import ZopeMessageFactory as _
