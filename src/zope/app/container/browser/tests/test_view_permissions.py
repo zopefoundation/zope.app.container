@@ -20,12 +20,12 @@ from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.interface import alsoProvides
 from zope.security.interfaces import Unauthorized
 
-from zope.app.testing.functional import BrowserTestCase
+
 from zope.container.ordered import OrderedContainer
 from zope.dublincore.interfaces import IZopeDublinCore
 from zope.securitypolicy.interfaces import IRolePermissionManager
 from zope.app.container.testing import AppContainerLayer
-
+from zope.app.container.browser.tests import BrowserTestCase
 
 class Tests(BrowserTestCase):
 
@@ -41,14 +41,14 @@ class Tests(BrowserTestCase):
         transaction.commit()
 
         response = self.publish('/')
-        self.assertEquals(response.getStatus(), 200)
-        body = response.getBody()
+        self.assertEquals(response.status_int, 200)
+        body = response.text
 
         # confirm we can see the file name
-        self.assert_(body.find('<a href="obj">obj</a>') != -1)
+        self.assertIn('<a href="obj">obj</a>', body)
 
         # confirm we can see the metadata title
-        self.assert_(body.find('<td><span>My object</span></td>') != -1)
+        self.assertIn('<td><span>My object</span></td>', body)
 
     def test_deny_view(self):
         """Tests the denial of view permissions to anonymous.
@@ -86,14 +86,14 @@ class Tests(BrowserTestCase):
         transaction.commit()
 
         response = self.publish('/')
-        self.assertEquals(response.getStatus(), 200)
-        body = response.getBody()
+        self.assertEquals(response.status_int, 200)
+        body = response.text
 
         # confirm we can see the file name
-        self.assert_(body.find('<a href="obj">obj</a>') != -1)
+        self.assertIn('<a href="obj">obj</a>', body)
 
         # confirm we *cannot* see the metadata title
-        self.assert_(body.find('My object') == -1)
+        self.assertNotIn('My object', body)
 
 
 def test_suite():

@@ -1,5 +1,6 @@
 include *.py
 include *.txt
+include *.rst
 include buildout.cfg
 recursive-include src *.pt
 recursive-include src *.txt

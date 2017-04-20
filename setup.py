@@ -13,70 +13,99 @@
 ##############################################################################
 """Setup for zope.app.container package
 
-$Id$
 """
 import os
 from setuptools import setup, find_packages
 
 def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
+        return f.read()
+
+version = '4.0.0.dev0'
 
 setup(name='zope.app.container',
-      version='3.9.2',
+      version=version,
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
       long_description=(
-          read('README.txt')
+          read('README.rst')
           + '\n\n' +
-          read('CHANGES.txt')
+          read('CHANGES.rst')
           ),
-      keywords = "zope3 container",
-      classifiers = [
+      keywords="zope3 container",
+      classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Web Environment',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: Zope Public License',
           'Programming Language :: Python',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3.4',
+          'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: Implementation :: CPython',
+          'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
           'Operating System :: OS Independent',
           'Topic :: Internet :: WWW/HTTP',
-          'Framework :: Zope3'],
-      url='http://cheeseshop.python.org/pypi/zope.app.container',
+          'Framework :: Zope3',
+      ],
+      url='http://github.com/zopefoundation/zope.app.container',
       license='ZPL 2.1',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
       namespace_packages=['zope', 'zope.app'],
+      extras_require={
+          'test': [
+              'zope.app.appsetup',
+              'zope.app.basicskin >= 4.0',
+              'zope.app.content',
+              'zope.app.dependable >= 4.0',
+              'zope.app.http',
+              'zope.app.pagetemplate >= 4.0',
+              'zope.app.principalannotation',
+              'zope.app.publication',
+              'zope.app.publisher',
+              'zope.app.security',
+              'zope.app.testing',
+              'zope.app.wsgi',
 
-      extras_require=dict(test=['zope.app.testing',
-                                'zope.app.zcmlfiles',
-                                'zope.login',
-                                'zope.password',
-                                'zope.securitypolicy',
-                                'zope.schema',
-                                'zope.site',
-                                ]),
-      install_requires=['setuptools',
-                        'zope.browser',
-                        'zope.browsermenu',
-                        'zope.browserpage',
-                        'zope.component',
-                        'zope.container',
-                        'zope.copypastemove',
-                        'zope.dublincore >= 3.7',
-                        'zope.event',
-                        'zope.exceptions',
-                        'zope.i18n',
-                        'zope.i18nmessageid',
-                        'zope.interface',
-                        'zope.lifecycleevent',
-                        'zope.location',
-                        'zope.publisher >= 3.12',
-                        'zope.security',
-                        'zope.size',
-                        'zope.traversing',
-                        ],
-      include_package_data = True,
-      zip_safe = False,
+              'zope.applicationcontrol',
+              'zope.browser',
+              'zope.browserresource',
+              'zope.copypastemove',
+              'zope.login',
+              'zope.password',
+              'zope.principalannotation',
+              'zope.principalregistry',
+              'zope.securitypolicy',
+              'zope.site',
+              'zope.testbrowser>5',
+              'zope.testing',
+              'zope.testrunner',
+      ]},
+      install_requires=[
+          'setuptools',
+          'zope.browser',
+          'zope.browsermenu',
+          'zope.browserpage',
+          'zope.component',
+          'zope.container',
+          'zope.copypastemove',
+          'zope.dublincore >= 3.7',
+          'zope.event',
+          'zope.exceptions',
+          'zope.i18n',
+          'zope.i18nmessageid',
+          'zope.interface',
+          'zope.lifecycleevent',
+          'zope.location',
+          'zope.publisher >= 3.12',
+          'zope.security',
+          'zope.size',
+          'zope.traversing',
+      ],
+      include_package_data=True,
+      zip_safe=False,
       )
-

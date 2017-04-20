@@ -20,7 +20,7 @@ import zope.interface
 import zope.security.checker
 from zope.component.interfaces import IFactory
 from zope.component.interfaces import ComponentLookupError
-from zope.interface import implements, Interface, directlyProvides
+from zope.interface import implementer, Interface, directlyProvides
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.browser import BrowserView
@@ -46,9 +46,9 @@ from zope.app.container.contained import contained
 from zope.app.container.browser.adding import Adding
 from zope.app.container.sample import SampleContainer
 
-
+@implementer(IContainmentRoot)
 class Root(object):
-    implements(IContainmentRoot)
+    pass
 
 class Container(SampleContainer):
     pass
@@ -62,9 +62,10 @@ class CreationView(BrowserView):
 class Content(object):
     pass
 
+
+@implementer(IFactory)
 class Factory(object):
 
-    implements(IFactory)
 
     title = ''
     description = ''
@@ -154,7 +155,7 @@ class Test(PlacelessSetup, unittest.TestCase):
 
         # typical add - id is provided by user
         adding.action(type_name='foo', id='bar')
-        self.assert_('bar' in container)
+        self.assertIn('bar', container)
 
         # missing type_name
         self.assertRaises(UserError, adding.action, id='bar')
@@ -170,7 +171,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         adding.nameAllowed = lambda: False
         adding.contentName = 'baz'
         adding.action(type_name='foo')
-        self.assert_('baz' in container)
+        self.assertIn('baz', container)
 
         # alternative add w/missing contentName
         # Note: Passing is None as object name might be okay, if the container
@@ -181,7 +182,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         directlyProvides(container, IContainerNamesContainer)
         adding.contentName = None
         adding.action(type_name='foo')
-        self.assert_('Content' in container)
+        self.assertIn('Content', container)
 
 
     def test_action(self):
@@ -207,7 +208,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         container = Container()
         request = TestRequest()
         adding = Adding(container, request)
-        self.assert_(adding.publishTraverse(request, 'foo') is factory)
+        self.assertIs(adding.publishTraverse(request, 'foo'), factory)
 
 
 def test_constraint_driven_addingInfo():
@@ -248,9 +249,9 @@ def test_constraint_driven_addingInfo():
     ...         pass
     ...     __setitem__.precondition = pre
 
-
-    >>> class Container(object):
-    ...     zope.interface.implements(IContainer)
+    >>> @zope.interface.implementer(IContainer)
+    ... class Container(object):
+    ...    pass
 
     >>> from zope.component.factory import Factory
     >>> ztapi.provideUtility(IFactory, Factory(F1), 'f1')
@@ -297,8 +298,9 @@ def test_constraint_driven_add():
     ...         pass
     ...     __setitem__.precondition = pre
 
-    >>> class Container(SampleContainer):
-    ...     zope.interface.implements(ITestContainer)
+    >>> @zope.interface.implementer(ITestContainer)
+    ... class Container(SampleContainer):
+    ...    pass
 
     >>> adding = Adding(Container(), TestRequest())
     >>> c = adding.add(F1())
@@ -311,8 +313,9 @@ def test_constraint_driven_add():
     ...
     Invalid: not a valid child
 
-    >>> class ValidContainer(SampleContainer):
-    ...     zope.interface.implements(ITestContainer)
+    >>> @zope.interface.implementer(ITestContainer)
+    ... class ValidContainer(SampleContainer):
+    ...    pass
 
     >>> def constr(container):
     ...     "a mock container constraint"
@@ -348,8 +351,9 @@ def test_nameAllowed():
 
     Class implements IContainerNamesContainer
 
-    >>> class FakeContainer(object):
-    ...    zope.interface.implements(IContainerNamesContainer)
+    >>> @zope.interface.implementer(IContainerNamesContainer)
+    ... class FakeContainer(object):
+    ...    pass
 
     nameAllowed returns False if the class imlements
     IContainerNamesContainer
@@ -377,9 +381,10 @@ def test_nameAllowed():
 def test_chooseName():
     """If user don't enter name, pick one
 
-    >>> class MyContainer(object):
+    >>> @zope.interface.implementer(INameChooser, IContainer)
+    ... class MyContainer(object):
     ...    args = {}
-    ...    zope.interface.implements(INameChooser, IContainer)
+    ...
     ...    def chooseName(self, name, object):
     ...        self.args["choose"] = name, object
     ...        return 'pickone'
@@ -445,9 +450,9 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
     ...         pass
     ...     __setitem__.precondition = pre
 
-
-    >>> class Container(object):
-    ...     zope.interface.implements(IContainer)
+    >>> @zope.interface.implementer(IContainer)
+    ... class Container(object):
+    ...     pass
 
     >>> from zope.component.factory import Factory
     >>> ztapi.provideUtility(IFactory, Factory(F1), 'f1')
@@ -503,8 +508,9 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     ...     __setitem__.precondition = pre
 
 
-    >>> class Container(object):
-    ...     zope.interface.implements(IContainer)
+    >>> @zope.interface.implementer(IContainer)
+    ... class Container(object):
+    ...     pass
 
     >>> from zope.component.factory import Factory
     >>> ztapi.provideUtility(IFactory, Factory(F1), 'f1')
@@ -559,8 +565,9 @@ def test_isSingleMenuItem_with_ICNC():
     ...     __setitem__.precondition = pre
 
 
-    >>> class Container(object):
-    ...     zope.interface.implements(IContainer, IContainerNamesContainer)
+    >>> @zope.interface.implementer(IContainer, IContainerNamesContainer)
+    ... class Container(object):
+    ...     pass
 
     >>> from zope.app.container.browser.adding import Adding
     >>> adding = Adding(Container(), TestRequest())
@@ -574,10 +581,20 @@ def test_isSingleMenuItem_with_ICNC():
 
     """
 
+from zope.testing import renormalizing
+import re
+checker = renormalizing.RENormalizing([
+    (re.compile("u('.*?')"), r"\1"),
+    (re.compile('u(".*?")'), r"\1"),
+    # Python 3 adds module name to exceptions.
+    (re.compile('zope.interface.exceptions.Invalid'), 'Invalid'),
+])
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(Test),
-        doctest.DocTestSuite(setUp=setUp, tearDown=tearDown),
+        doctest.DocTestSuite(setUp=setUp,
+                             tearDown=tearDown,
+                             checker=checker),
         ))
 
 if __name__=='__main__':

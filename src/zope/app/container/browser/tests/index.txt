@@ -6,7 +6,7 @@ links).
 
 We can get this view from the root folder easily::
 
-  >>> response = http(r"""
+  >>> response = http(br"""
   ... GET / HTTP/1.1
   ... """)
 
@@ -14,5 +14,5 @@ And we can check that there isn't a form (where the management
 operations would have buttons)::
 
   >>> body = response.getBody().lower()
-  >>> "<form" in body
+  >>> b"<form" in body
   False

@@ -13,16 +13,19 @@
 ##############################################################################
 """'containerView' directive test
 """
-import cStringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 import doctest
 import pprint
 import re
-import unittest
+
 
 from zope.interface import Interface
 from zope.component.interface import provideInterface
 from zope.publisher.interfaces.browser import IBrowserRequest
-from zope.app.container.browser.metaconfigure import containerViews
+
 
 atre = re.compile(' at [0-9a-fA-Fx]+')
 
@@ -41,7 +44,7 @@ class Context(object):
         self.info = 'info'
 
     def __repr__(self):
-        stream = cStringIO.StringIO()
+        stream = StringIO()
         pprinter = pprint.PrettyPrinter(stream=stream, width=60)
         pprinter.pprint(self.actions)
         r = stream.getvalue()
@@ -59,6 +62,7 @@ def test_containerViews():
     """
     >>> from zope.browsermenu.metaconfigure import menus
     >>> from zope.interface.interface import InterfaceClass
+    >>> from zope.app.container.browser.metaconfigure import containerViews
     >>> zmi_views = InterfaceClass('zmi_views', __module__='zope.app.menus')
     >>> menus.zmi_views = zmi_views
     >>> zmi_actions = InterfaceClass('zmi_actions', __module__='zope.app.menus')
@@ -119,6 +123,7 @@ def test_containerViews_layer():
     """
     >>> from zope.browsermenu.metaconfigure import menus
     >>> from zope.interface.interface import InterfaceClass
+    >>> from zope.app.container.browser.metaconfigure import containerViews
     >>> zmi_views = InterfaceClass('zmi_views', __module__='zope.app.menus')
     >>> menus.zmi_views = zmi_views
     >>> zmi_actions = InterfaceClass('zmi_actions', __module__='zope.app.menus')
@@ -175,6 +180,14 @@ def test_containerViews_layer():
       <InterfaceClass zope.interface.Interface>)]
     """
 
+from zope.testing import renormalizing
+import re
+
+checker = renormalizing.RENormalizing([
+    # Python 3 unicode removed the "u".
+    (re.compile("u('.*?')"), r"\1"),
+    (re.compile('u(".*?")'), r"\1"),
+])
 
 def test_suite():
-    return doctest.DocTestSuite()
+    return doctest.DocTestSuite(checker=checker)

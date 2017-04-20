@@ -1,5 +1,6 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
+   xmlns:browser="http://namespaces.zope.org/browser"
    i18n_domain="zope"
    package="zope.app.container"
    >
@@ -7,14 +8,80 @@
   <!-- This file is the equivalent of site.zcml and it is -->
   <!-- used for functional testing setup -->
 
-  <include package="zope.app.zcmlfiles" />
+
+  <include package="zope.component" file="meta.zcml" />
+  <include package="zope.security" file="meta.zcml" />
+  <include package="zope.app.container.browser" file="meta.zcml" />
+  <include package="zope.browserpage" file="meta.zcml" />
+  <include package="zope.app.publication" file="meta.zcml" />
+  <include package="zope.principalregistry" file="meta.zcml" />
+  <include package="zope.publisher" file="meta.zcml" />
+  <include package="zope.browserresource" file="meta.zcml" />
+  <include package="zope.browsermenu" file="meta.zcml" />
+
+  <include package="zope.principalregistry" />
+
+  <include package="zope.dublincore" />
+  <include package="zope.principalannotation" />
+  <include package="zope.annotation" />
+  <include package="zope.traversing" />
+  <include package="zope.traversing.browser" />
+  <include package="zope.location" />
+  <include package="zope.publisher" />
+  <include package="zope.copypastemove" />
+  <include package="zope.container" />
+  <include package="zope.app.appsetup" />
+  <include package="zope.app.basicskin" />
+
+  <include package="zope.app.publication" />
   <include package="zope.app.container.browser.tests" />
+  <include package="zope.app.pagetemplate" />
   <include package="zope.password" />
+  <include package="zope.browserresource" />
+  <include package="zope.browsermenu" />
+
 
   <include package="zope.securitypolicy" file="meta.zcml" />
   <include package="zope.securitypolicy" />
   <include package="zope.login" />
 
+  <!-- Needs zope.app.localpermission to be ported -->
+  <!-- <include package="zope.app.security" />  -->
+  <browser:defaultView name="index.html" />
+  <!-- These came from zope.app.component for some reason -->
+  <browser:page
+      for="zope.site.interfaces.ISiteManagementFolder"
+      permission="zope.ManageSite"
+      class="zope.app.container.browser.contents.JustContents"
+      name="index.html" attribute="index"
+      />
+  <browser:page
+      for="zope.site.interfaces.IFolder"
+      permission="zope.View"
+      class="zope.app.container.browser.contents.JustContents"
+      name="index.html" attribute="index"
+      />
+  <browser:pages
+      for="zope.site.interfaces.ILocalSiteManager"
+      permission="zope.ManageSite"
+      class="zope.app.container.browser.contents.JustContents"
+      >
+    <browser:page name="index.html" attribute="index" />
+  </browser:pages>
+
+  <!-- This normally comes from zope.app.folder -->
+  <browser:addMenuItem
+      class="zope.site.folder.Folder"
+      title="Folder"
+      description="Minimal folder"
+      permission="zope.ManageContent"
+      />
+
+  <browser:menu
+      id="zmi_views"
+      title="Views"
+      description="Menu for displaying alternate representations of an object"
+      />
   <securityPolicy
       component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
@@ -43,5 +110,9 @@
       login="mgr"
       password="mgrpw" />
   <grant role="zope.Manager" principal="zope.mgr" />
+
+  <class class="zope.site.folder.Folder">
+	  <allow attributes="items __getitem__ get __contains__ __setitem__" />
+  </class>
 
 </configure>

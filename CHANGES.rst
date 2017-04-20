@@ -2,6 +2,11 @@
 CHANGES
 =======
 
+4.0.0 (unreleased)
+------------------
+
+- Added support for PyPy and Python 3.4, 3.5 and 3.6.
+
 3.9.2 (2012-01-23)
 ------------------
 

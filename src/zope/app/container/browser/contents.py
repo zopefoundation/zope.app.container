@@ -15,7 +15,8 @@
 """
 __docformat__ = 'restructuredtext'
 
-import urllib
+import six
+from six.moves import urllib_parse as urllib
 
 from zope.component import queryMultiAdapter
 from zope.event import notify
@@ -117,7 +118,7 @@ class Contents(BrowserView):
                  )
         self.normalButtons = not self.specialButtons
 
-        info = map(self._extractContentInfo, self.context.items())
+        info = [self._extractContentInfo(x) for x in self.context.items()]
 
         self.supportsCut = info
         self.supportsCopy = info
@@ -261,6 +262,7 @@ class Contents(BrowserView):
         """Copy objects specified in a list of object ids"""
         request = self.request
         ids = request.get('ids')
+
         if not ids:
             self.error = _("You didn't specify any ids to copy.")
             return
@@ -301,7 +303,8 @@ class Contents(BrowserView):
         if not ids:
             self.error = _("You didn't specify any ids to cut.")
             return
-
+        if isinstance(ids, six.string_types):
+            ids = [ids]
         container_path = getPath(self.context)
 
         # For each item, check that it can be moved; if so, save the
