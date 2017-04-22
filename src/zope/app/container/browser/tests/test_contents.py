@@ -225,7 +225,7 @@ class PrincipalAnnotations(dict):
         return annotations
     def __init__(self, context):
         pass
-    def __repr__(self):
+    def __repr__(self): # pragma: no cover
         return "<%s.PrincipalAnnotations object>" % __name__
 
 
@@ -378,5 +378,5 @@ def test_suite():
         makeSuite(TestCutCopyPaste),
         ))
 
-if __name__=='__main__':
+if __name__=='__main__': # pragma: no cover
     main(defaultTest='test_suite')

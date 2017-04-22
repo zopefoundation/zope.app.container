@@ -102,5 +102,5 @@ def test_suite():
     suite.addTest(unittest.makeSuite(Tests))
     return suite
 
-if __name__=='__main__':
+if __name__=='__main__': # pragma: no cover
     unittest.main(defaultTest='test_suite')

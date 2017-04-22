@@ -55,7 +55,8 @@ class BrowserTestCase(unittest.TestCase):
             self._testapp.authorization = None
         env = {'wsgi.handleErrors': False}
         if form:
-            response = self._testapp.post(path, params=form, extra_environ=env)
+            response = self._testapp.post(path, params=form, extra_environ=env,
+                                          content_type="application/x-www-form-urlencoded; charset=utf-8")
         else:
             response = self._testapp.get(path, extra_environ=env)
         return response

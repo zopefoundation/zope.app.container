@@ -70,9 +70,6 @@ class Factory(object):
     title = ''
     description = ''
 
-    def getInterfaces(self):
-        return ()
-
     def __call__(self):
         return Content()
 
@@ -597,5 +594,5 @@ def test_suite():
                              checker=checker),
         ))
 
-if __name__=='__main__':
+if __name__=='__main__': # pragma: no cover
     unittest.main(defaultTest='test_suite')

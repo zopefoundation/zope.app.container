@@ -4,11 +4,9 @@ from zope.container.testing import setUp as cSetUp, tearDown as cTearDown
 
 try:
     from zope.testing.cleanup import tearDown as tTearDown
-except ImportError:
+except ImportError: # pragma: no cover
     def tTearDown():
         pass
-
-from zope.traversing.api import traverse
 
 from zope.app.wsgi.testlayer import BrowserLayer
 
@@ -68,62 +66,12 @@ def setUpTraversal():
                                   (ISimpleReadContainer,), ITraversable)
 
 
-class Place(object):
-
-    def __init__(self, path):
-        self.path = path
-
-    def __get__(self, inst, cls=None):
-        if inst is None:
-            return self
-
-        try:
-            # Use __dict__ directly to avoid infinite recursion
-            root = inst.__dict__['rootFolder']
-        except KeyError:
-            root = inst.rootFolder = buildSampleFolderTree()
-
-        return traverse(root, self.path)
-
-
 class PlacefulSetup(PlacelessSetup):
 
-    # Places :)
-    rootFolder  = Place(u'')
-
-    folder1     = Place(u'folder1')
-    folder1_1   = Place(u'folder1/folder1_1')
-    folder1_1_1 = Place(u'folder1/folder1_1/folder1_1_1')
-    folder1_1_2 = Place(u'folder1/folder1_2/folder1_1_2')
-    folder1_2   = Place(u'folder1/folder1_2')
-    folder1_2_1 = Place(u'folder1/folder1_2/folder1_2_1')
-
-    folder2     = Place(u'folder2')
-    folder2_1   = Place(u'folder2/folder2_1')
-    folder2_1_1 = Place(u'folder2/folder2_1/folder2_1_1')
-
-    folder3     = Place(u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER A}"
-                        u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER KA}"
-                        u"\N{CYRILLIC SMALL LETTER A}3")
-    folder3_1   = Place(u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER A}"
-                        u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER KA}"
-                        u"\N{CYRILLIC SMALL LETTER A}3/"
-                        u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER A}"
-                        u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER KA}"
-                        u"\N{CYRILLIC SMALL LETTER A}3_1")
-
-    def setUp(self, folders=False, site=False):
+    def setUp(self):
         super(PlacefulSetup, self).setUp()
         cSetUp()
         setUpTraversal()
-        if folders or site:
-            return self.buildFolders(site)
 
         from zope.security.management import newInteraction
         newInteraction()
@@ -133,14 +81,5 @@ class PlacefulSetup(PlacelessSetup):
         cTearDown()
         tTearDown()
 
-    def buildFolders(self, site=False):
+    def buildFolders(self):
         self.rootFolder = buildSampleFolderTree()
-        if site:
-            return self.makeSite()
-
-    def makeSite(self, path='/'):
-        folder = traverse(self.rootFolder, path)
-        return setup.createSiteManager(folder, True)
-
-    def createRootFolder(self):
-        self.rootFolder = zope.site.folder.rootFolder()

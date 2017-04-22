@@ -104,6 +104,7 @@ class Test(BrowserTestCase):
         root._p_jar.sync()
         self.assertIn('foo', root)
 
+
     def test_inplace_rename_multiple(self):
         root = self.getRootFolder()
         root['foo'] = File()
@@ -319,9 +320,14 @@ class Test(BrowserTestCase):
         body = response.text
         self.assertIn("cannot be moved", body)
 
-    @unittest.skip("Fails under webtest; encoding of the param isn't right")
+    @unittest.skipIf(str is not bytes, #Py2 only
+                     "Only Python 2 can do str(b'encoded') and get the right thing")
     def test_copy_then_delete_with_unicode_name(self):
-        """Tests unicode on object copied then deleted (#238579)."""
+        # Tests unicode on object copied then deleted (#238579)
+        # The zope.publisher.browser conversion methods for text/str
+        # rely on the default encoding, which breaks on this unicode name in Python 3.
+        # We either wind up with "b'voil\\xe0'" or a list of the ints that make
+        # up the bytes, depending on which order we try for the type names.
 
         # create a file with an accentuated unicode name
         root = self.getRootFolder()
@@ -330,7 +336,7 @@ class Test(BrowserTestCase):
 
         # copy the object
         response = self.publish('/@@contents.html', basic='mgr:mgrpw', form={
-            'ids' : (u'voil\xe0',),
+            'ids:list' : (u'voil\xe0'.encode('utf-8'),),
             'container_copy_button' : '' })
         self.assertEqual(response.status_int, 302)
         self.assertEqual(response.headers.get('Location'),
@@ -362,5 +368,5 @@ def test_suite():
     suite.addTest(index)
     return suite
 
-if __name__=='__main__':
+if __name__=='__main__': # pragma: no cover
     unittest.main(defaultTest='test_suite')
