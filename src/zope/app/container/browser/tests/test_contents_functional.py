@@ -349,7 +349,7 @@ class Test(BrowserTestCase):
             '/@@contents.html',
             basic='mgr:mgrpw',
             form={
-                'ids:list' : u'voil\xe0'.encode('utf-8'),
+                'ids:list': u'voil\xe0'.encode('utf-8'),
                 'container_copy_button': '',
             },
             headers={
