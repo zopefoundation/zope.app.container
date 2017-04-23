@@ -88,9 +88,7 @@ class Test(BrowserTestCase):
             form={'type_name': u'BrowserAdd__zope.site.folder.Folder'})
         body = response.unicode_normal_body
         self.assertIn('type="hidden" name="type_name"', body)
-        #self.assertIn('input name="new_value"', body)
         self.assertIn('type="submit" name="container_cancel_button"', body)
-        #self.assertIn('type="submit" name="container_rename_button"', body)
 
         response = self.publish(
             '/@@contents.html',
@@ -320,14 +318,24 @@ class Test(BrowserTestCase):
         body = response.text
         self.assertIn("cannot be moved", body)
 
-    @unittest.skipIf(str is not bytes, #Py2 only
-                     "Only Python 2 can do str(b'encoded') and get the right thing")
     def test_copy_then_delete_with_unicode_name(self):
         # Tests unicode on object copied then deleted (#238579)
-        # The zope.publisher.browser conversion methods for text/str
-        # rely on the default encoding, which breaks on this unicode name in Python 3.
-        # We either wind up with "b'voil\\xe0'" or a list of the ints that make
-        # up the bytes, depending on which order we try for the type names.
+
+        # The 'Accept-Charset' is important on Python 3 to get
+        # the encoding correct. The query string is actually correctly
+        # decoded to unicode (if it's ever even *encoded*) on the
+        # receiving side, but
+        # zope.publisher.browser.BrowserRequest._decode assumes it was
+        # smuggled as latin-1, and thus encodes it back to those
+        # bytes. If we don't specify latin-1 as a charset
+        # zope.publsher.http.HTTPCharsets will only let it try to be
+        # decoded as utf-8, which doesn't work.
+        # On Python 2, if we don't encode the parameter, it's improperly
+        # decoded before it ever gets to _decode, arriving as 'voill?'.
+
+        # This is most likely a mismatch
+        # somewhere in the webtest.TestApp/zope.app.wsgi.testlayer/zope.publisher
+        # stack.
 
         # create a file with an accentuated unicode name
         root = self.getRootFolder()
@@ -335,9 +343,17 @@ class Test(BrowserTestCase):
         transaction.commit()
 
         # copy the object
-        response = self.publish('/@@contents.html', basic='mgr:mgrpw', form={
-            'ids:list' : (u'voil\xe0'.encode('utf-8'),),
-            'container_copy_button' : '' })
+        response = self.publish(
+            '/@@contents.html',
+            basic='mgr:mgrpw',
+            form={
+                'ids:list' : u'voil\xe0'.encode('utf-8'),
+                'container_copy_button' : ''
+            },
+            headers={
+                'Accept-Charset': 'latin-1, utf-8',
+            },
+        )
         self.assertEqual(response.status_int, 302)
         self.assertEqual(response.headers.get('Location'),
             'http://localhost/@@contents.html')
@@ -367,6 +383,3 @@ def test_suite():
     index.layer = AppContainerLayer
     suite.addTest(index)
     return suite
-
-if __name__=='__main__': # pragma: no cover
-    unittest.main(defaultTest='test_suite')

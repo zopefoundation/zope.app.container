@@ -303,8 +303,7 @@ class Contents(BrowserView):
         if not ids:
             self.error = _("You didn't specify any ids to cut.")
             return
-        if isinstance(ids, six.string_types):
-            ids = [ids]
+
         container_path = getPath(self.context)
 
         # For each item, check that it can be moved; if so, save the

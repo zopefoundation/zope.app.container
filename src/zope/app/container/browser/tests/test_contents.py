@@ -13,7 +13,7 @@
 ##############################################################################
 """Test Container Contents
 """
-from unittest import TestCase, TestSuite, main, makeSuite
+import unittest
 
 from zope.interface import Interface, implementer
 from zope.security import checker
@@ -229,7 +229,7 @@ class PrincipalAnnotations(dict):
         return "<%s.PrincipalAnnotations object>" % __name__
 
 
-class TestCutCopyPaste(PlacefulSetup, TestCase):
+class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
 
     def setUp(self):
         PlacefulSetup.setUp(self)
@@ -356,7 +356,7 @@ class TestCutCopyPaste(PlacefulSetup, TestCase):
         request.setPrincipal(Principal())
         return Contents(container, request)
 
-class Test(BaseTestContentsBrowserView, TestCase):
+class Test(BaseTestContentsBrowserView, unittest.TestCase):
 
     def _TestView__newContext(self):
         from zope.app.container.sample import SampleContainer
@@ -373,10 +373,4 @@ class Test(BaseTestContentsBrowserView, TestCase):
         return Contents(container, request)
 
 def test_suite():
-    return TestSuite((
-        makeSuite(Test),
-        makeSuite(TestCutCopyPaste),
-        ))
-
-if __name__=='__main__': # pragma: no cover
-    main(defaultTest='test_suite')
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)

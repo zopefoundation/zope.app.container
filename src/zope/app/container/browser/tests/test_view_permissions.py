@@ -101,6 +101,3 @@ def test_suite():
     Tests.layer = AppContainerLayer
     suite.addTest(unittest.makeSuite(Tests))
     return suite
-
-if __name__=='__main__': # pragma: no cover
-    unittest.main(defaultTest='test_suite')

@@ -588,11 +588,8 @@ checker = renormalizing.RENormalizing([
 ])
 def test_suite():
     return unittest.TestSuite((
-        unittest.makeSuite(Test),
+        unittest.defaultTestLoader.loadTestsFromName(__name__),
         doctest.DocTestSuite(setUp=setUp,
                              tearDown=tearDown,
                              checker=checker),
         ))
-
-if __name__=='__main__': # pragma: no cover
-    unittest.main(defaultTest='test_suite')

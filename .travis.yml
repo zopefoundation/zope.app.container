@@ -14,7 +14,7 @@ install:
     - pip install -e  git+https://github.com/zopefoundation/zope.proxy.git#egg=zope.proxy
     - pip install -U -e .[test]
 script:
-  - coverage run -m zope.testrunner --test-path=src  --auto-color --auto-progress
+    - coverage run -m zope.testrunner --test-path=src  --auto-color --auto-progress
 notifications:
     email: false
 after_success:

@@ -48,15 +48,15 @@ class BrowserTestCase(unittest.TestCase):
             BTrees._base._TreeItems.__Security_checker__ = checker
             self.addCleanup(lambda: delattr(BTrees._base._TreeItems, '__Security_checker__'))
 
-    def publish(self, path, basic=None, form=None):
+    def publish(self, path, basic=None, form=None, headers=None):
         if basic:
             self._testapp.authorization = ('Basic', tuple(basic.split(':')))
         else:
             self._testapp.authorization = None
         env = {'wsgi.handleErrors': False}
         if form:
-            response = self._testapp.post(path, params=form, extra_environ=env,
-                                          content_type="application/x-www-form-urlencoded; charset=utf-8")
+            response = self._testapp.post(path, params=form,
+                                          extra_environ=env, headers=headers)
         else:
-            response = self._testapp.get(path, extra_environ=env)
+            response = self._testapp.get(path, extra_environ=env, headers=headers)
         return response
