@@ -2,11 +2,7 @@ from zope.component.testing import PlacelessSetup
 
 from zope.container.testing import setUp as cSetUp, tearDown as cTearDown
 
-try:
-    from zope.testing.cleanup import tearDown as tTearDown
-except ImportError: # pragma: no cover
-    def tTearDown():
-        pass
+from zope.testing.cleanup import tearDown as tTearDown
 
 from zope.app.wsgi.testlayer import BrowserLayer
 

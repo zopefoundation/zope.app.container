@@ -88,7 +88,9 @@ class Test(BrowserTestCase):
             form={'type_name': u'BrowserAdd__zope.site.folder.Folder'})
         body = response.unicode_normal_body
         self.assertIn('type="hidden" name="type_name"', body)
+        self.assertIn('input name="new_value"', body)
         self.assertIn('type="submit" name="container_cancel_button"', body)
+        self.assertNotIn('type="submit" name="container_rename_button"', body)
 
         response = self.publish(
             '/@@contents.html',
@@ -348,7 +350,7 @@ class Test(BrowserTestCase):
             basic='mgr:mgrpw',
             form={
                 'ids:list' : u'voil\xe0'.encode('utf-8'),
-                'container_copy_button' : ''
+                'container_copy_button': '',
             },
             headers={
                 'Accept-Charset': 'latin-1, utf-8',
@@ -356,7 +358,7 @@ class Test(BrowserTestCase):
         )
         self.assertEqual(response.status_int, 302)
         self.assertEqual(response.headers.get('Location'),
-            'http://localhost/@@contents.html')
+                         'http://localhost/@@contents.html')
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 200)
 
