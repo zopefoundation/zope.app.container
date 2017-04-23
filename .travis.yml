@@ -9,9 +9,6 @@ python:
 install:
     - pip install -U pip setuptools
     - pip install -U coverage coveralls
-    # workaround https://github.com/zopefoundation/BTrees/issues/70
-    - pip install -U --no-binary ":all:" persistent
-    - pip install -e  git+https://github.com/zopefoundation/zope.proxy.git#egg=zope.proxy
     - pip install -U -e .[test]
 script:
     - coverage run -m zope.testrunner --test-path=src  --auto-color --auto-progress
