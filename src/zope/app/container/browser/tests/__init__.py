@@ -30,24 +30,6 @@ class BrowserTestCase(unittest.TestCase):
         component.getGlobalSiteManager().registerUtility(PrincipalAnnotationUtility(),
                                                          IPrincipalAnnotationUtility)
 
-        # Temporarily check for and workaround (if needed) the issue with
-        # security checkers of BTreeItems on PyPy.
-        # https://github.com/zopefoundation/zope.security/issues/20
-        import BTrees
-        tree = BTrees.OOBTree.OOBTree()
-        tree['a'] = 42
-
-        checker = Checker({'items': CheckerPublic})
-        proxy = Proxy(tree, checker)
-        items = proxy.items()
-        try:
-            list(items)
-        except ForbiddenAttribute:
-            checker = Checker({'__iter__': CheckerPublic})
-            import BTrees._base
-            BTrees._base._TreeItems.__Security_checker__ = checker
-            self.addCleanup(lambda: delattr(BTrees._base._TreeItems, '__Security_checker__'))
-
     def publish(self, path, basic=None, form=None, headers=None):
         if basic:
             self._testapp.authorization = ('Basic', tuple(basic.split(':')))
