@@ -13,9 +13,9 @@
 ##############################################################################
 """Test Container Contents
 """
-from unittest import TestCase, TestSuite, main, makeSuite
+import unittest
 
-from zope.interface import Interface, implements
+from zope.interface import Interface, implementer
 from zope.security import checker
 from zope.traversing.api import traverse
 
@@ -29,11 +29,12 @@ from zope.copypastemove.interfaces import IContainerItemRenamer
 from zope.copypastemove.interfaces import IObjectMover, IObjectCopier
 from zope.copypastemove.interfaces import IPrincipalClipboard
 
-from zope.app.component.testing import PlacefulSetup
-from zope.app.container.contained import contained
-from zope.app.testing import ztapi
-from zope.app.container.interfaces import IContainer, IContained
+from zope.app.container.testing import PlacefulSetup
+from zope.container.contained import contained
 
+from zope.container.interfaces import IContainer, IContained
+
+from zope.app.container.browser.tests import provideAdapter
 
 class BaseTestContentsBrowserView(PlacefulSetup):
     """Base class for testing browser contents.
@@ -49,15 +50,15 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
 
-        ztapi.provideAdapter(IContained, IObjectCopier, ObjectCopier)
-        ztapi.provideAdapter(IContained, IObjectMover, ObjectMover)
-        ztapi.provideAdapter(IContainer, IContainerItemRenamer,
-            ContainerItemRenamer)
+        provideAdapter(IContained, IObjectCopier, ObjectCopier)
+        provideAdapter(IContained, IObjectMover, ObjectMover)
+        provideAdapter(IContainer, IContainerItemRenamer,
+                       ContainerItemRenamer)
 
-        ztapi.provideAdapter(IAnnotations, IPrincipalClipboard,
-                             PrincipalClipboard)
-        ztapi.provideAdapter(Principal, IAnnotations,
-                             PrincipalAnnotations)
+        provideAdapter(IAnnotations, IPrincipalClipboard,
+                       PrincipalClipboard)
+        provideAdapter(Principal, IAnnotations,
+                       PrincipalAnnotations)
 
     def testInfo(self):
         # Do we get the correct information back from ContainerContents?
@@ -72,16 +73,17 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         self.assertEquals(len(info_list), 2)
 
-        ids = map(lambda x: x['id'], info_list)
-        self.assert_('subcontainer' in ids)
+        ids = [x['id'] for x in info_list]
+        self.assertIn('subcontainer', ids)
 
-        objects = map(lambda x: x['object'], info_list)
-        self.assert_(subcontainer in objects)
+        objects = [x['object'] for x in info_list]
+        self.assertIn(subcontainer, objects)
 
-        urls = map(lambda x: x['url'], info_list)
-        self.assert_('subcontainer' in urls)
+        urls = [x['url'] for x in info_list]
+        self.assertIn('subcontainer', urls)
 
-        self.failIf(filter(None, map(lambda x: x['icon'], info_list)))
+        icons = [x['icon'] for x in info_list if x['icon']]
+        self.assertEqual([], icons)
 
     def testInfoUnicode(self):
         # If the id contains non-ASCII characters, url has to be quoted
@@ -92,8 +94,8 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         fc = self._TestView__newView(container)
         info_list = fc.listContentInfo()
 
-        urls = map(lambda x: x['url'], info_list)
-        self.assert_('f%C3%B6%C3%B6' in urls)
+        urls = [x['url'] for x in info_list]
+        self.assertIn('f%C3%B6%C3%B6', urls)
 
     def testInfoWDublinCore(self):
         container = self._TestView__newContext()
@@ -102,8 +104,8 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         from datetime import datetime
         from zope.dublincore.interfaces import IZopeDublinCore
+        @implementer(IZopeDublinCore)
         class FauxDCAdapter(object):
-            implements(IZopeDublinCore)
 
             __Security_checker__ = checker.Checker(
                 {"created": "zope.Public",
@@ -119,7 +121,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
             created = datetime(2001, 1, 1, 1, 1, 1)
             modified = datetime(2002, 2, 2, 2, 2, 2)
 
-        ztapi.provideAdapter(IDocument, IZopeDublinCore, FauxDCAdapter)
+        provideAdapter(IDocument, IZopeDublinCore, FauxDCAdapter)
 
         fc = self._TestView__newView(container)
         info = fc.listContentInfo()[0]
@@ -150,14 +152,14 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         self.assertEquals(len(info_list), 2)
 
-        ids = map(lambda x: x['id'], info_list)
-        self.assert_('subcontainer' in ids)
+        ids = [x['id'] for x in info_list]
+        self.assertIn('subcontainer', ids)
 
-        objects = map(lambda x: x['object'], info_list)
-        self.assert_(subcontainer in objects)
+        objects = [x['object'] for x in info_list]
+        self.assertIn(subcontainer, objects)
 
-        urls = map(lambda x: x['url'], info_list)
-        self.assert_('subcontainer' in urls)
+        urls = [x['url'] for x in info_list]
+        self.assertIn('subcontainer', urls)
 
     def testChangeTitle(self):
         container = self._TestView__newContext()
@@ -165,8 +167,8 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         container['document'] = document
 
         from zope.dublincore.interfaces import IDCDescriptiveProperties
+        @implementer(IDCDescriptiveProperties)
         class FauxDCDescriptiveProperties(object):
-            implements(IDCDescriptiveProperties)
 
             __Security_checker__ = checker.Checker(
                 {"title": "zope.Public",
@@ -178,18 +180,18 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
             def setTitle(self, title):
                 self.context.title = title
-                
+
             def getTitle(self):
                 return self.context.title
-                
+
             title = property(getTitle, setTitle)
 
-        ztapi.provideAdapter(IDocument, IDCDescriptiveProperties, FauxDCDescriptiveProperties)
-        
+        provideAdapter(IDocument, IDCDescriptiveProperties, FauxDCDescriptiveProperties)
+
         fc = self._TestView__newView(container)
 
         dc = IDCDescriptiveProperties(document)
-        
+
         fc.request.form.update({'retitle_id': 'document', 'new_value': 'new'})
         fc.changeTitle()
         events = getEvents()
@@ -201,16 +203,18 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 class IDocument(Interface):
     pass
 
+@implementer(IDocument)
 class Document(object):
-    implements(IDocument)
+    pass
 
 
 class Principal(object):
 
     id = 'bob'
 
+@implementer(IAnnotations)
 class PrincipalAnnotations(dict):
-    implements(IAnnotations)
+
     data = {}
     def __new__(class_, context):
         try:
@@ -221,24 +225,24 @@ class PrincipalAnnotations(dict):
         return annotations
     def __init__(self, context):
         pass
-    def __repr__(self):
+    def __repr__(self): # pragma: no cover
         return "<%s.PrincipalAnnotations object>" % __name__
 
 
-class TestCutCopyPaste(PlacefulSetup, TestCase):
+class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
 
     def setUp(self):
         PlacefulSetup.setUp(self)
         PlacefulSetup.buildFolders(self)
-        ztapi.provideAdapter(IContained, IObjectCopier, ObjectCopier)
-        ztapi.provideAdapter(IContained, IObjectMover, ObjectMover)
-        ztapi.provideAdapter(IContainer, IContainerItemRenamer,
-            ContainerItemRenamer)
+        provideAdapter(IContained, IObjectCopier, ObjectCopier)
+        provideAdapter(IContained, IObjectMover, ObjectMover)
+        provideAdapter(IContainer, IContainerItemRenamer,
+                       ContainerItemRenamer)
 
-        ztapi.provideAdapter(IAnnotations, IPrincipalClipboard,
-                             PrincipalClipboard)
-        ztapi.provideAdapter(Principal, IAnnotations,
-                             PrincipalAnnotations)
+        provideAdapter(IAnnotations, IPrincipalClipboard,
+                       PrincipalClipboard)
+        provideAdapter(Principal, IAnnotations,
+                       PrincipalAnnotations)
 
     def testRename(self):
         container = traverse(self.rootFolder, 'folder1')
@@ -352,7 +356,7 @@ class TestCutCopyPaste(PlacefulSetup, TestCase):
         request.setPrincipal(Principal())
         return Contents(container, request)
 
-class Test(BaseTestContentsBrowserView, TestCase):
+class Test(BaseTestContentsBrowserView, unittest.TestCase):
 
     def _TestView__newContext(self):
         from zope.app.container.sample import SampleContainer
@@ -369,10 +373,4 @@ class Test(BaseTestContentsBrowserView, TestCase):
         return Contents(container, request)
 
 def test_suite():
-    return TestSuite((
-        makeSuite(Test),
-        makeSuite(TestCutCopyPaste),
-        ))
-
-if __name__=='__main__':
-    main(defaultTest='test_suite')
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)

@@ -1,5 +1,6 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
+   xmlns:browser="http://namespaces.zope.org/browser"
    i18n_domain="zope"
    package="zope.app.container"
    >
@@ -7,26 +8,119 @@
   <!-- This file is the equivalent of site.zcml and it is -->
   <!-- used for functional testing setup -->
 
-  <include package="zope.app.zcmlfiles" />
-  <include package="zope.app.container.browser.tests" />
+
+  <include package="zope.component" file="meta.zcml" />
+  <include package="zope.security" file="meta.zcml" />
+  <include package="zope.app.container.browser" file="meta.zcml" />
+  <include package="zope.browserpage" file="meta.zcml" />
+  <include package="zope.app.publication" file="meta.zcml" />
+  <include package="zope.principalregistry" file="meta.zcml" />
+  <include package="zope.publisher" file="meta.zcml" />
+  <include package="zope.browserresource" file="meta.zcml" />
+  <include package="zope.browsermenu" file="meta.zcml" />
+
+  <include package="zope.principalregistry" />
+
+  <include package="zope.dublincore" />
+  <include package="zope.principalannotation" />
+  <include package="zope.annotation" />
+  <include package="zope.traversing" />
+  <include package="zope.traversing.browser" />
+  <include package="zope.location" />
+  <include package="zope.publisher" />
+  <include package="zope.copypastemove" />
+  <include package="zope.container" />
+  <include package="zope.app.appsetup" />
+  <include package="zope.app.basicskin" />
+
+  <include package="zope.app.publication" />
+  <include package="zope.app.pagetemplate" />
   <include package="zope.password" />
+  <include package="zope.browserresource" />
+  <include package="zope.browsermenu" />
+
 
   <include package="zope.securitypolicy" file="meta.zcml" />
   <include package="zope.securitypolicy" />
   <include package="zope.login" />
 
+  <!-- These normally come from zope.app.zcmlfiles/menus.zcml -->
+  <browser:menu
+      id="zmi_views"
+      title="Views"
+      description="Menu for displaying alternate representations of an object"
+      />
+
+  <browser:menu
+      id="zmi_actions"
+      title="Actions"
+      description="Menu for displaying actions to be performed"
+      />
+
+  <browser:menu
+      id="zope.app.container.add"
+      title="Add"
+      description="Menu for objects to be added according to
+                   containment constraints"
+      interface="zope.app.publisher.interfaces.browser.AddMenu"
+      />
+
+  <!-- <include package="zope.app.security" />  -->
+  <browser:defaultView name="index.html" />
+  <!-- These came from zope.app.component for some reason -->
+  <browser:page
+      for="zope.site.interfaces.ISiteManagementFolder"
+      permission="zope.ManageSite"
+      class="zope.app.container.browser.contents.JustContents"
+      name="index.html" attribute="index"
+      />
+  <browser:page
+      for="zope.site.interfaces.IFolder"
+      permission="zope.View"
+      class="zope.app.container.browser.contents.JustContents"
+      name="index.html" attribute="index"
+      />
+  <browser:pages
+      for="zope.site.interfaces.ILocalSiteManager"
+      permission="zope.ManageSite"
+      class="zope.app.container.browser.contents.JustContents"
+      >
+    <browser:page name="index.html" attribute="index" />
+  </browser:pages>
+  <browser:view
+      name="+"
+      menu="zmi_actions" title="Add Site Management Folder"
+      for="zope.site.interfaces.IFolder"
+      permission="zope.ManageSite"
+      class="zope.app.container.browser.adding.Adding"
+      >
+    <browser:page name="index.html" attribute="index"/>
+    <browser:page name="action.html" attribute="action"/>
+  </browser:view>
+
+  <!-- This normally comes from zope.app.folder -->
+  <browser:addMenuItem
+      class="zope.site.folder.Folder"
+      title="Folder"
+      description="Minimal folder"
+      permission="zope.ManageContent"
+      />
+
+
+  <include package="zope.app.container.browser.tests" />
+
   <securityPolicy
       component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
   <role id="zope.Anonymous" title="Everybody"
-                 description="All users have this role implicitly" />
+        description="All users have this role implicitly" />
   <role id="zope.Manager" title="Site Manager" />
 
   <!-- Replace the following directive if you don't want public access -->
   <grant permission="zope.View"
-                  role="zope.Anonymous" />
+         role="zope.Anonymous" />
   <grant permission="zope.dublincore.view"
-                  role="zope.Anonymous" />
+         role="zope.Anonymous" />
 
   <grantAll role="zope.Manager" />
 
@@ -43,5 +137,9 @@
       login="mgr"
       password="mgrpw" />
   <grant role="zope.Manager" principal="zope.mgr" />
+
+  <class class="zope.site.folder.Folder">
+	<allow attributes="items __getitem__ get __contains__ __setitem__" />
+  </class>
 
 </configure>
