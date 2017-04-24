@@ -21,7 +21,7 @@ def read(*rnames):
     with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
         return f.read()
 
-version = '4.0.0.dev0'
+version = '4.0.0'
 
 setup(name='zope.app.container',
       version=version,
