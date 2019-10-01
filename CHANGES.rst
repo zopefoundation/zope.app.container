@@ -9,6 +9,8 @@ CHANGES
 
 - Add support for Python 3.7 and 3.8.
 
+- Update PyPy version.
+
 
 4.0.0 (2017-04-24)
 ------------------
