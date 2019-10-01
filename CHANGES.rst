@@ -5,7 +5,9 @@ CHANGES
 4.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Drop support for Python 3.4.
+
+- Add support for Python 3.7 and 3.8.
 
 
 4.0.0 (2017-04-24)
