@@ -23,6 +23,8 @@ from zope.app.container.find import SimpleIdFindFilter
 from zope.app.container.interfaces import IFind
 
 # Very simple implementation right now
+
+
 class Find(BrowserView):
 
     def findByIds(self, ids):
@@ -36,5 +38,5 @@ class Find(BrowserView):
         result = []
         for object in finder.find([SimpleIdFindFilter(ids)]):
             url = absoluteURL(object, request)
-            result.append({ 'id': getName(object), 'url': url})
+            result.append({'id': getName(object), 'url': url})
         return result

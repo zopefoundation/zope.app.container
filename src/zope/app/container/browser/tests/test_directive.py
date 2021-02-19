@@ -14,20 +14,21 @@
 """'containerView' directive test
 """
 try:
-    from cStringIO import StringIO
+    from cStringIO import StringIO  # pragma: PY2
 except ImportError:
     from io import StringIO
 import doctest
 import pprint
 import re
 
-
+from zope.testing import renormalizing
 from zope.interface import Interface
 from zope.component.interface import provideInterface
 from zope.publisher.interfaces.browser import IBrowserRequest
 
 
 atre = re.compile(' at [0-9a-fA-Fx]+')
+
 
 class Context(object):
     info = ''
@@ -38,7 +39,7 @@ class Context(object):
     def action(self, discriminator, callable, args):
         if discriminator is None:
             if callable is provideInterface:
-                self.actions.append((callable, args[1])) #name is args[0]
+                self.actions.append((callable, args[1]))  # name is args[0]
         else:
             self.actions.append(discriminator)
         self.info = 'info'
@@ -50,7 +51,8 @@ class Context(object):
         r = stream.getvalue()
         return (''.join(atre.split(r))).strip()
 
-class I(Interface):
+
+class Iface(Interface):
     pass
 
 
@@ -69,55 +71,56 @@ def test_containerViews():
     >>> menus.zmi_actions = zmi_actions
 
     >>> context = Context()
-    >>> containerViews(context, for_=I, contents='zope.ManageContent',
+    >>> containerViews(context, for_=Iface, contents='zope.ManageContent',
     ...                add='zope.ManageContent', index='zope.View')
     >>> context
     [('adapter',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
       <InterfaceClass zope.app.menus.zmi_views>,
       u'Contents'),
      (<function provideInterface>,
       <InterfaceClass zope.app.menus.zmi_views>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      (<function provideInterface>,
       <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      ('view',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
       'contents.html',
       <InterfaceClass zope.publisher.interfaces.browser.IBrowserRequest>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      ('view',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
       'index.html',
       <InterfaceClass zope.publisher.interfaces.browser.IBrowserRequest>),
      ('adapter',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
       <InterfaceClass zope.app.menus.zmi_actions>,
       u'Add'),
      (<function provideInterface>,
       <InterfaceClass zope.app.menus.zmi_actions>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      (<function provideInterface>,
       <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      (<function provideInterface>,
       <InterfaceClass zope.interface.Interface>),
      ('view',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
       '+',
       <InterfaceClass zope.interface.Interface>)]
-    """
+    """  # noqa: E501 line too long
+
 
 def test_containerViews_layer():
     """
@@ -130,64 +133,63 @@ def test_containerViews_layer():
     >>> menus.zmi_actions = zmi_actions
 
     >>> context = Context()
-    >>> containerViews(context, for_=I, contents='zope.ManageContent',
+    >>> containerViews(context, for_=Iface, contents='zope.ManageContent',
     ...                add='zope.ManageContent', index='zope.View', layer=ITestLayer)
     >>> context
     [('adapter',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
       <InterfaceClass zope.app.menus.zmi_views>,
       u'Contents'),
      (<function provideInterface>,
       <InterfaceClass zope.app.menus.zmi_views>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      (<function provideInterface>,
       <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      ('view',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
       'contents.html',
       <InterfaceClass zope.publisher.interfaces.browser.IBrowserRequest>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      ('view',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
       'index.html',
       <InterfaceClass zope.publisher.interfaces.browser.IBrowserRequest>),
      ('adapter',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
       <InterfaceClass zope.app.menus.zmi_actions>,
       u'Add'),
      (<function provideInterface>,
       <InterfaceClass zope.app.menus.zmi_actions>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      (<function provideInterface>,
       <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
      (<function provideInterface>,
-      <InterfaceClass zope.app.container.browser.tests.test_directive.I>),
+      <InterfaceClass zope.app.container.browser.tests.test_directive.Iface>),
      (<function provideInterface>,
       <InterfaceClass zope.interface.Interface>),
      ('view',
-      (<InterfaceClass zope.app.container.browser.tests.test_directive.I>,
+      (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
       '+',
       <InterfaceClass zope.interface.Interface>)]
-    """
+    """  # noqa: E501 line too long
 
-from zope.testing import renormalizing
-import re
 
 checker = renormalizing.RENormalizing([
     # Python 3 unicode removed the "u".
     (re.compile("u('.*?')"), r"\1"),
     (re.compile('u(".*?")'), r"\1"),
 ])
+
 
 def test_suite():
     return doctest.DocTestSuite(checker=checker)

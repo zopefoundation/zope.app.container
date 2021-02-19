@@ -47,9 +47,9 @@ from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
 import zope.security.checker
 
+
 @implementer(IAdding, IPublishTraverse)
 class Adding(BrowserView):
-
 
     def add(self, content):
         """See zope.app.container.interfaces.IAdding
@@ -76,10 +76,10 @@ class Adding(BrowserView):
             chooser.checkName(name, content)
 
         container[name] = content
-        self.contentName = name # Set the added object Name
+        self.contentName = name  # Set the added object Name
         return container[name]
 
-    contentName = None # usually set by Adding traverser
+    contentName = None  # usually set by Adding traverser
 
     def nextURL(self):
         """See zope.app.container.interfaces.IAdding"""
@@ -127,7 +127,7 @@ class Adding(BrowserView):
             view_name = type_name
 
         if queryMultiAdapter((self, self.request),
-                                  name=view_name) is not None:
+                             name=view_name) is not None:
             url = "%s/%s=%s" % (
                 absoluteURL(self, self.request), type_name, id)
             self.request.response.redirect(url)
@@ -142,7 +142,7 @@ class Adding(BrowserView):
         #       registered via ZCML and was used via addMenuItem worked
         #       here. (SR)
         factory = getUtility(IFactory, type_name)
-        if not type(factory) is zope.security.checker.Proxy:
+        if not isinstance(factory, zope.security.checker.Proxy):
             factory = LocationProxy(factory, self, type_name)
             factory = zope.security.checker.ProxyFactory(factory)
         content = factory()
@@ -184,7 +184,7 @@ class Adding(BrowserView):
                         if not checkFactory(container, None, factory):
                             continue
                         elif item['extra']['factory'] != item['action']:
-                            item['has_custom_add_view']=True
+                            item['has_custom_add_view'] = True
                 # translate here to have a localized sorting
                 item['title'] = zope.i18n.translate(item['title'],
                                                     context=self.request)
@@ -194,7 +194,7 @@ class Adding(BrowserView):
         collator = queryAdapter(self.request.locale, ICollator)
         if collator is None:
             collator = FallbackCollator(self.request.locale)
-        result.sort(key = lambda x: collator.key(x['title']))
+        result.sort(key=lambda x: collator.key(x['title']))
         return result
 
     def isSingleMenuItem(self):
@@ -202,9 +202,9 @@ class Adding(BrowserView):
         return len(self.addingInfo()) == 1
 
     def hasCustomAddView(self):
-       "This should be called only if there is `singleMenuItem` else return 0"
-       if self.isSingleMenuItem():
-           menu_item = self.addingInfo()[0]
-           if 'has_custom_add_view' in menu_item:
-               return True
-       return False
+        "This should be called only if there is `singleMenuItem` else return 0"
+        if self.isSingleMenuItem():
+            menu_item = self.addingInfo()[0]
+            if 'has_custom_add_view' in menu_item:
+                return True
+        return False

@@ -14,4 +14,4 @@
 """BBB this module moved to zope.container
 """
 
-from zope.container.btree import BTreeContainer # BBB
+from zope.container.btree import BTreeContainer  # BBB

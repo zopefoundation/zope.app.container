@@ -36,6 +36,7 @@ from zope.container.interfaces import IContainer, IContained
 
 from zope.app.container.browser.tests import provideAdapter
 
+
 class BaseTestContentsBrowserView(PlacefulSetup):
     """Base class for testing browser contents.
 
@@ -71,7 +72,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         fc = self._TestView__newView(container)
         info_list = fc.listContentInfo()
 
-        self.assertEquals(len(info_list), 2)
+        self.assertEqual(len(info_list), 2)
 
         ids = [x['id'] for x in info_list]
         self.assertIn('subcontainer', ids)
@@ -104,6 +105,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         from datetime import datetime
         from zope.dublincore.interfaces import IZopeDublinCore
+
         @implementer(IZopeDublinCore)
         class FauxDCAdapter(object):
 
@@ -150,7 +152,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         info_list = fc.listContentInfo()
 
-        self.assertEquals(len(info_list), 2)
+        self.assertEqual(len(info_list), 2)
 
         ids = [x['id'] for x in info_list]
         self.assertIn('subcontainer', ids)
@@ -167,6 +169,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         container['document'] = document
 
         from zope.dublincore.interfaces import IDCDescriptiveProperties
+
         @implementer(IDCDescriptiveProperties)
         class FauxDCDescriptiveProperties(object):
 
@@ -186,7 +189,10 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
             title = property(getTitle, setTitle)
 
-        provideAdapter(IDocument, IDCDescriptiveProperties, FauxDCDescriptiveProperties)
+        provideAdapter(
+            IDocument,
+            IDCDescriptiveProperties,
+            FauxDCDescriptiveProperties)
 
         fc = self._TestView__newView(container)
 
@@ -195,13 +201,13 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         fc.request.form.update({'retitle_id': 'document', 'new_value': 'new'})
         fc.changeTitle()
         events = getEvents()
-        self.assertEquals(dc.title, 'new')
-        self.failIf('title' not in events[-1].descriptions[0].attributes)
-
+        self.assertEqual(dc.title, 'new')
+        self.assertIn('title', events[-1].descriptions[0].attributes)
 
 
 class IDocument(Interface):
     pass
+
 
 @implementer(IDocument)
 class Document(object):
@@ -212,10 +218,12 @@ class Principal(object):
 
     id = 'bob'
 
+
 @implementer(IAnnotations)
 class PrincipalAnnotations(dict):
 
     data = {}
+
     def __new__(class_, context):
         try:
             annotations = class_.data[context.id]
@@ -223,9 +231,11 @@ class PrincipalAnnotations(dict):
             annotations = dict.__new__(class_)
             class_.data[context.id] = annotations
         return annotations
+
     def __init__(self, context):
         pass
-    def __repr__(self): # pragma: no cover
+
+    def __repr__(self):  # pragma: no cover
         return "<%s.PrincipalAnnotations object>" % __name__
 
 
@@ -247,7 +257,7 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
     def testRename(self):
         container = traverse(self.rootFolder, 'folder1')
         fc = self._TestView__newView(container)
-        ids=['document1', 'document2']
+        ids = ['document1', 'document2']
         for id in ids:
             document = Document()
             container[id] = document
@@ -255,13 +265,13 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
                                 'new_value': ['document1_1', 'document2_2']
                                 })
         fc.renameObjects()
-        self.failIf('document1_1' not in container)
-        self.failIf('document1' in container)
+        self.assertIn('document1_1', container)
+        self.assertNotIn('document1', container)
 
     def testCopyPaste(self):
         container = traverse(self.rootFolder, 'folder1')
         fc = self._TestView__newView(container)
-        ids=['document1', 'document2']
+        ids = ['document1', 'document2']
         for id in ids:
             document = Document()
             container[id] = document
@@ -269,10 +279,10 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
         fc.request.form['ids'] = ids
         fc.copyObjects()
         fc.pasteObjects()
-        self.failIf('document1' not in container)
-        self.failIf('document2' not in container)
-        self.failIf('document1-2' not in container)
-        self.failIf('document2-2' not in container)
+        self.assertIn('document1', container)
+        self.assertIn('document2', container)
+        self.assertIn('document1-2', container)
+        self.assertIn('document2-2', container)
 
     def testCopyFolder(self):
         container = traverse(self.rootFolder, 'folder1')
@@ -281,8 +291,8 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
         fc.request.form['ids'] = ids
         fc.copyObjects()
         fc.pasteObjects()
-        self.failIf('folder1_1' not in container)
-        self.failIf('folder1_1-2' not in container)
+        self.assertIn('folder1_1', container)
+        self.assertIn('folder1_1-2', container)
 
     def testCopyFolder2(self):
         container = traverse(self.rootFolder, '/folder1/folder1_1')
@@ -291,8 +301,8 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
         fc.request.form['ids'] = ids
         fc.copyObjects()
         fc.pasteObjects()
-        self.failIf('folder1_1_1' not in container)
-        self.failIf('folder1_1_1-2' not in container)
+        self.assertIn('folder1_1_1', container)
+        self.assertIn('folder1_1_1-2', container)
 
     def testCopyFolder3(self):
         container = traverse(self.rootFolder, '/folder1/folder1_1')
@@ -303,21 +313,21 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
         fc.request.form['ids'] = ids
         fc.copyObjects()
         tg.pasteObjects()
-        self.failIf('folder1_1_1' not in container)
-        self.failIf('folder1_1_1' not in target)
+        self.assertIn('folder1_1_1', container)
+        self.assertIn('folder1_1_1', target)
 
     def testCutPaste(self):
         container = traverse(self.rootFolder, 'folder1')
         fc = self._TestView__newView(container)
-        ids=['document1', 'document2']
+        ids = ['document1', 'document2']
         for id in ids:
             document = Document()
             container[id] = document
         fc.request.form['ids'] = ids
         fc.cutObjects()
         fc.pasteObjects()
-        self.failIf('document1' not in container)
-        self.failIf('document2' not in container)
+        self.assertIn('document1', container)
+        self.assertIn('document2', container)
 
     def testCutFolder(self):
         container = traverse(self.rootFolder, 'folder1')
@@ -326,7 +336,7 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
         fc.request.form['ids'] = ids
         fc.cutObjects()
         fc.pasteObjects()
-        self.failIf('folder1_1' not in container)
+        self.assertIn('folder1_1', container)
 
     def testCutFolder2(self):
         container = traverse(self.rootFolder, '/folder1/folder1_1')
@@ -335,7 +345,7 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
         fc.request.form['ids'] = ids
         fc.cutObjects()
         fc.pasteObjects()
-        self.failIf('folder1_1_1' not in container)
+        self.assertIn('folder1_1_1', container)
 
     def testCutFolder3(self):
         container = traverse(self.rootFolder, '/folder1/folder1_1')
@@ -346,8 +356,8 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
         fc.request.form['ids'] = ids
         fc.cutObjects()
         tg.pasteObjects()
-        self.failIf('folder1_1_1' in container)
-        self.failIf('folder1_1_1' not in target)
+        self.assertNotIn('folder1_1_1', container)
+        self.assertIn('folder1_1_1', target)
 
     def _TestView__newView(self, container):
         from zope.app.container.browser.contents import Contents
@@ -355,6 +365,7 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
         request = TestRequest()
         request.setPrincipal(Principal())
         return Contents(container, request)
+
 
 class Test(BaseTestContentsBrowserView, unittest.TestCase):
 
@@ -371,6 +382,7 @@ class Test(BaseTestContentsBrowserView, unittest.TestCase):
         request = TestRequest()
         request.setPrincipal(Principal())
         return Contents(container, request)
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

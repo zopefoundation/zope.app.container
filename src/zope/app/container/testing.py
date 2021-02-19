@@ -1,3 +1,7 @@
+from zope.traversing.interfaces import ITraversable
+from zope.container.traversal import ContainerTraversable
+from zope.container.interfaces import ISimpleReadContainer
+from zope.site.folder import Folder, rootFolder
 from zope.component.testing import PlacelessSetup
 
 from zope.container.testing import setUp as cSetUp, tearDown as cTearDown
@@ -12,7 +16,7 @@ AppContainerLayer = BrowserLayer(
     zope.app.container,
     allowTearDown=True)
 
-from zope.site.folder import Folder, rootFolder
+
 def buildSampleFolderTree():
     # set up a reasonably complex folder structure
     #
@@ -44,17 +48,15 @@ def buildSampleFolderTree():
          u"\N{CYRILLIC SMALL LETTER PE}"
          u"\N{CYRILLIC SMALL LETTER KA}"
          u"\N{CYRILLIC SMALL LETTER A}3"][
-         u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER A}"
-         u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER KA}"
-         u"\N{CYRILLIC SMALL LETTER A}3_1"] = Folder()
+        u"\N{CYRILLIC SMALL LETTER PE}"
+        u"\N{CYRILLIC SMALL LETTER A}"
+        u"\N{CYRILLIC SMALL LETTER PE}"
+        u"\N{CYRILLIC SMALL LETTER KA}"
+        u"\N{CYRILLIC SMALL LETTER A}3_1"] = Folder()
 
     return root
 
-from zope.traversing.interfaces import ITraversable
-from zope.container.interfaces import ISimpleReadContainer
-from zope.container.traversal import ContainerTraversable
+
 def setUpTraversal():
     from zope.traversing.testing import setUp
     setUp()
