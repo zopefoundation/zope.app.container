@@ -228,12 +228,11 @@ class Test(BrowserTestCase):
         self.assertEqual(dc.title, 'test title')
 
     def test_pasteable_for_deleted_clipboard_item(self):
-        """Tests Paste button visibility when copied item is deleted."""
-
+        """Test Paste button visibility when copied item is deleted."""
         root = self.getRootFolder()
         root['foo'] = File()    # item to be copied/deleted
-        root['bar'] = File()    # ensures that there's always an item in
-        # the collection view
+        # Ensure that there's always an item in the collection view:
+        root['bar'] = File()
         transaction.commit()
 
         # confirm foo in contents, Copy button visible, Paste not visible
