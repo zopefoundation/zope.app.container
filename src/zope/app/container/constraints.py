@@ -26,13 +26,3 @@ from zope.container.constraints import (
     ContainerTypesConstraint,
     containers
 )
-
-
-
-
-
-
-
-
-
-

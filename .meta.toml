@@ -1,0 +1,32 @@
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/pure-python
+[meta]
+template = "pure-python"
+commit-id = "519ffffe1b360ede58b32a375b5f8b26059d8016"
+
+[python]
+with-appveyor = false
+with-pypy = true
+with-legacy-python = true
+with-docs = false
+with-sphinx-doctests = false
+
+[coverage]
+fail-under = 90
+
+[flake8]
+additional-config = [
+    "# F401 imported but unused",
+    "per-file-ignores =",
+    "    src/zope/app/container/contained.py: F401",
+    "    src/zope/app/container/directory.py: F401",
+    "    src/zope/app/container/constraints.py: F401",
+    "    src/zope/app/container/ordered.py: F401",
+    "    src/zope/app/container/find.py: F401",
+    "    src/zope/app/container/sample.py: F401",
+    "    src/zope/app/container/dependency.py: F401",
+    "    src/zope/app/container/size.py: F401",
+    "    src/zope/app/container/btree.py: F401",
+    "    src/zope/app/container/traversal.py: F401",
+    "    src/zope/app/container/interfaces.py: F401",
+    ]

@@ -13,9 +13,6 @@
 ##############################################################################
 """View Class for the Container's Contents view.
 """
-__docformat__ = 'restructuredtext'
-
-import six
 from six.moves import urllib_parse as urllib
 
 from zope.component import queryMultiAdapter
@@ -41,6 +38,7 @@ from zope.app.container.browser.adding import Adding
 from zope.app.container.interfaces import IContainer, DuplicateIDError
 from zope.app.container.interfaces import IContainerNamesContainer
 
+
 class Contents(BrowserView):
 
     __used_for__ = IContainer
@@ -54,7 +52,7 @@ class Contents(BrowserView):
     def listContentInfo(self):
         request = self.request
 
-        if  "container_cancel_button" in request:
+        if "container_cancel_button" in request:
             if "type_name" in request:
                 del request.form['type_name']
             if "rename_ids" in request and "new_value" in request:
@@ -68,12 +66,12 @@ class Contents(BrowserView):
             self.error = _("You didn't specify any ids to rename.")
         elif "container_add_button" in request:
             if "single_type_name" in request \
-                   and "single_new_value" in request:
+                    and "single_new_value" in request:
                 request.form['type_name'] = request['single_type_name']
                 request.form['new_value'] = request['single_new_value']
                 self.addObject()
             elif 'single_type_name' in request \
-                     and 'single_new_value' not in request:
+                    and 'single_new_value' not in request:
                 request.form['type_name'] = request['single_type_name']
                 request.form['new_value'] = ""
                 self.addObject()
@@ -110,12 +108,12 @@ class Contents(BrowserView):
         request = self.request
 
         self.specialButtons = (
-                 'type_name' in request or
-                 'rename_ids' in request or
-                 ('container_rename_button' in request
-                  and request.get("ids")) or
-                 'retitle_id' in request
-                 )
+            'type_name' in request or
+            'rename_ids' in request or
+            ('container_rename_button' in request
+             and request.get("ids")) or
+            'retitle_id' in request
+        )
         self.normalButtons = not self.specialButtons
 
         info = [self._extractContentInfo(x) for x in self.context.items()]
@@ -127,14 +125,12 @@ class Contents(BrowserView):
         self.supportsRename = (
             self.supportsCut and
             not IContainerNamesContainer.providedBy(self.context)
-            )
+        )
 
         return info
 
-
     def _extractContentInfo(self, item):
         request = self.request
-
 
         rename_ids = {}
         if "container_rename_button" in request:
@@ -143,7 +139,6 @@ class Contents(BrowserView):
         elif "rename_ids" in request:
             for rename_id in request.get('rename_ids', ()):
                 rename_ids[rename_id] = rename_id
-
 
         retitle_id = request.get('retitle_id')
 
@@ -155,7 +150,6 @@ class Contents(BrowserView):
         info['url'] = urllib.quote(id.encode('utf-8'))
         info['rename'] = rename_ids.get(id)
         info['retitle'] = id == retitle_id
-
 
         zmi_icon = queryMultiAdapter((obj, self.request), name='zmi_icon')
         if zmi_icon is None:
@@ -185,7 +179,6 @@ class Contents(BrowserView):
         else:
             info['retitleable'] = 0
             info['plaintitle'] = 1
-
 
         sized_adapter = ISized(obj, None)
         if sized_adapter is not None:
@@ -333,7 +326,6 @@ class Contents(BrowserView):
         clipboard.clearContents()
         clipboard.addItems('cut', items)
 
-
     def pasteable(self):
         """Decide if there is anything to paste
         """
@@ -360,7 +352,6 @@ class Contents(BrowserView):
                     raise
 
         return True
-
 
     def pasteObjects(self):
         """Paste ojects in the user clipboard to the container
@@ -406,8 +397,8 @@ class Contents(BrowserView):
             # TODO Can't we add a 'copy_of' or something as a prefix
             # instead of raising an exception ?
             raise UserError(
-                _("The given name(s) %s is / are already being used" %(
-                str(not_pasteable_ids))))
+                _("The given name(s) %s is / are already being used" % (
+                    str(not_pasteable_ids))))
 
     def hasClipboardContents(self):
         """Interogate the ``PrinicipalAnnotation`` to see if clipboard
@@ -440,6 +431,7 @@ class Contents(BrowserView):
             return ''
 
         return self._index()
+
 
 class JustContents(Contents):
     """Like Contents, but does't delegate to item named index.html"""

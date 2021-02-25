@@ -57,7 +57,7 @@ class IContainerViews(Interface):
         skin specific views in a layer named after the skin. If the 'layer'
         attribute is not supplied, it defaults to 'default'."""),
         required=False
-        )
+    )
 
 
 def containerViews(_context, for_, contents=None, add=None, index=None,
@@ -65,7 +65,7 @@ def containerViews(_context, for_, contents=None, add=None, index=None,
     """Set up container views for a given content type."""
 
     if for_ is None:
-            raise ValueError("A for interface must be specified.")
+        raise ValueError("A for interface must be specified.")
 
     if contents is not None:
         from zope.app.menus import zmi_views
@@ -82,11 +82,18 @@ def containerViews(_context, for_, contents=None, add=None, index=None,
         viewObj = view(_context, name='+', layer=layer, for_=for_,
                        permission=add, class_=Adding)
         menuItemDirective(
-            _context, zmi_actions, for_, '+', _('Add'), permission=add, layer=layer,
-            filter='python:modules["zope.app.container.browser.metaconfigure"].menuFilter(context, request)')
+            _context,
+            zmi_actions,
+            for_,
+            '+',
+            _('Add'),
+            permission=add,
+            layer=layer,
+            filter='python:modules["zope.app.container.browser.metaconfigure"].menuFilter(context, request)')  # noqa: E501 line too long
         viewObj.page(_context, name='index.html', attribute='index')
         viewObj.page(_context, name='action.html', attribute='action')
         viewObj()
+
 
 def menuFilter(context, request):
     '''This is a function that filters the "Add" menu item'''

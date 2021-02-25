@@ -32,49 +32,76 @@ from zope.app.wsgi.testlayer import http
 from zope.app.container.browser.tests.test_contents import provideAdapter
 from zope.app.container.browser.tests import BrowserTestCase
 
+
 class IImmovable(Interface):
     """Marker interface for immovable objects."""
 
+
 class IUncopyable(Interface):
     """Marker interface for uncopyable objects."""
+
 
 @implementer(IAttributeAnnotatable)
 class File(Persistent):
     pass
 
+
 @implementer(IImmovable)
 class ImmovableFile(File):
     pass
 
+
 @implementer(IUncopyable)
 class UncopyableFile(File):
     pass
+
 
 class ObjectNonCopier(copypastemove.ObjectCopier):
 
     def copyable(self):
         return False
 
+
 class ObjectNonMover(copypastemove.ObjectMover):
 
     def moveable(self):
         return False
+
 
 @implementer(IReadContainer, IContained)
 class ReadOnlyContainer(Persistent):
 
     __parent__ = __name__ = None
 
-    def __init__(self): self.data = {}
-    def keys(self): return self.data.keys()
-    def __getitem__(self, key): return self.data[key]
-    def get(self, key, default=None): return self.data.get(key, default)
-    def __iter__(self): return iter(self.data)
-    def values(self): return self.data.values()
-    def __len__(self): return len(self.data)
-    def items(self): return self.data.items()
-    def __contains__(self, key): return key in self.data
-    def has_key(self, key): return self.data.has_key(key)
+    def __init__(self):
+        self.data = {}
+
+    def keys(self):
+        return self.data.keys()
+
+    def __getitem__(self, key):
+        return self.data[key]
+
+    def get(self, key, default=None):
+        return self.data.get(key, default)
+
+    def __iter__(self):
+        return iter(self.data)
+
+    def values(self):
+        return self.data.values()
+
+    def __len__(self):
+        return len(self.data)
+
+    def items(self):
+        return self.data.items()
+
+    def __contains__(self, key):
+        return key in self.data
+
+    def has_key(self, key):
+        return key in self.data
 
 
 class Test(BrowserTestCase):
@@ -103,7 +130,6 @@ class Test(BrowserTestCase):
 
         root._p_jar.sync()
         self.assertIn('foo', root)
-
 
     def test_inplace_rename_multiple(self):
         root = self.getRootFolder()
@@ -144,7 +170,6 @@ class Test(BrowserTestCase):
         root._p_jar.sync()
         self.assertNotIn('foo', root)
         self.assertIn('bar', root)
-
 
     def test_inplace_rename_single(self):
         root = self.getRootFolder()
@@ -202,41 +227,48 @@ class Test(BrowserTestCase):
         dc = IZopeDublinCore(root['foo'])
         self.assertEqual(dc.title, 'test title')
 
-
     def test_pasteable_for_deleted_clipboard_item(self):
-        """Tests Paste button visibility when copied item is deleted."""
-
+        """Test Paste button visibility when copied item is deleted."""
         root = self.getRootFolder()
         root['foo'] = File()    # item to be copied/deleted
-        root['bar'] = File()    # ensures that there's always an item in
-                                # the collection view
+        # Ensure that there's always an item in the collection view:
+        root['bar'] = File()
         transaction.commit()
 
         # confirm foo in contents, Copy button visible, Paste not visible
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 200)
-        self.assertIn('<a href="foo/@@SelectedManagementView.html">foo</a>', response.text)
-        self.assertIn('<input type="submit" name="container_copy_button"', response.text)
-        self.assertNotIn('<input type="submit" name="container_paste_button"', response.text)
+        self.assertIn(
+            '<a href="foo/@@SelectedManagementView.html">foo</a>',
+            response.text)
+        self.assertIn(
+            '<input type="submit" name="container_copy_button"',
+            response.text)
+        self.assertNotIn(
+            '<input type="submit" name="container_paste_button"',
+            response.text)
 
         # copy foo - confirm Paste visible
         response = self.publish('/@@contents.html', basic='mgr:mgrpw', form={
-            'ids:list' : ('foo',),
-            'container_copy_button' : '' })
+            'ids:list': ('foo',),
+            'container_copy_button': ''})
         self.assertEqual(response.status_int, 302)
         self.assertEqual(response.headers.get('Location'),
-            'http://localhost/@@contents.html')
+                         'http://localhost/@@contents.html')
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 200)
-        self.assertIn('<input type="submit" name="container_paste_button"', response.text)
+        self.assertIn(
+            '<input type="submit" name="container_paste_button"',
+            response.text)
 
         # delete foo -> nothing valid to paste -> Paste should not be visible
         del root['foo']
         transaction.commit()
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 200)
-        self.assertNotIn('<input type="submit" name="container_paste_button"', response.text)
-
+        self.assertNotIn(
+            '<input type="submit" name="container_paste_button"',
+            response.text)
 
     def test_paste_for_deleted_clipboard_item(self):
         """Tests paste operation when one of two copied items is deleted."""
@@ -249,32 +281,44 @@ class Test(BrowserTestCase):
         # confirm foo/bar in contents, Copy button visible, Paste not visible
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 200)
-        self.assertIn('<a href="foo/@@SelectedManagementView.html">foo</a>', response.text)
-        self.assertIn('<a href="bar/@@SelectedManagementView.html">bar</a>', response.text)
-        self.assertIn('<input type="submit" name="container_copy_button"', response.text)
-        self.assertNotIn('<input type="submit" name="container_paste_button"', response.text)
+        self.assertIn(
+            '<a href="foo/@@SelectedManagementView.html">foo</a>',
+            response.text)
+        self.assertIn(
+            '<a href="bar/@@SelectedManagementView.html">bar</a>',
+            response.text)
+        self.assertIn(
+            '<input type="submit" name="container_copy_button"',
+            response.text)
+        self.assertNotIn(
+            '<input type="submit" name="container_paste_button"',
+            response.text)
 
         # copy foo and bar - confirm Paste visible
         response = self.publish('/@@contents.html', basic='mgr:mgrpw', form={
-            'ids' : ('foo', 'bar'),
-            'container_copy_button' : '' })
+            'ids': ('foo', 'bar'),
+            'container_copy_button': ''})
         self.assertEqual(response.status_int, 302)
         self.assertEqual(response.headers.get('Location'),
-            'http://localhost/@@contents.html')
+                         'http://localhost/@@contents.html')
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 200)
-        self.assertIn('<input type="submit" name="container_paste_button"', response.text)
+        self.assertIn(
+            '<input type="submit" name="container_paste_button"',
+            response.text)
 
         # delete only foo -> bar still available -> Paste should be visible
         del root['foo']
         transaction.commit()
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 200)
-        self.assertIn('<input type="submit" name="container_paste_button"', response.text)
+        self.assertIn(
+            '<input type="submit" name="container_paste_button"',
+            response.text)
 
         # paste clipboard contents - only bar should be copied
         response = self.publish('/@@contents.html', basic='mgr:mgrpw', form={
-            'container_paste_button' : '' })
+            'container_paste_button': ''})
         self.assertEqual(response.status_int, 302)
         self.assertEqual(response.headers.get('Location'),
                          'http://localhost/@@contents.html')
@@ -336,8 +380,8 @@ class Test(BrowserTestCase):
         # decoded before it ever gets to _decode, arriving as 'voill?'.
 
         # This is most likely a mismatch
-        # somewhere in the webtest.TestApp/zope.app.wsgi.testlayer/zope.publisher
-        # stack.
+        # somewhere in the
+        # webtest.TestApp/zope.app.wsgi.testlayer/zope.publisher stack.
 
         # create a file with an accentuated unicode name
         root = self.getRootFolder()
@@ -373,6 +417,7 @@ def test_suite():
     suite = unittest.TestSuite()
     Test.layer = AppContainerLayer
     suite.addTest(unittest.makeSuite(Test))
+
     def _http(query_str, *args, **kwargs):
         wsgi_app = AppContainerLayer.make_wsgi_app()
         # Strip leading \n

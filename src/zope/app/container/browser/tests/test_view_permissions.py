@@ -27,6 +27,7 @@ from zope.securitypolicy.interfaces import IRolePermissionManager
 from zope.app.container.testing import AppContainerLayer
 from zope.app.container.browser.tests import BrowserTestCase
 
+
 class Tests(BrowserTestCase):
 
     def test_default_view_permissions(self):
@@ -41,7 +42,7 @@ class Tests(BrowserTestCase):
         transaction.commit()
 
         response = self.publish('/')
-        self.assertEquals(response.status_int, 200)
+        self.assertEqual(response.status_int, 200)
         body = response.text
 
         # confirm we can see the file name
@@ -86,7 +87,7 @@ class Tests(BrowserTestCase):
         transaction.commit()
 
         response = self.publish('/')
-        self.assertEquals(response.status_int, 200)
+        self.assertEqual(response.status_int, 200)
         body = response.text
 
         # confirm we can see the file name

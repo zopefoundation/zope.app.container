@@ -13,24 +13,25 @@
 ##############################################################################
 """Adding implementation tests
 """
+from zope.testing import renormalizing
+import re
 import doctest
 import unittest
 
 import zope.interface
 import zope.security.checker
-from zope.component.interfaces import IFactory
-from zope.component.interfaces import ComponentLookupError
-from zope.interface import implementer, Interface, directlyProvides
-from zope.publisher.browser import TestRequest
-from zope.publisher.interfaces.browser import IBrowserRequest
-from zope.publisher.browser import BrowserView
 from zope.browsermenu.interfaces import AddMenu
 from zope.browsermenu.interfaces import IMenuItemType, IBrowserMenu
+from zope.component.interfaces import IFactory
+from zope.interface import implementer, Interface, directlyProvides
+from zope.interface.interfaces import ComponentLookupError
+from zope.publisher.browser import BrowserView
+from zope.publisher.browser import TestRequest
+from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.browsermenu.menu import BrowserMenuItem, BrowserMenu
 from zope.security.interfaces import ForbiddenAttribute
 from zope.exceptions.interfaces import UserError
 from zope.traversing.api import getParent
-from zope.traversing.browser import AbsoluteURL
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.browser.interfaces import IAbsoluteURL
 from zope.traversing.interfaces import IContainmentRoot
@@ -38,7 +39,6 @@ from zope.traversing.interfaces import IContainmentRoot
 from zope.app.testing import ztapi
 from zope.app.testing.placelesssetup import PlacelessSetup, setUp, tearDown
 from zope.app.container.interfaces import IAdding
-from zope.app.container.interfaces import IObjectAddedEvent
 from zope.app.container.interfaces import IContainerNamesContainer
 from zope.app.container.interfaces import INameChooser
 from zope.app.container.interfaces import IContainer
@@ -46,12 +46,15 @@ from zope.app.container.contained import contained
 from zope.app.container.browser.adding import Adding
 from zope.app.container.sample import SampleContainer
 
+
 @implementer(IContainmentRoot)
 class Root(object):
     pass
 
+
 class Container(SampleContainer):
     pass
+
 
 class CreationView(BrowserView):
 
@@ -65,7 +68,6 @@ class Content(object):
 
 @implementer(IFactory)
 class Factory(object):
-
 
     title = ''
     description = ''
@@ -86,18 +88,21 @@ class AbsoluteURL(BrowserView):
 
     __call__ = __str__
 
+
 def defineMenuItem(menuItemType, for_, action, title=u'', extra=None):
     newclass = type(title, (BrowserMenuItem,),
-                    {'title':title, 'action':action,
-                     '_for': for_, 'extra':extra})
+                    {'title': title, 'action': action,
+                     '_for': for_, 'extra': extra})
     zope.interface.classImplements(newclass, menuItemType)
-    ztapi.provideAdapter((for_, IBrowserRequest), menuItemType, newclass, title)
+    ztapi.provideAdapter((for_, IBrowserRequest),
+                         menuItemType, newclass, title)
+
 
 def registerAddMenu():
-  ztapi.provideUtility(IMenuItemType, AddMenu, 'zope.app.container.add')
-  ztapi.provideUtility(IBrowserMenu,
-                       BrowserMenu('zope.app.container.add', u'', u''),
-                       'zope.app.container.add')
+    ztapi.provideUtility(IMenuItemType, AddMenu, 'zope.app.container.add')
+    ztapi.provideUtility(IBrowserMenu,
+                         BrowserMenu('zope.app.container.add', u'', u''),
+                         'zope.app.container.add')
 
 
 class Test(PlacelessSetup, unittest.TestCase):
@@ -129,7 +134,7 @@ class Test(PlacelessSetup, unittest.TestCase):
         ztapi.browserView(IAdding, "Thing", CreationView)
 
         self.assertEqual(adding.contentName, None)
-        view = adding.publishTraverse(request, 'Thing=')
+        adding.publishTraverse(request, 'Thing=')
         self.assertEqual(adding.contentName, '')
 
     def testAction(self):
@@ -162,7 +167,7 @@ class Test(PlacelessSetup, unittest.TestCase):
 
         # bad type_name
         self.assertRaises(ComponentLookupError, adding.action,
-            type_name='***', id='bar')
+                          type_name='***', id='bar')
 
         # alternative add - id is provided internally instead of from user
         adding.nameAllowed = lambda: False
@@ -180,7 +185,6 @@ class Test(PlacelessSetup, unittest.TestCase):
         adding.contentName = None
         adding.action(type_name='foo')
         self.assertIn('Content', container)
-
 
     def test_action(self):
         container = Container()
@@ -273,6 +277,7 @@ def test_constraint_driven_addingInfo():
     >>> items[2]['title']
     u'item3'
     """
+
 
 def test_constraint_driven_add():
     """
@@ -374,7 +379,6 @@ def test_nameAllowed():
     """
 
 
-
 def test_chooseName():
     """If user don't enter name, pick one
 
@@ -416,7 +420,6 @@ def test_chooseName():
     >>> obj is o
     True
     """
-
 
 
 def test_SingleMenuItem_and_CustomAddView_NonICNC():
@@ -474,6 +477,7 @@ def test_SingleMenuItem_and_CustomAddView_NonICNC():
     True
 
     """
+
 
 def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
     """
@@ -533,6 +537,7 @@ def test_SingleMenuItem_and_NoCustomAddView_NonICNC():
 
     """
 
+
 def test_isSingleMenuItem_with_ICNC():
     """
     This test checks for whether there is a single content that can be added
@@ -578,18 +583,19 @@ def test_isSingleMenuItem_with_ICNC():
 
     """
 
-from zope.testing import renormalizing
-import re
+
 checker = renormalizing.RENormalizing([
     (re.compile("u('.*?')"), r"\1"),
     (re.compile('u(".*?")'), r"\1"),
     # Python 3 adds module name to exceptions.
     (re.compile('zope.interface.exceptions.Invalid'), 'Invalid'),
 ])
+
+
 def test_suite():
     return unittest.TestSuite((
         unittest.defaultTestLoader.loadTestsFromName(__name__),
         doctest.DocTestSuite(setUp=setUp,
                              tearDown=tearDown,
                              checker=checker),
-        ))
+    ))
