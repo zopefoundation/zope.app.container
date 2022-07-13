@@ -54,7 +54,7 @@ from zope.app.container.sample import SampleContainer
 
 
 @implementer(IContainmentRoot)
-class Root(object):
+class Root:
     pass
 
 
@@ -68,12 +68,12 @@ class CreationView(BrowserView):
         return 'been there, done that'
 
 
-class Content(object):
+class Content:
     pass
 
 
 @implementer(IFactory)
-class Factory(object):
+class Factory:
 
     title = ''
     description = ''
@@ -95,7 +95,7 @@ class AbsoluteURL(BrowserView):
     __call__ = __str__
 
 
-def defineMenuItem(menuItemType, for_, action, title=u'', extra=None):
+def defineMenuItem(menuItemType, for_, action, title='', extra=None):
     newclass = type(title, (BrowserMenuItem,),
                     {'title': title, 'action': action,
                      '_for': for_, 'extra': extra})
@@ -107,14 +107,14 @@ def defineMenuItem(menuItemType, for_, action, title=u'', extra=None):
 def registerAddMenu():
     ztapi.provideUtility(IMenuItemType, AddMenu, 'zope.app.container.add')
     ztapi.provideUtility(IBrowserMenu,
-                         BrowserMenu('zope.app.container.add', u'', u''),
+                         BrowserMenu('zope.app.container.add', '', ''),
                          'zope.app.container.add')
 
 
 class Test(PlacelessSetup, unittest.TestCase):
 
     def setUp(self):
-        super(Test, self).setUp()
+        super().setUp()
 
     def test(self):
         container = Container()

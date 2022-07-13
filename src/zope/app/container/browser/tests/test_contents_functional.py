@@ -112,7 +112,7 @@ class Test(BrowserTestCase):
         response = self.publish(
             '/@@contents.html',
             basic='mgr:mgrpw',
-            form={'type_name': u'BrowserAdd__zope.site.folder.Folder'})
+            form={'type_name': 'BrowserAdd__zope.site.folder.Folder'})
         body = response.unicode_normal_body
         self.assertIn('type="hidden" name="type_name"', body)
         self.assertIn('input name="new_value"', body)
@@ -122,7 +122,7 @@ class Test(BrowserTestCase):
         response = self.publish(
             '/@@contents.html',
             basic='mgr:mgrpw',
-            form={'type_name': u'BrowserAdd__zope.site.folder.Folder',
+            form={'type_name': 'BrowserAdd__zope.site.folder.Folder',
                   'new_value': 'foo'})
         self.assertEqual(response.status_int, 302)
         self.assertEqual(response.headers.get('Location'),
@@ -141,7 +141,7 @@ class Test(BrowserTestCase):
 
         response = self.publish('/@@contents.html',
                                 basic='mgr:mgrpw',
-                                form={'container_rename_button': u''})
+                                form={'container_rename_button': ''})
         body = response.unicode_normal_body
         self.assertNotIn('input name="new_value:list"', body)
         self.assertNotIn('type="submit" name="container_cancel_button"', body)
@@ -152,7 +152,7 @@ class Test(BrowserTestCase):
 
         response = self.publish('/@@contents.html',
                                 basic='mgr:mgrpw',
-                                form={'container_rename_button': u'',
+                                form={'container_rename_button': '',
                                       'ids:list': ['foo']})
         body = response.unicode_normal_body
         self.assertIn('input name="new_value:list"', body)
@@ -207,7 +207,7 @@ class Test(BrowserTestCase):
 
         response = self.publish('/@@contents.html',
                                 basic='mgr:mgrpw',
-                                form={'retitle_id': u'foo'})
+                                form={'retitle_id': 'foo'})
         body = ' '.join(response.text.split())
         self.assertIn('type="hidden" name="retitle_id"', body)
         self.assertIn('input name="new_value"', body)
@@ -216,8 +216,8 @@ class Test(BrowserTestCase):
 
         response = self.publish('/@@contents.html',
                                 basic='mgr:mgrpw',
-                                form={'retitle_id': u'foo',
-                                      'new_value': u'test title'})
+                                form={'retitle_id': 'foo',
+                                      'new_value': 'test title'})
         self.assertEqual(response.status_int, 302)
         self.assertEqual(response.headers.get('Location'),
                          'http://localhost/@@contents.html')
@@ -343,8 +343,8 @@ class Test(BrowserTestCase):
         transaction.commit()
         response = self.publish('/@@contents.html',
                                 basic='mgr:mgrpw',
-                                form={'ids:list': [u'uncopyable'],
-                                      'container_copy_button': u'Copy'})
+                                form={'ids:list': ['uncopyable'],
+                                      'container_copy_button': 'Copy'})
         self.assertEqual(response.status_int, 200)
         body = response.text
         self.assertIn("cannot be copied", body)
@@ -358,8 +358,8 @@ class Test(BrowserTestCase):
         transaction.commit()
         response = self.publish('/@@contents.html',
                                 basic='mgr:mgrpw',
-                                form={'ids:list': [u'immovable'],
-                                      'container_cut_button': u'Cut'})
+                                form={'ids:list': ['immovable'],
+                                      'container_cut_button': 'Cut'})
         self.assertEqual(response.status_int, 200)
         body = response.text
         self.assertIn("cannot be moved", body)
@@ -385,7 +385,7 @@ class Test(BrowserTestCase):
 
         # create a file with an accentuated unicode name
         root = self.getRootFolder()
-        root[u'voil\xe0'] = File()
+        root['voil\xe0'] = File()
         transaction.commit()
 
         # copy the object
@@ -393,7 +393,7 @@ class Test(BrowserTestCase):
             '/@@contents.html',
             basic='mgr:mgrpw',
             form={
-                'ids:list': u'voil\xe0'.encode('utf-8'),
+                'ids:list': 'voil\xe0'.encode(),
                 'container_copy_button': '',
             },
             headers={
@@ -407,7 +407,7 @@ class Test(BrowserTestCase):
         self.assertEqual(response.status_int, 200)
 
         # delete the object
-        del root[u'voil\xe0']
+        del root['voil\xe0']
         transaction.commit()
         response = self.publish('/@@contents.html', basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 200)

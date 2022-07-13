@@ -20,7 +20,7 @@ class BrowserTestCase(unittest.TestCase):
         return self.layer.getRootFolder()
 
     def setUp(self):
-        super(BrowserTestCase, self).setUp()
+        super().setUp()
         self._testapp = TestApp(self.layer.make_wsgi_app())
         # Typically this would be done by zope.app.principalannotation's
         # bootstrap.zcml but we don't have a dep on that.
