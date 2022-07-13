@@ -13,7 +13,5 @@
 """
 
 # BBB
-from zope.container.directory import (
-    noop,
-    Cloner
-)
+from zope.container.directory import Cloner
+from zope.container.directory import noop

@@ -17,14 +17,15 @@ try:
     from cStringIO import StringIO  # pragma: PY2
 except ImportError:
     from io import StringIO
+
 import doctest
 import pprint
 import re
 
-from zope.testing import renormalizing
-from zope.interface import Interface
 from zope.component.interface import provideInterface
+from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.testing import renormalizing
 
 
 atre = re.compile(' at [0-9a-fA-Fx]+')

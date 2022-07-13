@@ -16,7 +16,5 @@
 """
 
 # BBB
-from zope.app.dependable.dependency import (
-    exception_msg,
-    CheckDependency
-)
+from zope.app.dependable.dependency import CheckDependency
+from zope.app.dependable.dependency import exception_msg

@@ -1,16 +1,16 @@
-from zope.traversing.interfaces import ITraversable
-from zope.container.traversal import ContainerTraversable
-from zope.container.interfaces import ISimpleReadContainer
-from zope.site.folder import Folder, rootFolder
-from zope.component.testing import PlacelessSetup
-
-from zope.container.testing import setUp as cSetUp, tearDown as cTearDown
-
-from zope.testing.cleanup import tearDown as tTearDown
-
 from zope.app.wsgi.testlayer import BrowserLayer
+from zope.component.testing import PlacelessSetup
+from zope.container.interfaces import ISimpleReadContainer
+from zope.container.testing import setUp as cSetUp
+from zope.container.testing import tearDown as cTearDown
+from zope.container.traversal import ContainerTraversable
+from zope.site.folder import Folder
+from zope.site.folder import rootFolder
+from zope.testing.cleanup import tearDown as tTearDown
+from zope.traversing.interfaces import ITraversable
 
 import zope.app.container
+
 
 AppContainerLayer = BrowserLayer(
     zope.app.container,

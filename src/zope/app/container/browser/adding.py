@@ -20,12 +20,7 @@ factory screen.
 __docformat__ = 'restructuredtext'
 
 
-from zope.app.container.constraints import checkFactory
-from zope.app.container.constraints import checkObject
-from zope.app.container.i18n import ZopeMessageFactory as _
-from zope.app.container.interfaces import IAdding
-from zope.app.container.interfaces import IContainerNamesContainer
-from zope.app.container.interfaces import INameChooser
+import zope.security.checker
 from zope.browsermenu.menu import getMenu
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
@@ -45,7 +40,13 @@ from zope.publisher.browser import BrowserView
 from zope.publisher.interfaces import IPublishTraverse
 from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
-import zope.security.checker
+
+from zope.app.container.constraints import checkFactory
+from zope.app.container.constraints import checkObject
+from zope.app.container.i18n import ZopeMessageFactory as _
+from zope.app.container.interfaces import IAdding
+from zope.app.container.interfaces import IContainerNamesContainer
+from zope.app.container.interfaces import INameChooser
 
 
 @implementer(IAdding, IPublishTraverse)

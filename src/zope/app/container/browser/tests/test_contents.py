@@ -15,26 +15,26 @@
 """
 import unittest
 
-from zope.interface import Interface, implementer
+from zope.annotation.interfaces import IAnnotations
+from zope.component.eventtesting import getEvents
+from zope.container.contained import contained
+from zope.container.interfaces import IContained
+from zope.container.interfaces import IContainer
+from zope.copypastemove import ContainerItemRenamer
+from zope.copypastemove import ObjectCopier
+from zope.copypastemove import ObjectMover
+from zope.copypastemove import PrincipalClipboard
+from zope.copypastemove.interfaces import IContainerItemRenamer
+from zope.copypastemove.interfaces import IObjectCopier
+from zope.copypastemove.interfaces import IObjectMover
+from zope.copypastemove.interfaces import IPrincipalClipboard
+from zope.interface import Interface
+from zope.interface import implementer
 from zope.security import checker
 from zope.traversing.api import traverse
 
-from zope.component.eventtesting import getEvents
-
-from zope.annotation.interfaces import IAnnotations
-from zope.copypastemove import ContainerItemRenamer
-from zope.copypastemove import ObjectMover, ObjectCopier
-from zope.copypastemove import PrincipalClipboard
-from zope.copypastemove.interfaces import IContainerItemRenamer
-from zope.copypastemove.interfaces import IObjectMover, IObjectCopier
-from zope.copypastemove.interfaces import IPrincipalClipboard
-
-from zope.app.container.testing import PlacefulSetup
-from zope.container.contained import contained
-
-from zope.container.interfaces import IContainer, IContained
-
 from zope.app.container.browser.tests import provideAdapter
+from zope.app.container.testing import PlacefulSetup
 
 
 class BaseTestContentsBrowserView(PlacefulSetup):
@@ -360,8 +360,9 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
         self.assertIn('folder1_1_1', target)
 
     def _TestView__newView(self, container):
-        from zope.app.container.browser.contents import Contents
         from zope.publisher.browser import TestRequest
+
+        from zope.app.container.browser.contents import Contents
         request = TestRequest()
         request.setPrincipal(Principal())
         return Contents(container, request)
@@ -370,15 +371,17 @@ class TestCutCopyPaste(PlacefulSetup, unittest.TestCase):
 class Test(BaseTestContentsBrowserView, unittest.TestCase):
 
     def _TestView__newContext(self):
-        from zope.app.container.sample import SampleContainer
         from zope.site.folder import rootFolder
+
+        from zope.app.container.sample import SampleContainer
         root = rootFolder()
         container = SampleContainer()
         return contained(container, root, 'sample')
 
     def _TestView__newView(self, container):
-        from zope.app.container.browser.contents import Contents
         from zope.publisher.browser import TestRequest
+
+        from zope.app.container.browser.contents import Contents
         request = TestRequest()
         request.setPrincipal(Principal())
         return Contents(container, request)

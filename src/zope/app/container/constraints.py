@@ -15,14 +15,12 @@
 """
 
 # BBB
-from zope.container.constraints import (
-    checkObject,
-    checkFactory,
-    IItemTypePrecondition,
-    _TypesBased,
-    ItemTypePrecondition,
-    contains,
-    IContainerTypesConstraint,
-    ContainerTypesConstraint,
-    containers
-)
+from zope.container.constraints import ContainerTypesConstraint
+from zope.container.constraints import IContainerTypesConstraint
+from zope.container.constraints import IItemTypePrecondition
+from zope.container.constraints import ItemTypePrecondition
+from zope.container.constraints import _TypesBased
+from zope.container.constraints import checkFactory
+from zope.container.constraints import checkObject
+from zope.container.constraints import containers
+from zope.container.constraints import contains

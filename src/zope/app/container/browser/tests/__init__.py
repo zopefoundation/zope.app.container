@@ -3,10 +3,10 @@
 import unittest
 
 from webtest import TestApp
+from zope.principalannotation.interfaces import IPrincipalAnnotationUtility
+from zope.principalannotation.utility import PrincipalAnnotationUtility
 
 from zope import component
-from zope.principalannotation.utility import PrincipalAnnotationUtility
-from zope.principalannotation.interfaces import IPrincipalAnnotationUtility
 
 
 def provideAdapter(required, provided, factory):

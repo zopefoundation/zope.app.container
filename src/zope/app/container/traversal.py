@@ -15,9 +15,7 @@
 """
 
 # BBB
-from zope.container.traversal import (
-    ContainerTraverser,
-    ItemTraverser,
-    _marker,
-    ContainerTraversable
-)
+from zope.container.traversal import ContainerTraversable
+from zope.container.traversal import ContainerTraverser
+from zope.container.traversal import ItemTraverser
+from zope.container.traversal import _marker

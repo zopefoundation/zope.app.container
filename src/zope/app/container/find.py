@@ -15,9 +15,7 @@
 """
 
 # BBB
-from zope.container.find import (
-    FindAdapter,
-    _find_helper,
-    SimpleIdFindFilter,
-    SimpleInterfacesFindFilter
-)
+from zope.container.find import FindAdapter
+from zope.container.find import SimpleIdFindFilter
+from zope.container.find import SimpleInterfacesFindFilter
+from zope.container.find import _find_helper

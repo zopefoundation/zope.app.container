@@ -17,20 +17,20 @@
 import doctest
 import unittest
 
-from persistent import Persistent
 import transaction
-from zope import copypastemove
-from zope.interface import implementer, Interface
+from persistent import Persistent
 from zope.annotation.interfaces import IAttributeAnnotatable
-from zope.dublincore.interfaces import IZopeDublinCore
-
-from zope.app.container.interfaces import IReadContainer, IContained
-
-from zope.app.container.testing import AppContainerLayer
-
 from zope.app.wsgi.testlayer import http
-from zope.app.container.browser.tests.test_contents import provideAdapter
+from zope.dublincore.interfaces import IZopeDublinCore
+from zope.interface import Interface
+from zope.interface import implementer
+
+from zope import copypastemove
 from zope.app.container.browser.tests import BrowserTestCase
+from zope.app.container.browser.tests.test_contents import provideAdapter
+from zope.app.container.interfaces import IContained
+from zope.app.container.interfaces import IReadContainer
+from zope.app.container.testing import AppContainerLayer
 
 
 class IImmovable(Interface):

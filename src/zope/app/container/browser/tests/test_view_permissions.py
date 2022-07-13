@@ -14,18 +14,17 @@
 """Container View Permissions Tests
 """
 import unittest
+
 import transaction
-
 from zope.annotation.interfaces import IAttributeAnnotatable
-from zope.interface import alsoProvides
-from zope.security.interfaces import Unauthorized
-
-
 from zope.container.ordered import OrderedContainer
 from zope.dublincore.interfaces import IZopeDublinCore
+from zope.interface import alsoProvides
+from zope.security.interfaces import Unauthorized
 from zope.securitypolicy.interfaces import IRolePermissionManager
-from zope.app.container.testing import AppContainerLayer
+
 from zope.app.container.browser.tests import BrowserTestCase
+from zope.app.container.testing import AppContainerLayer
 
 
 class Tests(BrowserTestCase):
