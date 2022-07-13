@@ -16,15 +16,18 @@
 
 __docformat__ = 'restructuredtext'
 
-from zope.interface import Interface
+from zope.browsermenu.metaconfigure import menuItemDirective
+from zope.browserpage.metaconfigure import page
+from zope.browserpage.metaconfigure import view
 from zope.component import queryMultiAdapter
-from zope.configuration.fields import GlobalObject, GlobalInterface
+from zope.configuration.fields import GlobalInterface
+from zope.configuration.fields import GlobalObject
+from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.security.zcml import Permission
-from zope.browserpage.metaconfigure import page, view
-from zope.browsermenu.metaconfigure import menuItemDirective
-from zope.app.container.browser.contents import Contents
+
 from zope.app.container.browser.adding import Adding
+from zope.app.container.browser.contents import Contents
 from zope.app.container.i18n import ZopeMessageFactory as _
 
 

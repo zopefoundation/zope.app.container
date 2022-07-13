@@ -13,37 +13,43 @@
 ##############################################################################
 """Adding implementation tests
 """
-from zope.testing import renormalizing
-import re
 import doctest
+import re
 import unittest
 
 import zope.interface
 import zope.security.checker
+from zope.app.testing import ztapi
+from zope.app.testing.placelesssetup import PlacelessSetup
+from zope.app.testing.placelesssetup import setUp
+from zope.app.testing.placelesssetup import tearDown
 from zope.browsermenu.interfaces import AddMenu
-from zope.browsermenu.interfaces import IMenuItemType, IBrowserMenu
+from zope.browsermenu.interfaces import IBrowserMenu
+from zope.browsermenu.interfaces import IMenuItemType
+from zope.browsermenu.menu import BrowserMenu
+from zope.browsermenu.menu import BrowserMenuItem
 from zope.component.interfaces import IFactory
-from zope.interface import implementer, Interface, directlyProvides
+from zope.exceptions.interfaces import UserError
+from zope.interface import Interface
+from zope.interface import directlyProvides
+from zope.interface import implementer
 from zope.interface.interfaces import ComponentLookupError
 from zope.publisher.browser import BrowserView
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserRequest
-from zope.browsermenu.menu import BrowserMenuItem, BrowserMenu
 from zope.security.interfaces import ForbiddenAttribute
-from zope.exceptions.interfaces import UserError
+from zope.testing import renormalizing
 from zope.traversing.api import getParent
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.browser.interfaces import IAbsoluteURL
 from zope.traversing.interfaces import IContainmentRoot
 
-from zope.app.testing import ztapi
-from zope.app.testing.placelesssetup import PlacelessSetup, setUp, tearDown
+from zope.app.container.browser.adding import Adding
+from zope.app.container.contained import contained
 from zope.app.container.interfaces import IAdding
+from zope.app.container.interfaces import IContainer
 from zope.app.container.interfaces import IContainerNamesContainer
 from zope.app.container.interfaces import INameChooser
-from zope.app.container.interfaces import IContainer
-from zope.app.container.contained import contained
-from zope.app.container.browser.adding import Adding
 from zope.app.container.sample import SampleContainer
 
 

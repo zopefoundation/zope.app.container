@@ -17,31 +17,28 @@ __docformat__ = 'restructuredtext'
 
 # BBB
 from zope.browser.interfaces import IAdding
-
 # BBB
-from zope.container.interfaces import (
-    DuplicateIDError,
-    ContainerError,
-    InvalidContainerType,
-    InvalidItemType,
-    InvalidType,
-    IContained,
-    IItemContainer,
-    ISimpleReadContainer,
-    IReadContainer,
-    IWriteContainer,
-    IItemWriteContainer,
-    IContainer,
-    IBTreeContainer,
-    IOrderedContainer,
-    IContainerNamesContainer,
-    IObjectMovedEvent,
-    UnaddableError,
-    IObjectAddedEvent,
-    INameChooser,
-    IObjectRemovedEvent,
-    IContainerModifiedEvent,
-    IFind,
-    IObjectFindFilter,
-    IIdFindFilter
-)
+from zope.container.interfaces import ContainerError
+from zope.container.interfaces import DuplicateIDError
+from zope.container.interfaces import IBTreeContainer
+from zope.container.interfaces import IContained
+from zope.container.interfaces import IContainer
+from zope.container.interfaces import IContainerModifiedEvent
+from zope.container.interfaces import IContainerNamesContainer
+from zope.container.interfaces import IFind
+from zope.container.interfaces import IIdFindFilter
+from zope.container.interfaces import IItemContainer
+from zope.container.interfaces import IItemWriteContainer
+from zope.container.interfaces import INameChooser
+from zope.container.interfaces import InvalidContainerType
+from zope.container.interfaces import InvalidItemType
+from zope.container.interfaces import InvalidType
+from zope.container.interfaces import IObjectAddedEvent
+from zope.container.interfaces import IObjectFindFilter
+from zope.container.interfaces import IObjectMovedEvent
+from zope.container.interfaces import IObjectRemovedEvent
+from zope.container.interfaces import IOrderedContainer
+from zope.container.interfaces import IReadContainer
+from zope.container.interfaces import ISimpleReadContainer
+from zope.container.interfaces import IWriteContainer
+from zope.container.interfaces import UnaddableError

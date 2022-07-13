@@ -15,27 +15,33 @@
 """
 from six.moves import urllib_parse as urllib
 
+from zope.annotation.interfaces import IAnnotations
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryMultiAdapter
+from zope.copypastemove.interfaces import IContainerItemRenamer
+from zope.copypastemove.interfaces import IObjectCopier
+from zope.copypastemove.interfaces import IObjectMover
+from zope.copypastemove.interfaces import IPrincipalClipboard
+from zope.dublincore.interfaces import IDCDescriptiveProperties
+from zope.dublincore.interfaces import IZopeDublinCore
 from zope.event import notify
 from zope.exceptions.interfaces import UserError
-from zope.security.interfaces import Unauthorized
-from zope.security import canWrite
-from zope.size.interfaces import ISized
-from zope.traversing.interfaces import TraversalError
+from zope.lifecycleevent import Attributes
+from zope.lifecycleevent import ObjectModifiedEvent
 from zope.publisher.browser import BrowserView
-from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from zope.dublincore.interfaces import IZopeDublinCore
-from zope.dublincore.interfaces import IDCDescriptiveProperties
-from zope.copypastemove.interfaces import IPrincipalClipboard
-from zope.copypastemove.interfaces import IObjectCopier, IObjectMover
-from zope.copypastemove.interfaces import IContainerItemRenamer
-from zope.annotation.interfaces import IAnnotations
-from zope.lifecycleevent import ObjectModifiedEvent, Attributes
-from zope.traversing.api import getName, getPath, joinPath, traverse
+from zope.security import canWrite
+from zope.security.interfaces import Unauthorized
+from zope.size.interfaces import ISized
+from zope.traversing.api import getName
+from zope.traversing.api import getPath
+from zope.traversing.api import joinPath
+from zope.traversing.api import traverse
+from zope.traversing.interfaces import TraversalError
 
-from zope.app.container.i18n import ZopeMessageFactory as _
 from zope.app.container.browser.adding import Adding
-from zope.app.container.interfaces import IContainer, DuplicateIDError
+from zope.app.container.i18n import ZopeMessageFactory as _
+from zope.app.container.interfaces import DuplicateIDError
+from zope.app.container.interfaces import IContainer
 from zope.app.container.interfaces import IContainerNamesContainer
 
 
