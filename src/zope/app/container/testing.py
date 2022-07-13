@@ -29,30 +29,30 @@ def buildSampleFolderTree():
     # folder1_1_1 folder1_1_2  folder1_2_1  folder2_1_1
 
     root = rootFolder()
-    root[u'folder1'] = Folder()
-    root[u'folder1'][u'folder1_1'] = Folder()
-    root[u'folder1'][u'folder1_1'][u'folder1_1_1'] = Folder()
-    root[u'folder1'][u'folder1_1'][u'folder1_1_2'] = Folder()
-    root[u'folder1'][u'folder1_2'] = Folder()
-    root[u'folder1'][u'folder1_2'][u'folder1_2_1'] = Folder()
-    root[u'folder2'] = Folder()
-    root[u'folder2'][u'folder2_1'] = Folder()
-    root[u'folder2'][u'folder2_1'][u'folder2_1_1'] = Folder()
-    root[u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER A}"
-         u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER KA}"
-         u"\N{CYRILLIC SMALL LETTER A}3"] = Folder()
-    root[u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER A}"
-         u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER KA}"
-         u"\N{CYRILLIC SMALL LETTER A}3"][
-        u"\N{CYRILLIC SMALL LETTER PE}"
-        u"\N{CYRILLIC SMALL LETTER A}"
-        u"\N{CYRILLIC SMALL LETTER PE}"
-        u"\N{CYRILLIC SMALL LETTER KA}"
-        u"\N{CYRILLIC SMALL LETTER A}3_1"] = Folder()
+    root['folder1'] = Folder()
+    root['folder1']['folder1_1'] = Folder()
+    root['folder1']['folder1_1']['folder1_1_1'] = Folder()
+    root['folder1']['folder1_1']['folder1_1_2'] = Folder()
+    root['folder1']['folder1_2'] = Folder()
+    root['folder1']['folder1_2']['folder1_2_1'] = Folder()
+    root['folder2'] = Folder()
+    root['folder2']['folder2_1'] = Folder()
+    root['folder2']['folder2_1']['folder2_1_1'] = Folder()
+    root["\N{CYRILLIC SMALL LETTER PE}"
+         "\N{CYRILLIC SMALL LETTER A}"
+         "\N{CYRILLIC SMALL LETTER PE}"
+         "\N{CYRILLIC SMALL LETTER KA}"
+         "\N{CYRILLIC SMALL LETTER A}3"] = Folder()
+    root["\N{CYRILLIC SMALL LETTER PE}"
+         "\N{CYRILLIC SMALL LETTER A}"
+         "\N{CYRILLIC SMALL LETTER PE}"
+         "\N{CYRILLIC SMALL LETTER KA}"
+         "\N{CYRILLIC SMALL LETTER A}3"][
+        "\N{CYRILLIC SMALL LETTER PE}"
+        "\N{CYRILLIC SMALL LETTER A}"
+        "\N{CYRILLIC SMALL LETTER PE}"
+        "\N{CYRILLIC SMALL LETTER KA}"
+        "\N{CYRILLIC SMALL LETTER A}3_1"] = Folder()
 
     return root
 
@@ -67,7 +67,7 @@ def setUpTraversal():
 class PlacefulSetup(PlacelessSetup):
 
     def setUp(self):
-        super(PlacefulSetup, self).setUp()
+        super().setUp()
         cSetUp()
         setUpTraversal()
 
@@ -75,7 +75,7 @@ class PlacefulSetup(PlacelessSetup):
         newInteraction()
 
     def tearDown(self):
-        super(PlacefulSetup, self).tearDown()
+        super().tearDown()
         cTearDown()
         tTearDown()
 

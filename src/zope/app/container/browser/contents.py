@@ -13,7 +13,7 @@
 ##############################################################################
 """View Class for the Container's Contents view.
 """
-from six.moves import urllib_parse as urllib
+import urllib
 
 from zope.annotation.interfaces import IAnnotations
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
@@ -153,7 +153,7 @@ class Contents(BrowserView):
         info['id'] = info['cb_id'] = id
         info['object'] = obj
 
-        info['url'] = urllib.quote(id.encode('utf-8'))
+        info['url'] = urllib.parse.quote(id.encode('utf-8'))
         info['rename'] = rename_ids.get(id)
         info['retitle'] = id == retitle_id
 

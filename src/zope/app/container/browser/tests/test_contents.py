@@ -90,7 +90,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         # If the id contains non-ASCII characters, url has to be quoted
         container = self._TestView__newContext()
         subcontainer = self._TestView__newContext()
-        container[u'f\xf6\xf6'] = subcontainer
+        container['f\xf6\xf6'] = subcontainer
 
         fc = self._TestView__newView(container)
         info_list = fc.listContentInfo()
@@ -104,10 +104,11 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         container['document'] = document
 
         from datetime import datetime
+
         from zope.dublincore.interfaces import IZopeDublinCore
 
         @implementer(IZopeDublinCore)
-        class FauxDCAdapter(object):
+        class FauxDCAdapter:
 
             __Security_checker__ = checker.Checker(
                 {"created": "zope.Public",
@@ -171,7 +172,7 @@ class BaseTestContentsBrowserView(PlacefulSetup):
         from zope.dublincore.interfaces import IDCDescriptiveProperties
 
         @implementer(IDCDescriptiveProperties)
-        class FauxDCDescriptiveProperties(object):
+        class FauxDCDescriptiveProperties:
 
             __Security_checker__ = checker.Checker(
                 {"title": "zope.Public",
@@ -210,11 +211,11 @@ class IDocument(Interface):
 
 
 @implementer(IDocument)
-class Document(object):
+class Document:
     pass
 
 
-class Principal(object):
+class Principal:
 
     id = 'bob'
 

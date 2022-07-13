@@ -25,7 +25,7 @@ def read(*rnames):
         return f.read()
 
 
-version = '4.1.0.dev0'
+version = '5.0.dev0'
 
 setup(name='zope.app.container',
       version=version,
@@ -44,8 +44,6 @@ setup(name='zope.app.container',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: Zope Public License',
           'Programming Language :: Python',
-          'Programming Language :: Python :: 2.7',
-          'Programming Language :: Python :: 3.5',
           'Programming Language :: Python :: 3.6',
           'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: 3.8',

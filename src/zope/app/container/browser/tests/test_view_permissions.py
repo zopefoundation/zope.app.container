@@ -37,7 +37,7 @@ class Tests(BrowserTestCase):
         alsoProvides(obj, IAttributeAnnotatable)
 
         self.getRootFolder()['obj'] = obj
-        IZopeDublinCore(obj).title = u'My object'
+        IZopeDublinCore(obj).title = 'My object'
         transaction.commit()
 
         response = self.publish('/')
@@ -76,7 +76,7 @@ class Tests(BrowserTestCase):
         alsoProvides(obj, IAttributeAnnotatable)
 
         self.getRootFolder()['obj'] = obj
-        IZopeDublinCore(obj).title = u'My object'
+        IZopeDublinCore(obj).title = 'My object'
 
         # deny zope.app.dublincore.view to zope.Anonymous
         prm = IRolePermissionManager(self.getRootFolder())

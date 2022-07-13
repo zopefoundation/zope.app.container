@@ -35,23 +35,23 @@ class IContainerViews(Interface):
     """Define several container views for an `IContainer` implementation."""
 
     for_ = GlobalObject(
-        title=u"The declaration this containerViews are for.",
-        description=u"""
+        title="The declaration this containerViews are for.",
+        description="""
         The containerViews will be available for all objects that
         provide this declaration.
         """,
         required=True)
 
     contents = Permission(
-        title=u"The permission needed for content page.",
+        title="The permission needed for content page.",
         required=False)
 
     index = Permission(
-        title=u"The permission needed for index page.",
+        title="The permission needed for index page.",
         required=False)
 
     add = Permission(
-        title=u"The permission needed for add page.",
+        title="The permission needed for add page.",
         required=False)
 
     layer = GlobalInterface(

@@ -111,13 +111,13 @@ class Adding(BrowserView):
 
         factory = queryUtility(IFactory, name)
         if factory is None:
-            return super(Adding, self).publishTraverse(request, name)
+            return super().publishTraverse(request, name)
 
         return factory
 
     def action(self, type_name='', id=''):
         if not type_name:
-            raise UserError(_(u"You must select the type of object to add."))
+            raise UserError(_("You must select the type of object to add."))
 
         if type_name.startswith('@@'):
             type_name = type_name[2:]
@@ -129,7 +129,7 @@ class Adding(BrowserView):
 
         if queryMultiAdapter((self, self.request),
                              name=view_name) is not None:
-            url = "%s/%s=%s" % (
+            url = "{}/{}={}".format(
                 absoluteURL(self, self.request), type_name, id)
             self.request.response.redirect(url)
             return

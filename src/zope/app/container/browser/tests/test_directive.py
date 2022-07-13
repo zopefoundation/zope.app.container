@@ -31,7 +31,7 @@ from zope.testing import renormalizing
 atre = re.compile(' at [0-9a-fA-Fx]+')
 
 
-class Context(object):
+class Context:
     info = ''
 
     def __init__(self):
