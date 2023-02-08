@@ -14,7 +14,6 @@
 """Adding implementation tests
 """
 import doctest
-import re
 import unittest
 
 import zope.interface
@@ -38,7 +37,6 @@ from zope.publisher.browser import BrowserView
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.security.interfaces import ForbiddenAttribute
-from zope.testing import renormalizing
 from zope.traversing.api import getParent
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.browser.interfaces import IAbsoluteURL
@@ -227,7 +225,7 @@ def test_constraint_driven_addingInfo():
     >>> zope.interface.directlyProvides(TestMenu, IMenuItemType)
 
     >>> ztapi.provideUtility(IMenuItemType, TestMenu, 'TestMenu')
-    >>> ztapi.provideUtility(IBrowserMenu, BrowserMenu('TestMenu', u'', u''),
+    >>> ztapi.provideUtility(IBrowserMenu, BrowserMenu('TestMenu', '', ''),
     ...                      'TestMenu')
 
     >>> defineMenuItem(TestMenu, IAdding, '', 'item1')
@@ -270,18 +268,18 @@ def test_constraint_driven_addingInfo():
     >>> len(items)
     1
     >>> items[0]['title']
-    u'item3'
+    'item3'
 
     >>> adding.menu_id = 'TestMenu'
     >>> items = adding.addingInfo()
     >>> len(items)
     3
     >>> items[0]['title']
-    u'item1'
+    'item1'
     >>> items[1]['title'] # the collator ordered this one correctly!
-    u'Item2'
+    'Item2'
     >>> items[2]['title']
-    u'item3'
+    'item3'
     """
 
 
@@ -319,7 +317,7 @@ def test_constraint_driven_add():
     >>> adding.add(F2())
     Traceback (most recent call last):
     ...
-    Invalid: not a valid child
+    zope.interface.exceptions.Invalid: not a valid child
 
     >>> @zope.interface.implementer(ITestContainer)
     ... class ValidContainer(SampleContainer):
@@ -342,7 +340,7 @@ def test_constraint_driven_add():
     >>> c = adding.add(F1())
     Traceback (most recent call last):
     ...
-    Invalid: not a valid container
+    zope.interface.exceptions.Invalid: not a valid container
 
     >>> adding = Adding(ValidContainer(), TestRequest())
     >>> c = adding.add(F1())
@@ -590,18 +588,9 @@ def test_isSingleMenuItem_with_ICNC():
     """
 
 
-checker = renormalizing.RENormalizing([
-    (re.compile("u('.*?')"), r"\1"),
-    (re.compile('u(".*?")'), r"\1"),
-    # Python 3 adds module name to exceptions.
-    (re.compile('zope.interface.exceptions.Invalid'), 'Invalid'),
-])
-
-
 def test_suite():
     return unittest.TestSuite((
         unittest.defaultTestLoader.loadTestsFromName(__name__),
         doctest.DocTestSuite(setUp=setUp,
-                             tearDown=tearDown,
-                             checker=checker),
+                             tearDown=tearDown),
     ))

@@ -367,7 +367,7 @@ class Test(BrowserTestCase):
     def test_copy_then_delete_with_unicode_name(self):
         # Tests unicode on object copied then deleted (#238579)
 
-        # The 'Accept-Charset' is important on Python 3 to get
+        # The 'Accept-Charset' is important to get
         # the encoding correct. The query string is actually correctly
         # decoded to unicode (if it's ever even *encoded*) on the
         # receiving side, but
@@ -376,8 +376,6 @@ class Test(BrowserTestCase):
         # bytes. If we don't specify latin-1 as a charset
         # zope.publsher.http.HTTPCharsets will only let it try to be
         # decoded as utf-8, which doesn't work.
-        # On Python 2, if we don't encode the parameter, it's improperly
-        # decoded before it ever gets to _decode, arriving as 'voill?'.
 
         # This is most likely a mismatch
         # somewhere in the
@@ -416,7 +414,7 @@ class Test(BrowserTestCase):
 def test_suite():
     suite = unittest.TestSuite()
     Test.layer = AppContainerLayer
-    suite.addTest(unittest.makeSuite(Test))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(Test))
 
     def _http(query_str, *args, **kwargs):
         wsgi_app = AppContainerLayer.make_wsgi_app()

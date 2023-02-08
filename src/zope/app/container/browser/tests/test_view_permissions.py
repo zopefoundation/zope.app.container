@@ -99,5 +99,5 @@ class Tests(BrowserTestCase):
 def test_suite():
     suite = unittest.TestSuite()
     Tests.layer = AppContainerLayer
-    suite.addTest(unittest.makeSuite(Tests))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(Tests))
     return suite

@@ -13,14 +13,10 @@
 ##############################################################################
 """'containerView' directive test
 """
-try:
-    from cStringIO import StringIO  # pragma: PY2
-except ImportError:
-    from io import StringIO
-
 import doctest
 import pprint
 import re
+from io import StringIO
 
 from zope.component.interface import provideInterface
 from zope.interface import Interface
