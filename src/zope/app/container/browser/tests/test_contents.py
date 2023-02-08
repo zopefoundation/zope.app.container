@@ -18,7 +18,6 @@ import unittest
 from zope.annotation.interfaces import IAnnotations
 from zope.component.eventtesting import getEvents
 from zope.container.contained import contained
-from zope.container.interfaces import IContained
 from zope.container.interfaces import IContainer
 from zope.copypastemove import ContainerItemRenamer
 from zope.copypastemove import ObjectCopier
@@ -30,6 +29,7 @@ from zope.copypastemove.interfaces import IObjectMover
 from zope.copypastemove.interfaces import IPrincipalClipboard
 from zope.interface import Interface
 from zope.interface import implementer
+from zope.location.interfaces import IContained
 from zope.security import checker
 from zope.traversing.api import traverse
 
