@@ -21,7 +21,6 @@ from io import StringIO
 from zope.component.interface import provideInterface
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
-from zope.testing import renormalizing
 
 
 atre = re.compile(' at [0-9a-fA-Fx]+')
@@ -75,7 +74,7 @@ def test_containerViews():
       (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
       <InterfaceClass zope.app.menus.zmi_views>,
-      u'Contents'),
+      'Contents'),
      (<function provideInterface>,
       <InterfaceClass zope.app.menus.zmi_views>),
      (<function provideInterface>,
@@ -100,7 +99,7 @@ def test_containerViews():
       (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.publisher.interfaces.browser.IDefaultBrowserLayer>),
       <InterfaceClass zope.app.menus.zmi_actions>,
-      u'Add'),
+      'Add'),
      (<function provideInterface>,
       <InterfaceClass zope.app.menus.zmi_actions>),
      (<function provideInterface>,
@@ -137,7 +136,7 @@ def test_containerViews_layer():
       (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
       <InterfaceClass zope.app.menus.zmi_views>,
-      u'Contents'),
+      'Contents'),
      (<function provideInterface>,
       <InterfaceClass zope.app.menus.zmi_views>),
      (<function provideInterface>,
@@ -162,7 +161,7 @@ def test_containerViews_layer():
       (<InterfaceClass zope.app.container.browser.tests.test_directive.Iface>,
        <InterfaceClass zope.app.container.browser.tests.test_directive.ITestLayer>),
       <InterfaceClass zope.app.menus.zmi_actions>,
-      u'Add'),
+      'Add'),
      (<function provideInterface>,
       <InterfaceClass zope.app.menus.zmi_actions>),
      (<function provideInterface>,
@@ -181,12 +180,5 @@ def test_containerViews_layer():
     """  # noqa: E501 line too long
 
 
-checker = renormalizing.RENormalizing([
-    # Python 3 unicode removed the "u".
-    (re.compile("u('.*?')"), r"\1"),
-    (re.compile('u(".*?")'), r"\1"),
-])
-
-
 def test_suite():
-    return doctest.DocTestSuite(checker=checker)
+    return doctest.DocTestSuite()
