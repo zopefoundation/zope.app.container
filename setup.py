@@ -24,7 +24,7 @@ def read(*rnames):
         return f.read()
 
 
-version = '6.0.dev0'
+version = '6.0'
 
 setup(name='zope.app.container',
       version=version,
