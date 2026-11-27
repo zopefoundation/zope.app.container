@@ -21,7 +21,7 @@
       cellpadding="2" cellspacing="0"
       i18n:attributes="summary">
 
-    <thead> 
+    <thead>
       <tr>
         <th>&nbsp;</th>
         <th i18n:translate="">Name</th>

@@ -5,7 +5,7 @@
 
   <form action="@@find.html" method="get">
     <input type="text" name="ids" value="" /><br />
-    <input type="submit" name="find_submit" value=" Find " 
+    <input type="submit" name="find_submit" value=" Find "
            i18n:attributes="value find-button"/>
   </form>
 
